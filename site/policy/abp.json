@@ -8,6 +8,12 @@
   "roles": {
     "keeper": {
       "who": "The agent the owner (until handover, Dinis) names to look after this site. Its public signing key is published before its first commit.",
+      "named": {
+        "agent": "streaming.d@SovereignWebsite.dinis",
+        "signing_fingerprint": "sha256:bffdcbf6ab6ddb99",
+        "key": "SovereignWebsite__Factory team/keys.json, on dev",
+        "yes": "Dinis Cruz, 21 November 2026, about 22:52 UTC, in the keeper's own session (https://claude.ai/code/session_015gaHdbE7t4XNf21L7neufF): \"Yes, you are keeper, push it to dev\""
+      },
       "may_change": [
         "site/**",
         "docs/**",
