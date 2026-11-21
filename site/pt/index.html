@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streaming</title>
+<meta name="description" content="A sua lista, notas e preferências para streaming no Reino Unido e em Portugal. Guardadas no seu navegador, sem conta.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Streaming">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:url" content="https://streaming.tool.sovereignweb.site/pt/">
+<meta property="og:title" content="Streaming">
+<meta property="og:description" content="A sua lista, notas e preferências para streaming no Reino Unido e em Portugal. Guardadas no seu navegador, sem conta.">
+<meta property="og:image" content="https://streaming.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Streaming">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Streaming">
+<meta name="twitter:description" content="A sua lista, notas e preferências para streaming no Reino Unido e em Portugal. Guardadas no seu navegador, sem conta.">
+<meta name="twitter:image" content="https://streaming.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
+<link rel="canonical" href="https://streaming.tool.sovereignweb.site/pt/">
+<link rel="alternate" hreflang="en-GB" href="https://streaming.tool.sovereignweb.site/">
+<link rel="alternate" hreflang="pt-PT" href="https://streaming.tool.sovereignweb.site/pt/">
+<link rel="stylesheet" href="/assets/streaming.css">
+<script src="/assets/design.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar para o conteúdo</a>
+<details class="family-credit">
+  <summary>Sovereign Website</summary>
+  <ul>
+    <li><a href="/start/">Start here</a></li>
+    <li><a href="/agents/">Use with your AI</a></li>
+    <li class="family-gap"><a href="/admin/">How this site was made</a></li>
+    <li><a href="https://sovereignwebsite.ai/">Sovereign Website</a></li>
+    <li><a href="https://sovereignwebsite.org/">Principles</a></li>
+    <li><a href="https://sovereignwebsite.site/">Hosted</a></li>
+    <li><a href="https://hub.sovereignweb.site/">Hub</a></li>
+    <li><a href="https://agents.sovereignweb.site/">Agents</a></li>
+    <li><a href="https://vault.sovereignwebsite.site/">Vault</a></li>
+    <li><a href="https://agenticcells.ai/">AgentiCCells</a></li>
+    <li><a href="https://riskmandate.ai/">RiskMandate</a></li>
+    <li><a href="https://newsroom.sgit.ai/">Newsroom</a></li>
+  </ul>
+</details>
+<header class="top">
+  <a class="name" href="/pt/">Streaming</a>
+  <nav class="own" aria-label="Streaming">
+    <a href="/start/">Começar aqui</a>
+    <a href="/agents/">Usar com a sua IA</a>
+    <a href="/" hreflang="en-GB" lang="en-GB">English</a>
+    <span><label class="sr" for="design">Escolher um desenho</label><select id="design" name="design"><option value="paper">Papel</option><option value="night">Noite</option><option value="cinema">Cinema</option><option value="coast">Costa</option><option value="contrast">Alto contraste</option></select></span>
+  </nav>
+</header>
+<main id="main">
+<div class="mark">streaming.tool.sovereignweb.site</div>
+<h1>A sua lista de streaming</h1>
+<p>A sua lista para ver, títulos vistos e ocultos, classificações, notas e preferências. Tudo fica neste navegador: sem conta, sem servidor, sem cookies, sem rastreio.</p>
+<p>Este sítio não tem dados de catálogo. Para saber o que está em streaming, use a <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">página de streaming do PrompTugal</a> e depois acrescente aqui um título, colando a ligação ou escrevendo o nome.</p>
+<p id="msg" class="msg" role="status" aria-live="polite"></p>
+
+<section class="panel" aria-labelledby="add-h">
+<h2 id="add-h">Acrescentar um título</h2>
+<form id="add-form" class="row">
+  <div class="grow"><label for="add-input">Uma ligação para a ficha (PrompTugal ou themoviedb.org) ou o título</label><input type="text" id="add-input" autocomplete="off"></div>
+  <button type="submit">Acrescentar</button>
+</form>
+</section>
+
+<section class="panel" aria-labelledby="list-h">
+<h2 id="list-h">A sua lista <span id="count" class="meta"></span></h2>
+<div class="row">
+  <div><label for="filter-status">Mostrar</label><select id="filter-status"><option value="">Todos (exceto ocultos)</option><option value="watch">Para ver</option><option value="seen">Visto</option><option value="hidden">Oculto</option></select></div>
+  <div class="grow"><label for="filter-text">Pesquisar na sua lista</label><input type="search" id="filter-text"></div>
+</div>
+<ul id="items" class="items"></ul>
+</section>
+
+<section class="panel" aria-labelledby="prefs-h">
+<h2 id="prefs-h">As suas preferências</h2>
+<form id="prefs-form">
+  <fieldset><legend>Serviços favoritos</legend>
+    <label><input type="checkbox" id="svc-0"> Netflix</label>
+    <label><input type="checkbox" id="svc-1"> Disney+</label>
+    <label><input type="checkbox" id="svc-2"> Prime Video</label>
+    <label><input type="checkbox" id="svc-3"> Apple TV+</label>
+  </fieldset>
+  <fieldset><legend>Países</legend>
+    <label><input type="checkbox" id="cty-GB"> Reino Unido</label>
+    <label><input type="checkbox" id="cty-PT"> Portugal</label>
+  </fieldset>
+  <label for="genres">Géneros favoritos (separados por vírgulas)</label><input type="text" id="genres" autocomplete="off">
+  <p><button type="submit">Guardar preferências</button></p>
+</form>
+</section>
+
+<section class="panel" aria-labelledby="views-h">
+<h2 id="views-h">Vistas guardadas</h2>
+<p>Uma vista guardada é um nome e uma ligação para uma vista filtrada na página do PrompTugal.</p>
+<ul id="views" class="items"></ul>
+<form id="view-form" class="row">
+  <div><label for="view-name">Nome</label><input type="text" id="view-name" autocomplete="off"></div>
+  <div class="grow"><label for="view-link">Ligação (data.promptugal.news/streaming/...)</label><input type="url" id="view-link" autocomplete="off"></div>
+  <button type="submit">Guardar vista</button>
+</form>
+</section>
+
+<section class="panel" aria-labelledby="data-h">
+<h2 id="data-h">Os seus dados</h2>
+<p>Exporte a sua lista num ficheiro JSON, importe-o noutro dispositivo ou apague-a deste navegador.</p>
+<div class="row">
+  <button type="button" id="export">Exportar em JSON</button>
+  <div><label for="import">Importar um ficheiro JSON</label><input type="file" id="import" accept="application/json,.json"></div>
+  <button type="button" id="wipe" class="quiet">Apagar tudo deste navegador</button>
+</div>
+</section>
+
+<section aria-labelledby="priv-h">
+<h2 id="priv-h">Privacidade</h2>
+<p>A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.</p>
+</section>
+
+<footer>
+<nav class="site-links" aria-label="About this site">
+  <a href="/start/">Começar aqui</a>
+  <a href="/agents/">Usar com a sua IA</a>
+  <a href="/admin/">Como este sítio foi feito</a>
+  <a href="/policy/">Como este sítio é governado</a>
+</nav>
+Sovereign Website. Source: <a href="https://github.com/SovereignWebsite/Site__Tool__Streaming">github.com/SovereignWebsite/Site__Tool__Streaming</a>.</footer>
+</main>
+<script type="application/json" id="i18n">{"empty":"Ainda não há nada aqui.","open":"Abrir ficha","remove":"Remover","norating":"Sem classificação","noteph":"A sua nota privada","statusfor":"Estado de","ratingfor":"Classificação de","notefor":"Nota sobre","s_watch":"Para ver","s_seen":"Visto","s_hidden":"Oculto","added":"Acrescentado.","removed":"Removido.","prefssaved":"Preferências guardadas.","viewadded":"Vista guardada.","exported":"Exportado.","imported":"Importado.","wiped":"Tudo foi removido deste navegador.","noviews":"Ainda não há vistas guardadas.","nostorage":"O navegador não quis guardar isto. Exporte uma cópia para o conservar.","confirmwipe":"Remover tudo deste navegador?","err_empty":"Escreva primeiro um título ou cole uma ligação.","err_badlink":"Essa ligação não parece correta.","err_host":"Só são aceites ligações para a página de streaming do PrompTugal ou para themoviedb.org. Escreva antes o título.","err_notitle":"Não foi possível ler um título dessa ligação. Escreva antes o título.","err_duplicate":"Esse título já está na sua lista.","err_noname":"Dê um nome à vista.","err_viewhost":"Uma vista guardada tem de ser uma ligação para data.promptugal.news/streaming/.","err_import":"Esse ficheiro não é uma exportação do Streaming."}</script>
+<script src="/assets/core.js"></script>
+<script src="/assets/app.js"></script>
+</body>
+</html>

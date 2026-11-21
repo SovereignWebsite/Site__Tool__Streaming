@@ -1,0 +1,60 @@
+/* Streaming: five designs, chosen with the "Choose a design" control and kept in this browser only. */
+:root,[data-design="paper"]{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#5d5c57;--accent:#2f6b4f;--line:#e4e1d8;--card:#fff;--radius:8px}
+[data-design="night"]{--bg:#141513;--fg:#ecebe6;--muted:#a8a69e;--accent:#7fc3a0;--line:#2c2d29;--card:#1c1d1a;--radius:8px}
+[data-design="cinema"]{--bg:#16090c;--fg:#f4e9e4;--muted:#c4aaa3;--accent:#ff8a73;--line:#4a2228;--card:#241014;--radius:2px}
+[data-design="coast"]{--bg:#eef5f8;--fg:#10252e;--muted:#3f5864;--accent:#0b5d86;--line:#c3d7e0;--card:#fff;--radius:16px}
+[data-design="contrast"]{--bg:#000;--fg:#fff;--muted:#e6e6e6;--accent:#ffe14d;--line:#fff;--card:#000;--radius:0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:56rem;margin:0 auto;padding:2rem 1rem 4rem}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--bg);padding:.4rem;z-index:99}
+.mark{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(2rem,6vw,3rem);line-height:1.1;margin:.4rem 0 1rem}
+h2{font-size:1.25rem;margin:2rem 0 .5rem}
+p,li{color:var(--muted)}a{color:var(--accent)}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;max-width:56rem;margin:0 auto;padding:2.2rem 1rem 0}
+.top .name{font-weight:600;color:var(--fg);text-decoration:none}
+.own{display:flex;flex-wrap:wrap;gap:1rem;margin-left:auto;font-size:.95rem;align-items:center}
+.own a{color:var(--accent);font-weight:600}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1rem;margin:1rem 0}
+label{display:block;font-weight:600;color:var(--fg);margin:.5rem 0 .2rem}
+input[type=text],input[type=url],input[type=search],textarea,select{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:.5rem .6rem}
+select{width:auto}
+button,.btn{font:inherit;cursor:pointer;color:var(--bg);background:var(--accent);border:2px solid var(--accent);border-radius:var(--radius);padding:.4rem .9rem;font-weight:600}
+button.quiet{background:transparent;color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:flex-end}.row>.grow{flex:1 1 14rem}
+fieldset{border:1px solid var(--line);border-radius:var(--radius);margin:.5rem 0;padding:.5rem .8rem}
+legend{font-weight:600;color:var(--fg)}
+fieldset label{display:inline-flex;gap:.4rem;align-items:center;font-weight:400;margin-right:1rem}
+ul.items{list-style:none;padding:0;margin:0}
+ul.items li{border-top:1px solid var(--line);padding:.8rem 0;color:var(--fg)}
+.item-title{font-weight:600;font-size:1.05rem}
+.meta{font-size:.85rem;color:var(--muted)}
+.status{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700}
+.msg{min-height:1.5rem;color:var(--fg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+.site-links{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;margin-bottom:.8rem;font-size:.95rem}
+.site-links a{font-weight:600}
+main a,main code{overflow-wrap:anywhere}
+/* The Sovereign Website credit on a customer's site: one small, muted control at the far top right that opens a
+   pop-up menu of the family links. Not a strip and not a menu bar: the site is about its owner (Dinis, 20 November
+   2026: "It needs to fundamentally be about the site and who is it about ... top right pop-up menu").
+   CSS only (details/summary), so no script and no CSP issue. It sits in the page's corner, above the owner's header;
+   a site whose own header uses that corner moves it with --family-top / --family-right.
+   To remove it, the owner sets one attribute: <html data-family-credit="off">. */
+.family-credit{--fam-fg:var(--family-fg,#5a5a5a);--fam-strong:var(--family-fg-strong,#111);--fam-bg:var(--family-bg,#fff);
+  position:absolute;top:var(--family-top,.4rem);right:var(--family-right,.75rem);z-index:50;font-size:.75rem;line-height:1.4}
+@media (prefers-color-scheme:dark){.family-credit{--fam-fg:var(--family-fg,#b5b5b5);--fam-strong:var(--family-fg-strong,#fff);--fam-bg:var(--family-bg,#1c1c1c)}}
+.family-credit summary{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;color:var(--fam-fg);list-style:none;min-height:24px;padding:.15rem .3rem;border-radius:4px}
+.family-credit summary::-webkit-details-marker{display:none}
+.family-credit summary::after{content:"";width:.35rem;height:.35rem;border:solid currentColor;border-width:0 1px 1px 0;transform:rotate(45deg) translateY(-2px)}
+.family-credit summary:hover,.family-credit summary:focus-visible,.family-credit[open] summary{color:var(--fam-strong)}
+.family-credit ul{position:absolute;right:0;top:100%;margin:.25rem 0 0;padding:.35rem 0;list-style:none;min-width:11rem;
+  background:var(--fam-bg);border:1px solid rgba(127,127,127,.3);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.family-credit a{display:block;padding:.3rem .8rem;min-height:24px;color:var(--fam-fg);text-decoration:none}
+.family-credit a:hover,.family-credit a:focus-visible{color:var(--fam-strong);background:rgba(127,127,127,.1)}
+.family-credit .family-gap{border-bottom:1px solid rgba(127,127,127,.25);padding-bottom:.3rem;margin-bottom:.3rem}
+[data-family-credit="off"] .family-credit{display:none}
+@media print{.family-credit{display:none}}

@@ -1,0 +1,14 @@
+{
+  "app": "streaming",
+  "exported": "2026-01-01T00:00:00.000Z",
+  "data": {
+    "v": 1,
+    "items": [
+      {"id": "fix1", "title": "The Imaginary Lighthouse", "url": "", "status": "watch", "rating": 0, "note": "Made-up entry for tests.", "added": "2026-01-01T00:00:00.000Z"},
+      {"id": "fix2", "title": "Sample Harbour Nights", "url": "https://www.themoviedb.org/movie/1-sample-harbour-nights", "status": "seen", "rating": 4, "note": "", "added": "2026-01-02T00:00:00.000Z"},
+      {"id": "fix3", "title": "Placeholder Hills", "url": "", "status": "hidden", "rating": 1, "note": "Not for me.", "added": "2026-01-03T00:00:00.000Z"}
+    ],
+    "prefs": {"services": ["Netflix", "Nonsense"], "countries": ["PT"], "genres": ["Drama", "drama", "Comedy"]},
+    "views": [{"name": "Made-up view", "url": "https://data.promptugal.news/streaming/?made=up"}]
+  }
+}

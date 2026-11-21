@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+const C = createRequire(import.meta.url)('../site/assets/core.js');
+
+let s = C.empty();
+assert.equal(C.addItem(s, 'The Imaginary Lighthouse').ok, true);
+assert.equal(C.addItem(s, 'the imaginary lighthouse').error, 'duplicate');
+assert.equal(C.addItem(s, '').error, 'empty');
+assert.equal(C.addItem(s, 'https://example.com/x').error, 'host');
+assert.equal(C.addItem(s, 'https://').error, 'badlink');
+const r = C.addItem(s, 'https://www.themoviedb.org/movie/9-made-up-film');
+assert.equal(r.item.title, 'made up film');
+assert.equal(s.items.length, 2);
+C.update(s, r.item.id, { status: 'seen', rating: 9, note: 'ok' });
+assert.equal(r.item.status, 'seen'); assert.equal(r.item.rating, 0);
+C.update(s, r.item.id, { rating: 5 }); assert.equal(r.item.rating, 5);
+assert.equal(C.list(s, {}).length, 2);
+C.update(s, r.item.id, { status: 'hidden' });
+assert.equal(C.list(s, {}).length, 1);
+assert.equal(C.list(s, { showHidden: true }).length, 2);
+assert.equal(C.remove(s, r.item.id), true);
+
+assert.equal(C.addView(s, 'v', 'https://data.promptugal.news/streaming/?a=1').ok, true);
+assert.equal(C.addView(s, 'v', 'https://evil.example/streaming/').error, 'viewhost');
+assert.equal(C.addView(s, '', 'https://data.promptugal.news/streaming/').error, 'noname');
+
+const fx = readFileSync(new URL('./fixtures/made-up-list.json', import.meta.url), 'utf8');
+const imp = C.importJson(fx);
+assert.equal(imp.ok, true);
+assert.deepEqual(imp.state.prefs.services, ['Netflix']);
+assert.deepEqual(imp.state.prefs.genres, ['Drama', 'Comedy']);
+assert.equal(imp.state.views.length, 1);
+const round = C.importJson(C.exportJson(imp.state));
+assert.deepEqual(round.state.items, imp.state.items);
+assert.equal(C.importJson('nope').error, 'json');
+assert.equal(C.importJson('{"app":"x"}').error, 'shape');
+const bad = C.importJson(JSON.stringify({ app: 'streaming', data: { v: 1, items: [{ title: 'T', url: 'https://evil.example/', status: 'zzz' }] } }));
+assert.equal(bad.state.items[0].url, ''); assert.equal(bad.state.items[0].status, 'watch');
+
+const mem = { d: {}, getItem(k) { return this.d[k] ?? null; }, setItem(k, v) { this.d[k] = v; } };
+C.save(mem, imp.state);
+assert.equal(C.load(mem).items.length, 3);
+console.log('core tests passed');
