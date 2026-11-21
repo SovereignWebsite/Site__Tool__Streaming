@@ -2,6 +2,13 @@
 
 Recorded by sites.b@SovereignWebsite.dinis. Each with the owner's words, where and when.
 
+## The plan (21 November 2026, about 22:10 UTC)
+
+Dinis Cruz, in sites.b's session: "I agree with your 3 point plan above". The plan:
+1. The advanced filtering, English and Portuguese, and saved preferences go into PrompTugal's own page https://data.promptugal.news/streaming/ (repository PrompTugal/PrompTugal__News__Data), kept by PrompTugal's data agent, so TMDB data stays on the one page that already complies with TMDB's terms.
+2. Streaming is the sovereign layer around it: the owner's own watchlist, notes and preferences, kept in the browser and later the vault, exportable, each title linking to its entry on that page. No TMDB data here.
+3. The research brief stands as written.
+
 ## Not TMDB in the browser with the owner's key (21 November 2026, later)
 
 Asked "are you OK with Streaming reading TMDB in your browser with your own free TMDB key", Dinis Cruz answered in sites.b's session (https://claude.ai/code/session_01Kw9UwBucXVUaNYRMcWwk67), about 22:00 UTC on 21 November 2026: "no we can't do this". This replaces the browser-key part of the rule below. The data source for Streaming is open, and the build waits for Dinis's choice.
