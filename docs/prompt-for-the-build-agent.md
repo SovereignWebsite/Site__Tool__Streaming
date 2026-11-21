@@ -39,4 +39,4 @@ The list on data.promptugal.news/streaming/ comes from TMDB (The Movie Database)
 
 ## Start
 
-Read `docs/` in this repository (this file, `docs/research-brief.md`, `site/policy/`), plan the first version, then build it in small signed commits to `dev`, checking the live site after each. Report to Dinis in your session: what is live, and every item waiting on him as "link - text". If anything here conflicts with TMDB's terms as you read them, stop and ask Dinis.
+Read `docs/` in this repository (this file, `docs/decisions.md`, `docs/research-brief.md`, `site/policy/`), plan the first version, then build it in small signed commits to `dev`, checking the live site after each. Report to Dinis in your session: what is live, and every item waiting on him as "link - text". If anything here conflicts with TMDB's terms as you read them, stop and ask Dinis.
