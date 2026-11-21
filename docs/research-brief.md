@@ -8,7 +8,7 @@ You are a researcher for Dinis Cruz. Write a report, in plain British English wi
 
 ## The question
 
-Streaming (https://streaming.tool.sovereignweb.site) is a sovereign, personal, non-commercial app for what is streaming in the United Kingdom and Portugal, in English and Portuguese, built on TMDB's API with the visitor's own key, with preferences kept in the browser and later in an encrypted vault. What could it become, as a showcase of a sovereign website that is genuinely useful?
+Streaming (https://streaming.tool.sovereignweb.site) is a sovereign, personal, non-commercial app for what is streaming in the United Kingdom and Portugal, in English and Portuguese, the sovereign layer around PrompTugal's streaming page (https://data.promptugal.news/streaming/): the owner's own watchlist, notes and preferences, kept in the browser and later in an encrypted vault, each title linking to that page, with no TMDB data of its own (Dinis agreed this plan on 21 November 2026; see docs/decisions.md). What could it become, as a showcase of a sovereign website that is genuinely useful?
 
 ## What to look at
 
