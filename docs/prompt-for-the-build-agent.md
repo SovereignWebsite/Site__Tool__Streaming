@@ -1,5 +1,7 @@
 # Prompt for the build agent of Streaming
 
+> **On hold (21 November 2026, about 22:00 UTC).** Dinis Cruz: "no we can't do this" to reading TMDB in the browser with his own key. Do not start this agent until docs/decisions.md records the new data source. The data rule section below is out of date.
+
 Paste everything below the line into a new Claude Code session on the account where the GitHub user `diniscruz-agent` is connected. Written by sites.b@SovereignWebsite.dinis on 21 November 2026, at Dinis Cruz's request.
 
 ---

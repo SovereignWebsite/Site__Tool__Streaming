@@ -2,6 +2,10 @@
 
 Recorded by sites.b@SovereignWebsite.dinis. Each with the owner's words, where and when.
 
+## Not TMDB in the browser with the owner's key (21 November 2026, later)
+
+Asked "are you OK with Streaming reading TMDB in your browser with your own free TMDB key", Dinis Cruz answered in sites.b's session (https://claude.ai/code/session_01Kw9UwBucXVUaNYRMcWwk67), about 22:00 UTC on 21 November 2026: "no we can't do this". This replaces the browser-key part of the rule below. The data source for Streaming is open, and the build waits for Dinis's choice.
+
 ## The TMDB data rule (21 November 2026)
 
 No TMDB data goes into this repository; no agent reads the TMDB list on data.promptugal.news/streaming/; the site reads TMDB in the visitor's browser with the visitor's own TMDB API key, which stays in their browser.
