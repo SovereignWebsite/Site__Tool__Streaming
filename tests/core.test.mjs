@@ -41,4 +41,13 @@ assert.equal(bad.state.items[0].url, ''); assert.equal(bad.state.items[0].status
 const mem = { d: {}, getItem(k) { return this.d[k] ?? null; }, setItem(k, v) { this.d[k] = v; } };
 C.save(mem, imp.state);
 assert.equal(C.load(mem).items.length, 3);
+const a = C.importJson(fx).state;
+const o = C.empty(); C.addItem(o, 'Sample Harbour Nights'); C.addItem(o, 'Another Made-up Title'); C.setPrefs(o, { services: ['Disney+'], countries: ['GB'], genres: ['Horror'] });
+const before = a.items.length;
+assert.equal(C.merge(a, o), 2); assert.equal(a.items.length, before + 2);
+assert.equal(C.merge(a, o), 0);
+assert.deepEqual(a.prefs.services, ['Netflix', 'Disney+']); assert.deepEqual(a.prefs.countries, ['PT', 'GB']);
+assert.deepEqual(C.counts(a), { watch: 3, seen: 1, hidden: 1 });
+assert.equal(C.list(a, { sort: 'title' })[0].title, 'Another Made-up Title');
+assert.equal(C.list(a, { sort: 'rating' })[0].rating, 4);
 console.log('core tests passed');

@@ -31,6 +31,30 @@ assert.equal(await pg.locator('#items li').count(), 1);
 const pt = await b.newPage(); await pt.goto(base + '/pt/');
 assert.equal(await pt.getAttribute('html', 'lang'), 'pt-PT');
 assert.equal(await pt.locator('#items li').count(), 1);
+// every page has the design control; the design carries across pages
+for (const path of ['/start/', '/agents/', '/admin/', '/policy/', '/pt/start/', '/pt/agents/', '/pt/admin/', '/pt/policy/']) {
+  const q = await b.newPage(); await q.goto(base + path);
+  assert.equal(await q.locator('#design').count(), 1, path);
+  assert.equal(await q.getAttribute('html', 'data-design'), null, 'new context has no stored design: ' + path);
+  await q.close();
+}
+// merge an import into the list
+const fixture = readFileSync(new URL('./fixtures/made-up-list.json', import.meta.url));
+await pg.setInputFiles('#import', { name: 'f.json', mimeType: 'application/json', buffer: fixture });
+await pg.waitForFunction(() => /Added 1 new/.test(document.getElementById('msg').textContent));
+assert.match(await pg.textContent('#counts'), /Hidden 2/);
+await pg.selectOption('#sort', 'title');
+assert.match(await pg.textContent('#items li .item-title >> nth=0'), /Imaginary/);
+// offline
+await pg.evaluate(() => navigator.serviceWorker.ready);
+await pg.reload(); await pg.evaluate(() => navigator.serviceWorker.ready);
+await pg.context().setOffline(true);
+await pg.reload();
+assert.equal(await pg.textContent('h1'), 'Your streaming list');
+assert.ok((await pg.locator('#items li').count()) >= 1);
+await pg.goto(base + '/pt/policy/');
+assert.match(await pg.textContent('h1'), /governado/);
+await pg.context().setOffline(false);
 const external = requests.filter((u) => !u.startsWith(base));
 assert.deepEqual(external, [], 'no request leaves the site');
 console.log('ui tests passed');

@@ -101,12 +101,44 @@
 
   function list(state, filter) {
     var f = filter || {};
-    return state.items.filter(function (i) {
+    return sortItems(state.items, f.sort).filter(function (i) {
       if (f.status && i.status !== f.status) return false;
       if (!f.status && !f.showHidden && i.status === 'hidden') return false;
       if (f.text && (i.title + ' ' + i.note).toLowerCase().indexOf(f.text.toLowerCase()) < 0) return false;
       return true;
     });
+  }
+
+  function sortItems(items, how) {
+    var a = items.slice();
+    if (how === 'title') a.sort(function (x, y) { return x.title.toLowerCase() < y.title.toLowerCase() ? -1 : x.title.toLowerCase() > y.title.toLowerCase() ? 1 : 0; });
+    else if (how === 'rating') a.sort(function (x, y) { return y.rating - x.rating; });
+    return a;
+  }
+
+  function counts(state) {
+    var c = { watch: 0, seen: 0, hidden: 0 };
+    state.items.forEach(function (i) { c[i.status]++; });
+    return c;
+  }
+
+  function keyOf(i) { return i.url || i.title.toLowerCase(); }
+
+  /* Adds what is in `other` and not yet in `state`; never overwrites what the owner already has. */
+  function merge(state, other) {
+    var have = {}, added = 0;
+    state.items.forEach(function (i) { have[keyOf(i)] = 1; });
+    other.items.forEach(function (i) { if (!have[keyOf(i)]) { have[keyOf(i)] = 1; state.items.push(i); added++; } });
+    setPrefs(state, {
+      services: state.prefs.services.concat(other.prefs.services),
+      countries: state.prefs.countries.concat(other.prefs.countries),
+      genres: state.prefs.genres.concat(other.prefs.genres)
+    });
+    state.prefs.services = state.prefs.services.filter(function (v, k, a) { return a.indexOf(v) === k; });
+    state.prefs.countries = state.prefs.countries.filter(function (v, k, a) { return a.indexOf(v) === k; });
+    var urls = {}; state.views.forEach(function (v) { urls[v.url] = 1; });
+    other.views.forEach(function (v) { if (!urls[v.url]) { urls[v.url] = 1; state.views.push(v); } });
+    return added;
   }
 
   function exportJson(state) { return JSON.stringify({ app: 'streaming', exported: new Date().toISOString(), data: state }, null, 2); }
@@ -147,7 +179,7 @@
   function save(storage, state) { try { storage.setItem(KEY, JSON.stringify(state)); return true; } catch (e) { return false; } }
 
   var api = { KEY: KEY, SERVICES: SERVICES, COUNTRIES: COUNTRIES, empty: empty, addItem: addItem, update: update, remove: remove,
-    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, exportJson: exportJson, importJson: importJson,
+    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, exportJson: exportJson, importJson: importJson,
     load: load, save: save, titleFromUrl: titleFromUrl };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StreamingCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

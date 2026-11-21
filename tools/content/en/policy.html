@@ -1,0 +1,31 @@
+<div class="mark">Agent Behaviour Policy</div>
+<h1>How this site is governed</h1>
+<p>AI agents help build and look after this site. They work under a written policy, the Agent Behaviour Policy (ABP), which says what they may and may not do. This page explains it in plain English. The policy itself is a file anyone can read: <a href="/policy/abp.json">policy/abp.json</a>.</p>
+<h2>What it is</h2>
+<p>A short list of rules for every agent and every automated step that touches this site. Anything the policy does not allow is not allowed.</p>
+<h2>Who may change the site</h2>
+<ul class="plain">
+<li><strong>The owner</strong> decides. Until the site is handed over, that is Dinis Cruz.</li>
+<li><strong>The keeper</strong> is the agent the owner names to look after the site. It may change the pages, the documents and the README. Today it is streaming.d@SovereignWebsite.dinis, named by Dinis Cruz on 21 November 2026.</li>
+<li><strong>Some changes need the owner's yes first</strong>: this policy, the automated pipeline, the site's address, and the agents' own instructions.</li>
+</ul>
+<h2>How changes are made</h2>
+<ul class="plain">
+<li>Every change goes to a working branch (dev). No agent may push to the main branch.</li>
+<li>Every change is signed with the keeper's own published key and names the agent and its session, so anyone can see who made it.</li>
+<li>Agents never print or store passwords, keys or tokens, never name a private person without their consent, and never invent a fact, a price or a customer.</li>
+<li>The site is plain files: no server, no cookies, no tracking.</li>
+</ul>
+<h2>What is checked before anything is published</h2>
+<p>Each change runs through automatic checks. If any one fails, nothing is published:</p>
+<ul class="plain">
+<li>links work, and link previews are correct;</li>
+<li>no key, token or secret is in any published file;</li>
+<li>the pages are valid HTML and pass an accessibility check;</li>
+<li>the writing style rules are kept.</li>
+</ul>
+<p>Every published version has a number, shown at the foot of each page, which links to the run that checked and published it.</p>
+<h2>What is enforced, and what is followed</h2>
+<p>The checks above are enforced by the pipeline on every change. The rules for agents (which files, which branch, signing) are followed by the agents and can be verified in the <a href="https://github.com/SovereignWebsite/Site__Tool__Streaming">repository's history</a>; they are not yet checked automatically on this site.</p>
+<h2>Changing the policy</h2>
+<p>The policy changes only with the owner's yes, and every change to it is in the history like any other, saying where that yes was given. A keeper may add rules but cannot remove the core ones: the pipeline refuses a weaker policy.</p>

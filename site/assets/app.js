@@ -23,8 +23,10 @@
   function renderItems() {
     var ul = $('items'); ul.textContent = '';
     var status = $('filter-status').value;
-    var items = C.list(state, { status: status || '', text: $('filter-text').value, showHidden: false });
+    var items = C.list(state, { status: status || '', text: $('filter-text').value, showHidden: false, sort: $('sort').value });
+    var n = C.counts(state);
     $('count').textContent = items.length + ' / ' + state.items.length;
+    $('counts').textContent = T.s_watch + ' ' + n.watch + ' · ' + T.s_seen + ' ' + n.seen + ' · ' + T.s_hidden + ' ' + n.hidden;
     if (!items.length) { ul.appendChild(el('li', {}, T.empty)); return; }
     items.forEach(function (it) {
       var li = el('li');
@@ -80,6 +82,7 @@
   });
   $('filter-status').addEventListener('change', renderItems);
   $('filter-text').addEventListener('input', renderItems);
+  $('sort').addEventListener('change', renderItems);
 
   $('prefs-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -109,6 +112,7 @@
     rd.onload = function () {
       var r = C.importJson(String(rd.result));
       if (!r.ok) { say('err_import'); return; }
+      if ($('merge').checked) { var n = C.merge(state, r.state); persist(); renderItems(); renderPrefs(); renderViews(); $('msg').textContent = T.merged.replace('{n}', n); return; }
       state = r.state; persist(); renderItems(); renderPrefs(); renderViews(); say('imported');
     };
     rd.readAsText(f); this.value = '';

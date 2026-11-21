@@ -4,6 +4,8 @@
 [data-design="cinema"]{--bg:#16090c;--fg:#f4e9e4;--muted:#c4aaa3;--accent:#ff8a73;--line:#4a2228;--card:#241014;--radius:2px}
 [data-design="coast"]{--bg:#eef5f8;--fg:#10252e;--muted:#3f5864;--accent:#0b5d86;--line:#c3d7e0;--card:#fff;--radius:16px}
 [data-design="contrast"]{--bg:#000;--fg:#fff;--muted:#e6e6e6;--accent:#ffe14d;--line:#fff;--card:#000;--radius:0}
+/* The Sovereign Website menu follows the chosen design, not the operating system's colour scheme. */
+:root,[data-design]{--family-fg:var(--muted);--family-fg-strong:var(--fg);--family-bg:var(--card)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
 main{max-width:56rem;margin:0 auto;padding:2rem 1rem 4rem}
@@ -26,6 +28,7 @@ button.quiet{background:transparent;color:var(--accent)}
 .row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:flex-end}.row>.grow{flex:1 1 14rem}
 fieldset{border:1px solid var(--line);border-radius:var(--radius);margin:.5rem 0;padding:.5rem .8rem}
 legend{font-weight:600;color:var(--fg)}
+label.plain{font-weight:400;display:flex;gap:.4rem;align-items:center;color:var(--muted)}
 fieldset label{display:inline-flex;gap:.4rem;align-items:center;font-weight:400;margin-right:1rem}
 ul.items{list-style:none;padding:0;margin:0}
 ul.items li{border-top:1px solid var(--line);padding:.8rem 0;color:var(--fg)}
