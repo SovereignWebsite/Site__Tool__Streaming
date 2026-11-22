@@ -28,7 +28,7 @@ const L = {
     withPics: 'Include your pictures', exportBtn: 'Export as JSON', importLabel: 'Import a JSON file', merge: 'Add to my list instead of replacing it', wipeBtn: 'Wipe everything from this browser',
     privacy: 'Your list is saved in this browser\'s own storage and goes nowhere else. Clearing your browser data removes it, so export a copy now and then. A personal, non-commercial tool.',
     js: {
-      tab_watch: 'To watch', tab_seen: 'Seen', tab_hidden: 'Hidden',
+      tab_watch: 'To watch', tab_seen: 'Seen', tab_hidden: 'Hidden', count_watch: '{n} to watch', count_seen: '{n} seen', count_hidden: '{n} hidden', countTag: ' tagged #{t}',
       edit: 'Note and tags', notePh: 'Your private note', tagsLabel: 'Your tags (separated by commas)', tagsPh: 'family, weekend',
       allTags: 'All', tagFilter: 'Filter by tag', filterTag: 'Show only #{t}', filterTagCount: 'Show only #{t} ({n} titles)',
       undo: 'Undo', undone: 'Put back.', removedT: 'Removed {t}.', hiddenT: 'Hid {t}.',
@@ -90,7 +90,7 @@ const L = {
     withPics: 'Incluir as suas imagens', exportBtn: 'Exportar em JSON', importLabel: 'Importar um ficheiro JSON', merge: 'Juntar à minha lista em vez de a substituir', wipeBtn: 'Apagar tudo deste navegador',
     privacy: 'A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.',
     js: {
-      tab_watch: 'Para ver', tab_seen: 'Vistos', tab_hidden: 'Ocultos',
+      tab_watch: 'Para ver', tab_seen: 'Vistos', tab_hidden: 'Ocultos', count_watch: '{n} para ver', count_seen: '{n} vistos', count_hidden: '{n} ocultos', countTag: ' com #{t}',
       edit: 'Nota e etiquetas', notePh: 'A sua nota privada', tagsLabel: 'As suas etiquetas (separadas por vírgulas)', tagsPh: 'família, fim de semana',
       allTags: 'Todas', tagFilter: 'Filtrar por etiqueta', filterTag: 'Mostrar só #{t}', filterTagCount: 'Mostrar só #{t} ({n} títulos)',
       undo: 'Anular', undone: 'Reposto.', removedT: 'Removeu {t}.', hiddenT: 'Ocultou {t}.',
@@ -232,6 +232,7 @@ function homeMain(k) {
   <button type="button" class="tab" data-status="seen" aria-pressed="false">${t.js.tab_seen} <span class="n" id="n-seen">0</span></button>
   <button type="button" class="tab" data-status="hidden" aria-pressed="false">${t.js.tab_hidden} <span class="n" id="n-hidden">0</span></button>
 </div>
+<p id="list-count" class="list-count"></p>
 <div id="tagbar" class="tagbar" role="group" aria-label="${t.js.tagFilter}" hidden></div>
 <div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">${t.js.pickBtn}</button></div>
 <div id="pick-card" class="pick-card" hidden></div>

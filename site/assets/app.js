@@ -360,6 +360,8 @@
     var query = $('filter-text').value;
     var sort = L === 'queue' ? 'order' : $('sort').value;
     var items = C.list(state, { status: tab, text: query, sort: sort, tag: tagFilter });
+    $('list-count').textContent = state.items.length ? fmt(T['count_' + tab], { n: items.length }) + (tagFilter ? fmt(T.countTag, { t: tagFilter }) : '') : '';
+    $('list-count').hidden = !state.items.length;
     $('tools').hidden = state.items.length < 4;
     $('sort-wrap').hidden = L === 'queue';
     $('example-banner').hidden = !C.hasExamples(state);

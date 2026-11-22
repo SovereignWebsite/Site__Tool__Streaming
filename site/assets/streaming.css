@@ -282,3 +282,10 @@ body[data-layout="stubs"] .lead,body[data-layout="stubs"] .add,body[data-layout=
 body[data-layout="shelf"] .shelf{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
 body[data-layout="stubs"] .charts{grid-template-columns:repeat(3,1fr)}body[data-layout="stubs"] .charts .chart:last-child{grid-column:auto}
 }
+/* Round 3 addendum: second-layer buttons look available; the selected tab is unmistakable; the chooser scrolls inside itself. */
+.quiet-chip{background:var(--card);color:var(--fg);border-color:var(--line)}
+.text-danger{color:var(--fg)}
+.tab[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+.list-count{margin:.5rem 0 0;font-weight:700;color:var(--fg);font-size:1.05rem}
+.design-dialog{max-height:90dvh;overflow:auto}
+.design-dialog::backdrop{background:rgba(0,0,0,.78)}
