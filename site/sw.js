@@ -1,7 +1,7 @@
 /* Streaming service worker: lets the site open offline. It keeps copies of this site's own files only,
    asks the network first so updates arrive, and never touches any other address. No tracking. */
-var CACHE = 'streaming-files-v2';
-var CORE = ['/', '/pt/', '/assets/streaming.css', '/assets/core.js', '/assets/app.js', '/assets/design.js', '/assets/pwa.js', '/assets/design-control.js',
+var CACHE = 'streaming-files-v3';
+var CORE = ['/', '/pt/', '/assets/streaming.css', '/assets/core.js', '/assets/app.js', '/assets/design.js', '/assets/pwa.js', '/assets/design-control.js', '/assets/poster.js', '/assets/pictures.js',
   '/start/', '/pt/start/', '/agents/', '/pt/agents/', '/admin/', '/pt/admin/', '/policy/', '/pt/policy/', '/manifest.webmanifest'];
 
 self.addEventListener('install', function (e) {

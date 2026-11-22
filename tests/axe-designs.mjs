@@ -1,10 +1,13 @@
-// Runs axe on every page in every design. Usage: node tests/axe-designs.mjs _site
+// Runs axe (WCAG 2.0, 2.1 and 2.2, A and AA) on every page in every design, light and dark.
+// The home pages are filled with made-up titles and shown with the design's own content open.
+// Usage: node tests/axe-designs.mjs _site
 import { createServer } from 'node:http';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 const root = process.argv[2] || '_site';
+const fixture = JSON.parse(readFileSync(new URL('./fixtures/design-sample.json', import.meta.url), 'utf8')).data;
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.jpg': 'image/jpeg', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const srv = createServer((q, r) => {
   let p = join(root, decodeURIComponent(q.url.split('?')[0])); if (existsSync(p) && statSync(p).isDirectory()) p = join(p, 'index.html');
@@ -13,20 +16,38 @@ const srv = createServer((q, r) => {
 }).listen(0);
 const base = 'http://127.0.0.1:' + srv.address().port;
 const b = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM, args: ['--no-sandbox'] } : {});
-let bad = 0;
-for (const design of ['auto', 'paper', 'night', 'cinema', 'coast', 'contrast']) {
+const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+let bad = 0, runs = 0;
+async function check(pg, label) {
+  const r = await new AxeBuilder({ page: pg }).withTags(TAGS).analyze(); runs++;
+  for (const v of r.violations) { bad++; console.log(label, v.id, v.nodes.slice(0, 2).map((n) => n.target.join(' ') + ' ' + (n.any[0]?.message || '')).join(' | ')); }
+}
+for (const design of ['auto', 'shelf', 'queue', 'cards', 'stubs', 'list']) {
   for (const colour of ['light', 'dark']) {
-    const ctx = await b.newContext({ colorScheme: colour });
-    if (design !== 'auto') await ctx.addInitScript((d) => localStorage.setItem('streaming.design', d), design);
+    const ctx = await b.newContext({ colorScheme: colour, reducedMotion: 'reduce' });
+    await ctx.addInitScript(([s, d]) => {
+      localStorage.setItem('streaming.v1', JSON.stringify(s));
+      if (d !== 'auto') localStorage.setItem('streaming.design', d); else localStorage.removeItem('streaming.design');
+    }, [fixture, design]);
     const pg = await ctx.newPage();
     for (const path of ['/', '/pt/', '/start/', '/pt/start/', '/agents/', '/pt/agents/', '/admin/', '/pt/admin/', '/policy/', '/pt/policy/']) {
       await pg.goto(base + path);
-      if (path === '/' || path === '/pt/') { await pg.evaluate(() => localStorage.removeItem('streaming.v1')); await pg.reload(); await pg.click('#empty button'); await pg.fill('#add-input', 'A Made-up Title'); await pg.click('#add-form button'); await pg.fill('#add-input', 'Another Made-up Title'); await pg.click('#add-form button'); await pg.fill('#add-input', 'A Third Made-up Title'); await pg.click('#add-form button'); await pg.locator('#items li.item').first().getByText(/note|nota/i).click(); await pg.locator('#items li.item').first().locator('input[type=text]').fill('family, weekend'); await pg.locator('#items li.item').first().locator('.note-acts button').first().click(); await pg.locator('#items li.item').nth(1).getByText(/Hide|Ocultar/).click(); await pg.click('#pick-btn'); await pg.waitForSelector('#pick-card .pick-acts'); await pg.locator('#items li.item').first().locator('.note-acts, .item-bar .chip').last().click(); await pg.locator('details.fold summary').nth(0).click(); await pg.locator('details.fold summary').nth(1).click(); const r0 = await new AxeBuilder({ page: pg }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze(); for (const v of r0.violations) { bad++; console.log(design, colour, path, '(page with picker, tags, toast, note box)', v.id, v.nodes.slice(0, 2).map((n) => n.target.join(' ') + ' ' + (n.any[0]?.message || '')).join(' | ')); } await pg.locator('#items li.item').first().locator('.item-title').click(); }
-      const r = await new AxeBuilder({ page: pg }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
-      for (const v of r.violations) { bad++; console.log(design, colour, path, v.id, v.nodes.slice(0, 2).map((n) => n.target.join(' ') + ' ' + (n.any[0]?.message || '')).join(' | ')); }
+      const label = design + ' ' + colour + ' ' + path;
+      if (path === '/' || path === '/pt/') {
+        await check(pg, label + ' (list)');
+        await pg.locator('[data-id]').first().locator('.item-acts .chip').last().click(); // open Note and tags, with the picture controls
+        await pg.click('#pick-btn'); await pg.waitForSelector('#pick-card .pick-acts');
+        await pg.locator('details.fold summary').nth(0).click(); await pg.locator('details.fold summary').nth(1).click();
+        await check(pg, label + ' (edit panel, picker, folds)');
+        await pg.click('.tab[data-status="seen"]');
+        if (design === 'stubs') { await pg.locator('.chart summary').first().click(); await pg.locator('.chart .bar').nth(10).focus(); }
+        await check(pg, label + ' (seen)');
+        await pg.locator('[data-id]').first().locator('.item-title').click();
+        await check(pg, label + ' (record)');
+      } else await check(pg, label);
     }
     await ctx.close();
   }
 }
-console.log(bad ? bad + ' violations' : 'axe: all pages, all designs, light and dark: no violations');
+console.log(bad ? bad + ' violations in ' + runs + ' runs' : 'axe: ' + runs + ' runs, every page in every design, light and dark: no violations');
 await b.close(); srv.close();

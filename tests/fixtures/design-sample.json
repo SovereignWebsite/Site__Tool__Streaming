@@ -1,0 +1,162 @@
+{
+ "app": "streaming",
+ "exported": "2026-11-22T00:00:00.000Z",
+ "note": "Every title here is made up, for tests and screenshots.",
+ "data": {
+  "v": 1,
+  "items": [
+   {
+    "id": "fx00",
+    "title": "The Imaginary Lighthouse",
+    "url": "",
+    "status": "watch",
+    "rating": 0,
+    "note": "Made-up: one for a quiet Sunday.",
+    "added": "2026-08-01T18:00:00.000Z",
+    "tags": [
+     "family",
+     "weekend"
+    ]
+   },
+   {
+    "id": "fx01",
+    "title": "Sample Harbour Nights",
+    "url": "",
+    "status": "watch",
+    "rating": 0,
+    "note": "",
+    "added": "2026-09-03T18:00:00.000Z",
+    "tags": [
+     "weekend"
+    ]
+   },
+   {
+    "id": "fx02",
+    "title": "Placeholder Hills",
+    "url": "",
+    "status": "seen",
+    "rating": 4,
+    "note": "Made-up note: slow start, lovely ending.",
+    "added": "2026-10-05T18:00:00.000Z",
+    "tags": [
+     "family"
+    ],
+    "seenAt": "2026-11-12T21:00:00.000Z"
+   },
+   {
+    "id": "fx03",
+    "title": "A Fictional Coast",
+    "url": "",
+    "status": "seen",
+    "rating": 5,
+    "note": "",
+    "added": "2026-11-07T18:00:00.000Z",
+    "tags": [
+     "documentary"
+    ],
+    "seenAt": "2026-11-03T20:30:00.000Z"
+   },
+   {
+    "id": "fx04",
+    "title": "Made-up Comedy Hour",
+    "url": "",
+    "status": "watch",
+    "rating": 0,
+    "note": "",
+    "added": "2026-08-09T18:00:00.000Z",
+    "tags": [
+     "comedy"
+    ]
+   },
+   {
+    "id": "fx05",
+    "title": "The Invented Detective",
+    "url": "",
+    "status": "seen",
+    "rating": 3,
+    "note": "Guessed the twist early.",
+    "added": "2026-09-11T18:00:00.000Z",
+    "tags": [
+     "crime"
+    ],
+    "seenAt": "2026-10-21T22:00:00.000Z"
+   },
+   {
+    "id": "fx06",
+    "title": "Nowhere Station",
+    "url": "",
+    "status": "seen",
+    "rating": 4,
+    "note": "",
+    "added": "2026-10-13T18:00:00.000Z",
+    "tags": [
+     "crime",
+     "weekend"
+    ],
+    "seenAt": "2026-10-02T21:15:00.000Z"
+   },
+   {
+    "id": "fx07",
+    "title": "Paper Moon Over Lisbon",
+    "url": "",
+    "status": "watch",
+    "rating": 0,
+    "note": "Made-up title for testing.",
+    "added": "2026-11-15T18:00:00.000Z",
+    "tags": [
+     "family"
+    ]
+   },
+   {
+    "id": "fx08",
+    "title": "Ten Imaginary Summers",
+    "url": "",
+    "status": "seen",
+    "rating": 2,
+    "note": "",
+    "added": "2026-08-17T18:00:00.000Z",
+    "seenAt": "2026-09-14T20:00:00.000Z"
+   },
+   {
+    "id": "fx09",
+    "title": "Example Valley",
+    "url": "",
+    "status": "seen",
+    "rating": 5,
+    "note": "Best of the year (made-up).",
+    "added": "2026-09-19T18:00:00.000Z",
+    "tags": [
+     "documentary"
+    ],
+    "seenAt": "2026-08-30T19:45:00.000Z"
+   },
+   {
+    "id": "fx10",
+    "title": "Quiet Fictional Streets",
+    "url": "",
+    "status": "hidden",
+    "rating": 1,
+    "note": "",
+    "added": "2026-10-21T18:00:00.000Z"
+   },
+   {
+    "id": "fx11",
+    "title": "The Last Pretend Train",
+    "url": "",
+    "status": "watch",
+    "rating": 0,
+    "note": "",
+    "added": "2026-11-23T18:00:00.000Z",
+    "tags": [
+     "crime"
+    ]
+   }
+  ],
+  "prefs": {
+   "services": [],
+   "countries": [],
+   "genres": []
+  },
+  "views": []
+ }
+}

@@ -13,7 +13,10 @@ const srv = createServer((q, r) => {
 }).listen(0);
 const base = 'http://127.0.0.1:' + srv.address().port;
 const b = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM, args: ['--no-sandbox'] } : {});
-const ctx = await b.newContext(); const pg = await ctx.newPage(); const requests = [], errors = [];
+const ctx = await b.newContext();
+// this test walks through The list; tests/designs.test.mjs covers the other designs
+await ctx.addInitScript(() => { if (!localStorage.getItem('streaming.design')) localStorage.setItem('streaming.design', 'list'); });
+const pg = await ctx.newPage(); const requests = [], errors = [];
 pg.on('request', (r) => requests.push(r.url())); pg.on('pageerror', (e) => errors.push(e.message));
 const msg = () => pg.textContent('#msg');
 const count = (s) => pg.textContent('#n-' + s);
@@ -108,11 +111,11 @@ await pt.close();
   const c2 = await b.newContext({ colorScheme: 'dark', viewport: { width: 320, height: 700 } }); const q = await c2.newPage();
   await q.goto(base + '/policy/');
   assert.equal(await q.inputValue('#design'), 'auto');
-  assert.equal(await q.evaluate(() => getComputedStyle(document.body).backgroundColor), 'rgb(20, 21, 19)');
-  await q.selectOption('#design', 'coast');
-  assert.equal(await q.getAttribute('html', 'data-design'), 'coast');
+  assert.equal(await q.evaluate(() => getComputedStyle(document.body).backgroundColor), 'rgb(18, 16, 19)', 'Automatic is The shelf, dark');
+  await q.selectOption('#design', 'queue');
+  assert.equal(await q.getAttribute('html', 'data-design'), 'queue');
   await q.goto(base + '/pt/agents/');
-  assert.equal(await q.getAttribute('html', 'data-design'), 'coast');
+  assert.equal(await q.getAttribute('html', 'data-design'), 'queue');
   for (const path of ['/', '/agents/', '/policy/', '/pt/', '/pt/start/']) { await q.goto(base + path); assert.ok(await q.evaluate(() => document.documentElement.scrollWidth <= 320), 'no sideways scroll at 320 px: ' + path); }
   await q.selectOption('#design', 'auto');
   assert.equal(await q.getAttribute('html', 'data-design'), null);

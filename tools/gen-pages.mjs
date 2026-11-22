@@ -12,7 +12,7 @@ const L = {
     lang: 'en-GB', locale: 'en_GB', otherName: 'Português', otherLang: 'pt-PT',
     desc: 'Your own watchlist, notes and preferences for streaming in the UK and Portugal. Kept in your browser, no account.',
     skip: 'Skip to content', nav: ['Start here', 'Use with your AI'], foot: ['How this site was made', 'How this site is governed'],
-    designLabel: 'Choose a design', designs: ['Automatic', 'Paper', 'Night', 'Cinema', 'Coast', 'High contrast'],
+    designLabel: 'Choose a design', designs: ['Automatic (The shelf)', 'The shelf', 'The queue', 'Index cards', 'Ticket stubs', 'The list'],
     h1: 'Your streaming list',
     lead: 'Your watchlist, kept in this browser. No account, no server, no cookies, no tracking.',
     addLabel: 'Add a title', addPh: 'Paste a link, or type a title', addBtn: 'Add',
@@ -24,7 +24,7 @@ const L = {
     genres: 'Favourite genres (separated by commas)', prefsBtn: 'Save preferences',
     viewsH: 'Saved views', vname: 'Name', vlink: 'Link to the view', vbtn: 'Save view',
     dataH: 'Your data', dataP: 'Export your list as one JSON file, import it on another device, or wipe it from this browser.',
-    exportBtn: 'Export as JSON', importLabel: 'Import a JSON file', merge: 'Add to my list instead of replacing it', wipeBtn: 'Wipe everything from this browser',
+    withPics: 'Include your pictures', exportBtn: 'Export as JSON', importLabel: 'Import a JSON file', merge: 'Add to my list instead of replacing it', wipeBtn: 'Wipe everything from this browser',
     privacy: 'Your list is saved in this browser\'s own storage and goes nowhere else. Clearing your browser data removes it, so export a copy now and then. A personal, non-commercial tool.',
     js: {
       tab_watch: 'To watch', tab_seen: 'Seen', tab_hidden: 'Hidden',
@@ -33,6 +33,14 @@ const L = {
       undo: 'Undo', undone: 'Put back.', removedT: 'Removed {t}.', hiddenT: 'Hid {t}.',
       pickBtn: 'Pick something for tonight', pickTag: 'Pick something tagged #{t}', pickTitle: 'Tonight:', pickAgain: 'Pick again', close: 'Close', picked: 'Picked {t}.',
       openRecord: 'Record', recordH: 'Record', r_status: 'Status', r_rating: 'Your rating', r_tags: 'Your tags', r_note: 'Your note', r_added: 'Added', r_seen: 'Seen on', r_link: 'Link', none: 'None',
+      picAdd: 'Add your own picture', picChange: 'Change your picture', picRemove: 'Remove your picture', picNote: 'Your picture is shrunk and kept in this browser only. Without one, the title gets a poster drawn from its own words.',
+      picSaved: 'Picture saved in this browser.', picFailed: 'That file could not be read as a picture.', picRemoved: 'Picture removed.', r_picture: 'Picture', picOwn: 'Your own, kept in this browser', picGenerated: 'Drawn from the title',
+      noNote: 'No note yet.', addedOn: 'Added {d}', seenOn: 'seen {d}',
+      moveUp: 'Move up', moveDown: 'Move down', makeTonight: 'Watch tonight', movedUp: 'Moved {t} up.', movedDown: 'Moved {t} down.', madeTonight: '{t} is up next.', upNext: 'Up next', laterH: 'After that',
+      admitOne: 'Admit one', unusedH: 'Still to watch', asTable: 'Show as a table', noTags: 'No tags yet. Add some with Note and tags.',
+      statsH: 'Your figures', statSeen: 'Seen', statWatch: 'To watch', statAvg: 'Average rating',
+      chartMonths: 'Titles seen, last 12 months', tipMonth: '{m}: {n} seen', colMonth: 'Month', colSeen: 'Seen',
+      chartRatings: 'Your ratings', tipRating: '{s} stars: {n} titles', colRating: 'Rating', colTitles: 'Titles', chartTags: 'Your tags',
       jsonH: 'This record as JSON', copy: 'Copy JSON', copied: 'Copied.', copyFailed: 'Your browser would not copy it. Select the text and copy it instead.', download: 'Download JSON',
       markSeen: 'Mark as seen', toWatch: 'Back to watch', hide: 'Hide', unhide: 'Unhide', note: 'Add a note', editNote: 'Edit note', saveNote: 'Save note', cancel: 'Cancel',
       remove: 'Remove', open: 'Open entry', rateFor: 'Rating for {t}', star: '{n} out of 5', noteFor: 'Note for {t}', actionsFor: '{a}: {t}',
@@ -57,7 +65,7 @@ const L = {
     lang: 'pt-PT', locale: 'pt_PT', otherName: 'English', otherLang: 'en-GB',
     desc: 'A sua lista, notas e preferências para streaming no Reino Unido e em Portugal. Guardadas no seu navegador, sem conta.',
     skip: 'Saltar para o conteúdo', nav: ['Começar aqui', 'Usar com a sua IA'], foot: ['Como este sítio foi feito', 'Como este sítio é governado'],
-    designLabel: 'Escolher um desenho', designs: ['Automático', 'Papel', 'Noite', 'Cinema', 'Costa', 'Alto contraste'],
+    designLabel: 'Escolher um desenho', designs: ['Automático (A prateleira)', 'A prateleira', 'A fila', 'Fichas', 'Bilhetes', 'A lista'],
     h1: 'A sua lista de streaming',
     lead: 'A sua lista para ver, guardada neste navegador. Sem conta, sem servidor, sem cookies, sem rastreio.',
     addLabel: 'Adicionar um título', addPh: 'Ligação ou título', addBtn: 'Adicionar',
@@ -69,7 +77,7 @@ const L = {
     genres: 'Géneros favoritos (separados por vírgulas)', prefsBtn: 'Guardar preferências',
     viewsH: 'Vistas guardadas', vname: 'Nome', vlink: 'Ligação para a vista', vbtn: 'Guardar vista',
     dataH: 'Os seus dados', dataP: 'Exporte a sua lista num ficheiro JSON, importe-o noutro dispositivo ou apague-a deste navegador.',
-    exportBtn: 'Exportar em JSON', importLabel: 'Importar um ficheiro JSON', merge: 'Juntar à minha lista em vez de a substituir', wipeBtn: 'Apagar tudo deste navegador',
+    withPics: 'Incluir as suas imagens', exportBtn: 'Exportar em JSON', importLabel: 'Importar um ficheiro JSON', merge: 'Juntar à minha lista em vez de a substituir', wipeBtn: 'Apagar tudo deste navegador',
     privacy: 'A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.',
     js: {
       tab_watch: 'Para ver', tab_seen: 'Vistos', tab_hidden: 'Ocultos',
@@ -78,6 +86,14 @@ const L = {
       undo: 'Anular', undone: 'Reposto.', removedT: 'Removeu {t}.', hiddenT: 'Ocultou {t}.',
       pickBtn: 'Escolher algo para hoje à noite', pickTag: 'Escolher algo com #{t}', pickTitle: 'Hoje à noite:', pickAgain: 'Escolher outra vez', close: 'Fechar', picked: 'Escolhido: {t}.',
       openRecord: 'Ficha', recordH: 'Ficha', r_status: 'Estado', r_rating: 'A sua classificação', r_tags: 'As suas etiquetas', r_note: 'A sua nota', r_added: 'Adicionado', r_seen: 'Visto em', r_link: 'Ligação', none: 'Nenhuma',
+      picAdd: 'Adicionar uma imagem sua', picChange: 'Mudar a sua imagem', picRemove: 'Remover a sua imagem', picNote: 'A sua imagem é reduzida e fica só neste navegador. Sem imagem, o título recebe um cartaz desenhado a partir das suas próprias palavras.',
+      picSaved: 'Imagem guardada neste navegador.', picFailed: 'Não foi possível ler esse ficheiro como imagem.', picRemoved: 'Imagem removida.', r_picture: 'Imagem', picOwn: 'Sua, guardada neste navegador', picGenerated: 'Desenhada a partir do título',
+      noNote: 'Ainda sem nota.', addedOn: 'Adicionado a {d}', seenOn: 'visto a {d}',
+      moveUp: 'Subir', moveDown: 'Descer', makeTonight: 'Ver hoje', movedUp: '{t} subiu.', movedDown: '{t} desceu.', madeTonight: '{t} é o próximo.', upNext: 'A seguir', laterH: 'Depois',
+      admitOne: 'Entrada individual', unusedH: 'Ainda por ver', asTable: 'Mostrar em tabela', noTags: 'Ainda sem etiquetas. Acrescente-as em Nota e etiquetas.',
+      statsH: 'Os seus números', statSeen: 'Vistos', statWatch: 'Para ver', statAvg: 'Classificação média',
+      chartMonths: 'Títulos vistos, últimos 12 meses', tipMonth: '{m}: {n} vistos', colMonth: 'Mês', colSeen: 'Vistos',
+      chartRatings: 'As suas classificações', tipRating: '{s} estrelas: {n} títulos', colRating: 'Classificação', colTitles: 'Títulos', chartTags: 'As suas etiquetas',
       jsonH: 'Esta ficha em JSON', copy: 'Copiar JSON', copied: 'Copiado.', copyFailed: 'O navegador não quis copiar. Selecione o texto e copie-o.', download: 'Descarregar JSON',
       markSeen: 'Marcar como visto', toWatch: 'Voltar a para ver', hide: 'Ocultar', unhide: 'Mostrar', note: 'Adicionar nota', editNote: 'Editar nota', saveNote: 'Guardar nota', cancel: 'Cancelar',
       remove: 'Remover', open: 'Abrir ficha', rateFor: 'Classificação de {t}', star: '{n} em 5', noteFor: 'Nota sobre {t}', actionsFor: '{a}: {t}',
@@ -104,7 +120,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 
 function shell(k, o) {
   const t = L[k], url = ORIGIN + o.path, pre = k === 'pt' ? '/pt' : '';
-  const designs = ['auto', 'paper', 'night', 'cinema', 'coast', 'contrast'].map((d, i) => `<option value="${d}">${t.designs[i]}</option>`).join('');
+  const designs = ['auto', 'shelf', 'queue', 'cards', 'stubs', 'list'].map((d, i) => `<option value="${d}">${t.designs[i]}</option>`).join('');
   const meta = (a, b) => `<meta ${a} content="${esc(b)}">`;
   return `<!doctype html>
 <html lang="${t.lang}">
@@ -194,18 +210,18 @@ function homeMain(k) {
 <div id="pick-card" class="pick-card" hidden></div>
 <div id="tools" class="tools" hidden>
   <div class="grow"><label for="filter-text">${t.search}</label><input type="search" id="filter-text"></div>
-  <div><label for="sort">${t.sort}</label><select id="sort"><option value="new">${t.sortNew}</option><option value="title">${t.sortTitle}</option><option value="rating">${t.sortRating}</option></select></div>
+  <div id="sort-wrap"><label for="sort">${t.sort}</label><select id="sort"><option value="new">${t.sortNew}</option><option value="title">${t.sortTitle}</option><option value="rating">${t.sortRating}</option></select></div>
 </div>
 <div id="example-banner" class="banner" hidden><p>${t.js.exampleBanner}</p><button type="button" id="example-clear" class="quiet">${t.js.exampleClear}</button></div>
-<ul id="items" class="items"></ul>
+<div id="stage" class="stage"></div>
 <div id="empty" class="empty" hidden></div>
 </section>
 
 <div id="toast" class="toast" role="status" hidden><span id="toast-msg"></span> <button type="button" id="toast-undo">${t.js.undo}</button></div>
 
 <dialog id="record" class="record" aria-labelledby="record-h">
-  <p class="mark">${t.js.recordH}</p>
-  <h2 id="record-h"></h2>
+  <div class="record-top"><div id="record-art" class="record-art"></div><div><p class="mark">${t.js.recordH}</p>
+  <h2 id="record-h"></h2></div></div>
   <dl id="record-dl"></dl>
   <div class="row">
     <button type="button" id="rec-copy">${t.js.copy}</button>
@@ -247,7 +263,8 @@ function homeMain(k) {
 <summary>${t.dataH}</summary>
 <p>${t.dataP}</p>
 <div class="row">
-  <button type="button" id="export" class="quiet">${t.exportBtn}</button>
+  <div><button type="button" id="export" class="quiet">${t.exportBtn}</button>
+  <label class="plain"><input type="checkbox" id="with-pics" checked> ${t.withPics}</label></div>
   <div><input type="file" id="import" class="file-input" accept="application/json,.json"><label for="import" class="button">${t.importLabel}</label>
   <label class="plain"><input type="checkbox" id="merge" checked> ${t.merge}</label></div>
 </div>
@@ -261,6 +278,8 @@ function homeScripts(k) {
   const t = L[k];
   return `<script type="application/json" id="i18n">${JSON.stringify(t.js).replace(/</g, '\\u003c')}</script>
 <script src="/assets/core.js"></script>
+<script src="/assets/poster.js"></script>
+<script src="/assets/pictures.js"></script>
 <script src="/assets/app.js"></script>
 `;
 }

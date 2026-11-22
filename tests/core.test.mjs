@@ -76,4 +76,29 @@ assert.equal(C.list(a, { sort: 'rating' })[0].rating, 4);
   assert.equal(back.items.find((i) => i.id === c.id).seenAt, '2026-01-05T20:00:00.000Z');
   assert.equal('tags' in back.items.find((i) => i.id === c.id), false);
 }
+// the queue's own order, and the figures for the ticket stubs
+{
+  const q = C.empty();
+  const x = C.addItem(q, 'Made-up X').item, y = C.addItem(q, 'Made-up Y').item, z = C.addItem(q, 'Made-up Z').item; // order: Z, Y, X
+  C.update(q, y.id, { status: 'seen', now: new Date('2026-10-03T21:00:00.000Z') });
+  assert.equal(C.move(q, x.id, -1), true); // skips the seen title in between
+  assert.deepEqual(q.items.map((i) => i.title), ['Made-up X', 'Made-up Y', 'Made-up Z']);
+  assert.equal(C.move(q, x.id, -1), false);
+  C.update(q, z.id, { status: 'seen', now: new Date('2026-11-20T21:00:00.000Z'), rating: 4 });
+  C.update(q, y.id, { rating: 4 });
+  const months = C.seenByMonth(q, 3, new Date('2026-11-22T00:00:00.000Z'));
+  assert.deepEqual(months, [{ key: '2026-09', count: 0 }, { key: '2026-10', count: 1 }, { key: '2026-11', count: 1 }]);
+  assert.deepEqual(C.ratingCounts(q).map((r) => r.count), [0, 0, 0, 2, 0]);
+  assert.deepEqual(C.seenGroups(q).map((g) => g.key + ':' + g.items.length), ['2026-11:1', '2026-10:1']);
+}
+// the generated poster is the same for the same title, and different for another
+{
+  const P = createRequire(import.meta.url)('../site/assets/poster.js');
+  assert.equal(P.svg('The Imaginary Lighthouse'), P.svg('The Imaginary Lighthouse'));
+  const art = (t) => P.svg(t).replace(/<text[^>]*>[^<]*<\/text>/g, '');
+  assert.equal(art('The Imaginary Lighthouse'), art('the imaginary lighthouse'), 'same artwork whatever the case');
+  assert.notEqual(P.svg('The Imaginary Lighthouse'), P.svg('Placeholder Hills'));
+  assert.ok(P.svg('<script>').includes('&lt;script&gt;'));
+  assert.ok(P.lines('A very long made-up title that goes on and on and on for ever').length <= 4);
+}
 console.log('core tests passed');

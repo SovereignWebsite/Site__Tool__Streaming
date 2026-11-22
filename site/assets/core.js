@@ -129,6 +129,7 @@
     var a = items.slice();
     if (how === 'title') a.sort(function (x, y) { return x.title.toLowerCase() < y.title.toLowerCase() ? -1 : x.title.toLowerCase() > y.title.toLowerCase() ? 1 : 0; });
     else if (how === 'rating') a.sort(function (x, y) { return y.rating - x.rating; });
+    else if (how === 'new') a.sort(function (x, y) { return (y.added || '') < (x.added || '') ? -1 : (y.added || '') > (x.added || '') ? 1 : 0; });
     return a;
   }
 
@@ -203,6 +204,48 @@
     return JSON.stringify({ app: 'streaming', kind: 'record', exported: new Date().toISOString(), record: it }, null, 2);
   }
 
+  /* The owner's own order (the queue): moves a title one place up or down among titles with the same status. */
+  function move(state, id, dir) {
+    var idx = -1;
+    for (var i = 0; i < state.items.length; i++) if (state.items[i].id === id) { idx = i; break; }
+    if (idx < 0) return false;
+    var st = state.items[idx].status, j = idx + (dir < 0 ? -1 : 1);
+    while (j >= 0 && j < state.items.length && state.items[j].status !== st) j += dir < 0 ? -1 : 1;
+    if (j < 0 || j >= state.items.length) return false;
+    var t = state.items[idx]; state.items[idx] = state.items[j]; state.items[j] = t;
+    return true;
+  }
+
+  /* Figures for the ticket stubs, from the owner's own list only. */
+  function seenByMonth(state, months, now) {
+    var end = now || new Date(), out = [];
+    for (var k = months - 1; k >= 0; k--) {
+      var d = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() - k, 1));
+      out.push({ key: d.toISOString().slice(0, 7), count: 0 });
+    }
+    var at = {}; out.forEach(function (m, i) { at[m.key] = i; });
+    state.items.forEach(function (i) {
+      if (i.status !== 'seen' && !i.seenAt) return;
+      var when = (i.seenAt || i.added || '').slice(0, 7);
+      if (i.status === 'seen' && at[when] !== undefined) out[at[when]].count++;
+    });
+    return out;
+  }
+  function ratingCounts(state) {
+    var c = [0, 0, 0, 0, 0];
+    state.items.forEach(function (i) { if (i.rating >= 1 && i.rating <= 5) c[i.rating - 1]++; });
+    return c.map(function (n, k) { return { stars: k + 1, count: n }; });
+  }
+  function seenGroups(state) {
+    var groups = [], at = {};
+    list(state, { status: 'seen' }).slice().sort(function (a, b) { return (b.seenAt || b.added || '') < (a.seenAt || a.added || '') ? -1 : 1; }).forEach(function (i) {
+      var k = (i.seenAt || i.added || '').slice(0, 7) || 'unknown';
+      if (at[k] === undefined) { at[k] = groups.length; groups.push({ key: k, items: [] }); }
+      groups[at[k]].items.push(i);
+    });
+    return groups;
+  }
+
   function exportJson(state) { return JSON.stringify({ app: 'streaming', exported: new Date().toISOString(), data: state }, null, 2); }
 
   /* Validates an imported file and rebuilds a clean state; never trusts shapes. */
@@ -248,7 +291,7 @@
   function save(storage, state) { try { storage.setItem(KEY, JSON.stringify(state)); return true; } catch (e) { return false; } }
 
   var api = { KEY: KEY, SERVICES: SERVICES, COUNTRIES: COUNTRIES, empty: empty, addItem: addItem, update: update, remove: remove,
-    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, cleanTags: cleanTags, allTags: allTags, pick: pick, take: take, putBack: putBack, find: find, recordJson: recordJson, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
+    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, move: move, seenByMonth: seenByMonth, ratingCounts: ratingCounts, seenGroups: seenGroups, cleanTags: cleanTags, allTags: allTags, pick: pick, take: take, putBack: putBack, find: find, recordJson: recordJson, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
     load: load, save: save, titleFromUrl: titleFromUrl };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StreamingCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
