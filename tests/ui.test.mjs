@@ -29,7 +29,7 @@ assert.equal(await pg.isVisible('#example-banner'), false);
 assert.match(await pg.textContent('#empty'), /Your list is empty/);
 await pg.click('text=Show an example list');
 assert.equal(await pg.isVisible('#example-banner'), true);
-assert.equal(await count('watch'), '2'); assert.equal(await count('seen'), '2');
+assert.equal(await count('watch'), '5'); assert.equal(await count('seen'), '6'); assert.equal(await count('hidden'), '1');
 // adding an own title removes the example
 await pg.fill('#add-input', 'The Imaginary Lighthouse Two'); await pg.click('#add-form button');
 assert.equal(await pg.isVisible('#example-banner'), false);

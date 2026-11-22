@@ -161,10 +161,9 @@
     if (it.url) head.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer', 'class': 'open', 'aria-label': act(T.open, it.title) }, T.open));
     body.appendChild(head);
     add(body, tagsEl(it));
-    var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); bar.appendChild(actions(it)); body.appendChild(bar);
+    var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); var acts = actions(it); acts.appendChild(removeBtn(it)); bar.appendChild(acts); body.appendChild(bar);
     noteOrEdit(body, it);
     li.appendChild(body);
-    li.appendChild(removeBtn(it));
     return li;
   }
   function itemShelf(it) {
@@ -208,11 +207,11 @@
     var down = btn(T.moveDown, 'chip quiet-chip', act(T.moveDown, it.title), function () { if (C.move(state, it.id, 1)) { persist(); render(); say('movedDown', { t: it.title }); focusRow(it.id, '.move-down'); } });
     down.classList.add('move-down'); if (n === total) down.disabled = true;
     var bring = btn(T.makeTonight, 'chip', act(T.makeTonight, it.title), function () { while (C.move(state, it.id, -1)) {} persist(); render(); say('madeTonight', { t: it.title }); focusRow(it.id); });
-    bar.appendChild(bring); bar.appendChild(up); bar.appendChild(down); bar.appendChild(actions(it));
+    var qa = actions(it); qa.appendChild(removeBtn(it));
+    bar.appendChild(bring); bar.appendChild(up); bar.appendChild(down); bar.appendChild(qa);
     body.appendChild(bar);
     noteOrEdit(body, it);
     li.appendChild(body);
-    li.appendChild(removeBtn(it));
     return li;
   }
   function tonight(it) {

@@ -12,7 +12,7 @@
     "status": "watch",
     "rating": 0,
     "note": "Made-up: one for a quiet Sunday.",
-    "added": "2026-08-01T18:00:00.000Z",
+    "added": "2026-07-01T18:00:00.000Z",
     "tags": [
      "family",
      "weekend"
@@ -25,7 +25,7 @@
     "status": "watch",
     "rating": 0,
     "note": "",
-    "added": "2026-09-03T18:00:00.000Z",
+    "added": "2026-08-03T18:00:00.000Z",
     "tags": [
      "weekend"
     ]
@@ -37,7 +37,7 @@
     "status": "seen",
     "rating": 4,
     "note": "Made-up note: slow start, lovely ending.",
-    "added": "2026-10-05T18:00:00.000Z",
+    "added": "2026-09-05T18:00:00.000Z",
     "tags": [
      "family"
     ],
@@ -50,7 +50,7 @@
     "status": "seen",
     "rating": 5,
     "note": "",
-    "added": "2026-11-07T18:00:00.000Z",
+    "added": "2026-10-07T18:00:00.000Z",
     "tags": [
      "documentary"
     ],
@@ -63,7 +63,7 @@
     "status": "watch",
     "rating": 0,
     "note": "",
-    "added": "2026-08-09T18:00:00.000Z",
+    "added": "2026-07-09T18:00:00.000Z",
     "tags": [
      "comedy"
     ]
@@ -75,7 +75,7 @@
     "status": "seen",
     "rating": 3,
     "note": "Guessed the twist early.",
-    "added": "2026-09-11T18:00:00.000Z",
+    "added": "2026-08-11T18:00:00.000Z",
     "tags": [
      "crime"
     ],
@@ -88,7 +88,7 @@
     "status": "seen",
     "rating": 4,
     "note": "",
-    "added": "2026-10-13T18:00:00.000Z",
+    "added": "2026-09-13T18:00:00.000Z",
     "tags": [
      "crime",
      "weekend"
@@ -102,7 +102,7 @@
     "status": "watch",
     "rating": 0,
     "note": "Made-up title for testing.",
-    "added": "2026-11-15T18:00:00.000Z",
+    "added": "2026-10-15T18:00:00.000Z",
     "tags": [
      "family"
     ]
@@ -114,7 +114,7 @@
     "status": "seen",
     "rating": 2,
     "note": "",
-    "added": "2026-08-17T18:00:00.000Z",
+    "added": "2026-07-17T18:00:00.000Z",
     "seenAt": "2026-09-14T20:00:00.000Z"
    },
    {
@@ -124,7 +124,7 @@
     "status": "seen",
     "rating": 5,
     "note": "Best of the year (made-up).",
-    "added": "2026-09-19T18:00:00.000Z",
+    "added": "2026-08-19T18:00:00.000Z",
     "tags": [
      "documentary"
     ],
@@ -137,7 +137,7 @@
     "status": "hidden",
     "rating": 1,
     "note": "",
-    "added": "2026-10-21T18:00:00.000Z"
+    "added": "2026-09-21T18:00:00.000Z"
    },
    {
     "id": "fx11",
@@ -146,7 +146,7 @@
     "status": "watch",
     "rating": 0,
     "note": "",
-    "added": "2026-11-23T18:00:00.000Z",
+    "added": "2026-10-23T18:00:00.000Z",
     "tags": [
      "crime"
     ]

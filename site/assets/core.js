@@ -163,8 +163,11 @@
     var t = (now || new Date()).getTime();
     examples.forEach(function (e, i) {
       var title = clean(e.title, 200); if (!title) return;
-      state.items.push({ id: 'ex' + i + makeId().slice(1, 9), title: title, url: '', status: STATUSES.indexOf(e.status) >= 0 ? e.status : 'watch',
-        rating: e.rating >= 0 && e.rating <= 5 ? e.rating : 0, note: clean(e.note, 2000), added: new Date(t - i * 1000).toISOString(), example: true });
+      var it = { id: 'ex' + i + makeId().slice(1, 9), title: title, url: '', status: STATUSES.indexOf(e.status) >= 0 ? e.status : 'watch',
+        rating: e.rating >= 0 && e.rating <= 5 ? e.rating : 0, note: clean(e.note, 2000), added: new Date(t - (i + 1) * 86400000 * 3).toISOString(), example: true };
+      var tags = cleanTags(e.tags || []); if (tags.length) it.tags = tags;
+      if (it.status === 'seen' && e.seenDaysAgo >= 0) it.seenAt = new Date(t - e.seenDaysAgo * 86400000).toISOString();
+      state.items.push(it);
     });
   }
   function hasExamples(state) { return state.items.some(function (i) { return i.example; }); }

@@ -272,3 +272,13 @@ label.button.small{padding:.25rem .7rem;font-size:.85rem}
 .top .design-open{order:2}
 @media (min-width:40.01rem){.top .own{order:1}.top .design-open{order:2}}
 .design-cards .design-use{font-size:.9rem;padding:.35rem .7rem}
+/* Round 3: Remove sits with the other actions in The list and the queue; shelf and stubs use a desktop's width. */
+.item-acts .remove{position:static;align-self:center;margin-left:.2rem}
+.item-head{padding-right:0}
+@media (min-width:64rem){
+body[data-layout="shelf"] main,body[data-layout="stubs"] main,body[data-layout="shelf"] .top,body[data-layout="stubs"] .top{max-width:min(1200px,92vw)}
+body[data-layout="shelf"] .lead,body[data-layout="shelf"] .add,body[data-layout="shelf"] .privacy,body[data-layout="shelf"] .fold,
+body[data-layout="stubs"] .lead,body[data-layout="stubs"] .add,body[data-layout="stubs"] .privacy,body[data-layout="stubs"] .fold{max-width:44rem}
+body[data-layout="shelf"] .shelf{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+body[data-layout="stubs"] .charts{grid-template-columns:repeat(3,1fr)}body[data-layout="stubs"] .charts .chart:last-child{grid-column:auto}
+}
