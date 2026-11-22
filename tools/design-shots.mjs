@@ -20,8 +20,8 @@ for (const d of ['shelf', 'queue', 'cards', 'stubs', 'list']) {
   const p = await ctx.newPage();
   await p.goto('http://127.0.0.1:' + srv.address().port + '/');
   if (d === 'stubs') await p.click('.tab[data-status="seen"]');
-  await p.evaluate(() => { document.querySelector('.tagbar').hidden = true; document.querySelector('#pickbar').hidden = true; document.querySelector('#tools').hidden = true; });
-  await p.evaluate(() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 8));
+  // each design's own first screen, from just below the heading
+  await p.evaluate(() => window.scrollTo(0, document.querySelector('.list').getBoundingClientRect().top + window.scrollY - 8));
   await p.screenshot({ path: `site/assets/designs/${d}.jpg`, type: 'jpeg', quality: 78 });
   await ctx.close();
 }

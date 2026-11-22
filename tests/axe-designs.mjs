@@ -35,7 +35,10 @@ for (const design of ['auto', 'shelf', 'queue', 'cards', 'stubs', 'list']) {
       const label = design + ' ' + colour + ' ' + path;
       if (path === '/' || path === '/pt/') {
         await check(pg, label + ' (list)');
-        await pg.locator('[data-id]').first().locator('.item-acts .chip').last().click(); // open Note and tags, with the picture controls
+        await pg.locator('[data-id] .more-btn').first().click(); // the More menu
+        await check(pg, label + ' (More)');
+        await pg.locator('.more-menu .chip', { hasText: /Note and tags|Nota e etiquetas/ }).first().click(); // Note and tags, with the picture controls
+        if (design === 'queue' || design === 'auto' || design === 'shelf' || design === 'stubs') { const t = pg.locator('#all-toggle, #refine-toggle, #ticket-toggle'); for (let i = 0; i < await t.count(); i++) if (await t.nth(i).isVisible()) await t.nth(i).click(); }
         await pg.click('#pick-btn'); await pg.waitForSelector('#pick-card .pick-acts');
         await pg.locator('details.fold summary').nth(0).click(); await pg.locator('details.fold summary').nth(1).click();
         await check(pg, label + ' (edit panel, picker, folds)');

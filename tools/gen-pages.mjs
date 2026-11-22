@@ -29,6 +29,7 @@ const L = {
     privacy: 'Your list is saved in this browser\'s own storage and goes nowhere else. Clearing your browser data removes it, so export a copy now and then. A personal, non-commercial tool.',
     js: {
       tab_watch: 'To watch', tab_seen: 'Seen', tab_hidden: 'Hidden', count_watch: '{n} to watch', count_seen: '{n} seen', count_hidden: '{n} hidden', countTag: ' tagged #{t}',
+      more: 'More', newTicket: 'New ticket', allTitles: 'All titles', refineBtn: 'Search and tags', addQueue: 'Add to the queue', addTile: 'Add a title',
       edit: 'Note and tags', notePh: 'Your private note', tagsLabel: 'Your tags (separated by commas)', tagsPh: 'family, weekend',
       allTags: 'All', tagFilter: 'Filter by tag', filterTag: 'Show only #{t}', filterTagCount: 'Show only #{t} ({n} titles)',
       undo: 'Undo', undone: 'Put back.', removedT: 'Removed {t}.', hiddenT: 'Hid {t}.',
@@ -91,6 +92,7 @@ const L = {
     privacy: 'A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.',
     js: {
       tab_watch: 'Para ver', tab_seen: 'Vistos', tab_hidden: 'Ocultos', count_watch: '{n} para ver', count_seen: '{n} vistos', count_hidden: '{n} ocultos', countTag: ' com #{t}',
+      more: 'Mais', newTicket: 'Novo bilhete', allTitles: 'Todos os títulos', refineBtn: 'Pesquisa e etiquetas', addQueue: 'Adicionar à fila', addTile: 'Adicionar um título',
       edit: 'Nota e etiquetas', notePh: 'A sua nota privada', tagsLabel: 'As suas etiquetas (separadas por vírgulas)', tagsPh: 'família, fim de semana',
       allTags: 'Todas', tagFilter: 'Filtrar por etiqueta', filterTag: 'Mostrar só #{t}', filterTagCount: 'Mostrar só #{t} ({n} títulos)',
       undo: 'Anular', undone: 'Reposto.', removedT: 'Removeu {t}.', hiddenT: 'Ocultou {t}.',
@@ -215,34 +217,47 @@ function homeMain(k) {
   const t = L[k];
   return `<h1>${t.h1}</h1>
 <p class="lead">${t.lead}</p>
+<div id="add-home"></div>
 <form id="add-form" class="add" aria-labelledby="add-label">
   <label id="add-label" for="add-input">${t.addLabel}</label>
   <div class="add-row">
     <input type="text" id="add-input" autocomplete="off" placeholder="${t.addPh}">
     <button type="submit">${t.addBtn}</button>
   </div>
-  <p id="msg" class="msg" role="status" aria-live="polite"></p>
   <p class="help" id="add-help">${t.addHelp}</p>
 </form>
 
 <section class="list" aria-labelledby="list-h">
 <h2 id="list-h" class="sr">${t.tabsLabel}</h2>
+<p id="msg" class="msg" role="status" aria-live="polite"></p>
+<div id="hero" class="hero"></div>
+<p class="ticket-row" id="ticket-row" hidden><button type="button" id="ticket-toggle" class="chip" aria-expanded="false">${t.js.newTicket}</button></p>
+<div id="ticket-slot"></div>
+<p class="all-row" id="all-row" hidden><button type="button" id="all-toggle" class="chip quiet-chip" aria-expanded="false" aria-controls="tabsblock">${t.js.allTitles}</button></p>
+<div id="tabsblock" class="tabsblock">
 <div class="tabs" role="group" aria-label="${t.tabsLabel}">
   <button type="button" class="tab" data-status="watch" aria-pressed="true">${t.js.tab_watch} <span class="n" id="n-watch">0</span></button>
   <button type="button" class="tab" data-status="seen" aria-pressed="false">${t.js.tab_seen} <span class="n" id="n-seen">0</span></button>
   <button type="button" class="tab" data-status="hidden" aria-pressed="false">${t.js.tab_hidden} <span class="n" id="n-hidden">0</span></button>
 </div>
 <p id="list-count" class="list-count"></p>
-<div id="tagbar" class="tagbar" role="group" aria-label="${t.js.tagFilter}" hidden></div>
-<div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">${t.js.pickBtn}</button></div>
+</div>
+<div class="bar2">
+  <div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">${t.js.pickBtn}</button></div>
+  <button type="button" id="refine-toggle" class="chip quiet-chip" aria-expanded="false" aria-controls="refine" hidden>${t.js.refineBtn}</button>
+</div>
 <div id="pick-card" class="pick-card" hidden></div>
+<div id="refine" class="refine">
+<div id="tagbar" class="tagbar" role="group" aria-label="${t.js.tagFilter}" hidden></div>
 <div id="tools" class="tools" hidden>
   <div class="grow"><label for="filter-text">${t.search}</label><input type="search" id="filter-text"></div>
   <div id="sort-wrap"><label for="sort">${t.sort}</label><select id="sort"><option value="new">${t.sortNew}</option><option value="title">${t.sortTitle}</option><option value="rating">${t.sortRating}</option></select></div>
 </div>
+</div>
 <div id="example-banner" class="banner" hidden><p>${t.js.exampleBanner}</p><button type="button" id="example-clear" class="quiet">${t.js.exampleClear}</button></div>
 <div id="stage" class="stage"></div>
 <div id="empty" class="empty" hidden></div>
+<div id="add-slot"></div>
 </section>
 
 <div id="toast" class="toast" role="status" hidden><span id="toast-msg"></span> <button type="button" id="toast-undo">${t.js.undo}</button></div>

@@ -5,7 +5,7 @@
   var T = JSON.parse(document.getElementById('i18n').textContent);
   var $ = function (id) { return document.getElementById(id); };
   var state = C.load(window.localStorage);
-  var tab = 'watch', tagFilter = '', editing = null, lastPick = null, toastTimer = null, undoFn = null;
+  var tab = 'watch', tagFilter = '', editing = null, moreOpen = null, refineOpen = false, allOpen = false, ticketOpen = false, lastPick = null, toastTimer = null, undoFn = null;
   var PT_LINK = 'https://data.promptugal.news/streaming/';
   var LAYOUTS = ['shelf', 'queue', 'cards', 'stubs', 'list'];
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -54,7 +54,7 @@
   }
 
   function setTab(s) {
-    tab = s; editing = null;
+    tab = s; editing = null; moreOpen = null;
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-status') === s)); });
     $('pick-card').hidden = true;
     render();
@@ -78,13 +78,13 @@
   }
   function move(it, to) {
     return function () {
-      var from = it.status;
+      var from = it.status; moreOpen = null;
       C.update(state, it.id, { status: to }); persist(); render(); say('moved_' + to);
       if (to === 'hidden') toast(fmt(T.hiddenT, { t: it.title }), function () { C.update(state, it.id, { status: from }); persist(); render(); say('undone'); focusRow(it.id); });
     };
   }
   function removeItem(it) {
-    var taken = C.take(state, it.id); persist(); render(); say('removed');
+    moreOpen = null; var taken = C.take(state, it.id); persist(); render(); say('removed');
     toast(fmt(T.removedT, { t: it.title }), function () { C.putBack(state, taken); persist(); render(); say('undone'); focusRow(it.id); });
   }
   function titleBtn(it, cls) { return btn(it.title, 'item-title ' + (cls || ''), act(T.openRecord, it.title), function () { openRecord(it.id); }); }
@@ -107,16 +107,34 @@
     });
     return tg;
   }
+  /* One main action per title (and the stars); everything else is behind More. */
   function actions(it, opts) {
     var acts = el('span', { 'class': 'item-acts' });
-    if (it.status === 'watch') acts.appendChild(btn(T.markSeen, 'chip', act(T.markSeen, it.title), move(it, 'seen')));
-    if (it.status === 'seen') acts.appendChild(btn(T.toWatch, 'chip', act(T.toWatch, it.title), move(it, 'watch')));
-    if (it.status !== 'hidden') acts.appendChild(btn(T.hide, 'chip quiet-chip', act(T.hide, it.title), move(it, 'hidden')));
-    else acts.appendChild(btn(T.unhide, 'chip', act(T.unhide, it.title), move(it, 'watch')));
-    if (!(opts && opts.noEdit)) acts.appendChild(btn(T.edit, 'chip quiet-chip', act(T.edit, it.title), function () { editing = it.id; render(); focusRow(it.id, 'textarea'); }));
+    var q = opts && opts.queue;
+    if (it.status === 'watch' && q) acts.appendChild(btn(T.makeTonight, 'chip', act(T.makeTonight, it.title), opts.tonight));
+    else if (it.status === 'watch') acts.appendChild(btn(T.markSeen, 'chip', act(T.markSeen, it.title), move(it, 'seen')));
+    else if (it.status === 'hidden') acts.appendChild(btn(T.unhide, 'chip', act(T.unhide, it.title), move(it, 'watch')));
+    var m = btn(T.more, 'chip quiet-chip more-btn', act(T.more, it.title), function () {
+      moreOpen = moreOpen === it.id ? null : it.id; editing = null; render(); focusRow(it.id, moreOpen ? '.more-menu button' : '.more-btn');
+    });
+    m.setAttribute('aria-expanded', String(moreOpen === it.id));
+    m.setAttribute('aria-controls', 'more-' + it.id);
+    acts.appendChild(m);
     return acts;
   }
-  function removeBtn(it) { return btn(T.remove, 'text-danger remove', act(T.remove, it.title), function () { removeItem(it); }); }
+  function moreMenu(it, opts) {
+    if (moreOpen !== it.id) return null;
+    var box = el('div', { 'class': 'more-menu', id: 'more-' + it.id, role: 'group', 'aria-label': act(T.more, it.title) });
+    if (it.status === 'watch' && opts && opts.queue) box.appendChild(btn(T.markSeen, 'chip', act(T.markSeen, it.title), move(it, 'seen')));
+    if (it.status === 'seen') box.appendChild(btn(T.toWatch, 'chip quiet-chip', act(T.toWatch, it.title), move(it, 'watch')));
+    if (it.status !== 'hidden') box.appendChild(btn(T.hide, 'chip quiet-chip', act(T.hide, it.title), move(it, 'hidden')));
+    box.appendChild(btn(T.edit, 'chip quiet-chip', act(T.edit, it.title), function () { moreOpen = null; editing = it.id; render(); focusRow(it.id, 'textarea'); }));
+    ((opts && opts.extra) || []).forEach(function (b) { box.appendChild(b); });
+    if (it.url) box.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer', 'class': 'chip quiet-chip open', 'aria-label': act(T.open, it.title) }, T.open));
+    box.appendChild(btn(T.remove, 'text-danger remove', act(T.remove, it.title), function () { removeItem(it); }));
+    box.addEventListener('keydown', function (e) { if (e.key === 'Escape') { moreOpen = null; render(); focusRow(it.id, '.more-btn'); } });
+    return box;
+  }
 
   function editPanel(it) {
     var box = el('div', { 'class': 'note-edit' });
@@ -160,10 +178,10 @@
     var body = el('div', { 'class': 'item-body' });
     var head = el('div', { 'class': 'item-head' });
     head.appendChild(titleBtn(it));
-    if (it.url) head.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer', 'class': 'open', 'aria-label': act(T.open, it.title) }, T.open));
     body.appendChild(head);
     add(body, tagsEl(it));
-    var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); var acts = actions(it); acts.appendChild(removeBtn(it)); bar.appendChild(acts); body.appendChild(bar);
+    var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); bar.appendChild(actions(it)); body.appendChild(bar);
+    add(body, moreMenu(it));
     noteOrEdit(body, it);
     li.appendChild(body);
     return li;
@@ -176,8 +194,8 @@
     add(cap, tagsEl(it));
     cap.appendChild(stars(it));
     cap.appendChild(actions(it));
+    add(cap, moreMenu(it));
     noteOrEdit(cap, it);
-    cap.appendChild(removeBtn(it));
     li.appendChild(cap);
     return li;
   }
@@ -192,8 +210,8 @@
     li.appendChild(head);
     noteOrEdit(li, it, true);
     var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); bar.appendChild(actions(it)); li.appendChild(bar);
+    add(li, moreMenu(it));
     li.appendChild(el('p', { 'class': 'meta card-date' }, fmt(T.addedOn, { d: day(it.added) }) + (it.seenAt ? ' · ' + fmt(T.seenOn, { d: day(it.seenAt) }) : '')));
-    li.appendChild(removeBtn(it));
     return li;
   }
   function itemQueue(it, n, total) {
@@ -204,15 +222,16 @@
     body.appendChild(titleBtn(it));
     add(body, tagsEl(it));
     var bar = el('div', { 'class': 'item-bar' });
-    var up = btn(T.moveUp, 'chip quiet-chip', act(T.moveUp, it.title), function () { if (C.move(state, it.id, -1)) { persist(); render(); say('movedUp', { t: it.title }); focusRow(it.id, '.move-up'); } });
+    var up = btn(T.moveUp, 'chip quiet-chip', act(T.moveUp, it.title), function () { moreOpen = it.id; if (C.move(state, it.id, -1)) { persist(); render(); say('movedUp', { t: it.title }); focusRow(it.id, '.move-up'); } });
     up.classList.add('move-up');
-    var down = btn(T.moveDown, 'chip quiet-chip', act(T.moveDown, it.title), function () { if (C.move(state, it.id, 1)) { persist(); render(); say('movedDown', { t: it.title }); focusRow(it.id, '.move-down'); } });
+    var down = btn(T.moveDown, 'chip quiet-chip', act(T.moveDown, it.title), function () { moreOpen = it.id; if (C.move(state, it.id, 1)) { persist(); render(); say('movedDown', { t: it.title }); focusRow(it.id, '.move-down'); } });
     down.classList.add('move-down');
-    var bring = btn(T.makeTonight, 'chip', act(T.makeTonight, it.title), function () { while (C.move(state, it.id, -1)) {} persist(); render(); say('madeTonight', { t: it.title }); focusRow(it.id); });
-    var qa = actions(it); qa.appendChild(removeBtn(it));
-    /* A move that cannot happen is not shown. */
-    bar.appendChild(bring); if (n > 2) bar.appendChild(up); if (n < total) bar.appendChild(down); bar.appendChild(qa);
+    var bring = function () { moreOpen = null; while (C.move(state, it.id, -1)) {} persist(); render(); say('madeTonight', { t: it.title }); focusRow(it.id); };
+    /* A move that cannot happen is not offered. */
+    var extra = []; if (n > 2) extra.push(up); if (n < total) extra.push(down);
+    bar.appendChild(stars(it)); bar.appendChild(actions(it, { queue: true, tonight: bring }));
     body.appendChild(bar);
+    add(body, moreMenu(it, { queue: true, extra: extra }));
     noteOrEdit(body, it);
     li.appendChild(body);
     return li;
@@ -226,6 +245,7 @@
     add(body, tagsEl(it));
     body.appendChild(stars(it));
     body.appendChild(actions(it));
+    add(body, moreMenu(it));
     noteOrEdit(body, it);
     sec.appendChild(body);
     return sec;
@@ -237,10 +257,10 @@
     main.appendChild(titleBtn(it, 'stub-title'));
     add(main, tagsEl(it));
     var bar = el('div', { 'class': 'item-bar' }); bar.appendChild(stars(it)); bar.appendChild(actions(it)); main.appendChild(bar);
+    add(main, moreMenu(it));
     noteOrEdit(main, it);
     li.appendChild(main);
     var tear = el('div', { 'class': 'stub-tear' }); tear.appendChild(cover(it, 'stub-cover')); li.appendChild(tear);
-    li.appendChild(removeBtn(it));
     return li;
   }
 
@@ -372,11 +392,35 @@
     $('pick-btn').textContent = tagFilter ? fmt(T.pickTag, { t: tagFilter }) : T.pickBtn;
     $('add-help').hidden = !state.items.length;
 
+    /* Each design arranges the same pieces for its own first screen. */
+    var form = $('add-form'), had = document.activeElement && form.contains(document.activeElement);
+    $('add-home').after(form);
     var stage = $('stage'); stage.textContent = '';
-    if (L === 'stubs' && state.items.length) stage.appendChild(stats());
+    var hero = $('hero'); hero.textContent = '';
+    var none = !state.items.length;
+    $('refine-toggle').hidden = L === 'list' || (L === 'queue' && !allOpen);
+    $('refine').hidden = (L !== 'list' && !refineOpen) || (L === 'queue' && !allOpen);
+    $('refine-toggle').setAttribute('aria-expanded', String(L === 'list' || refineOpen));
+    $('all-row').hidden = L !== 'queue' || none;
+    $('tabsblock').hidden = L === 'queue' && !allOpen && !none;
+    $('all-toggle').setAttribute('aria-expanded', String(allOpen));
+    $('ticket-row').hidden = L !== 'stubs' || none;
+    $('ticket-toggle').setAttribute('aria-expanded', String(ticketOpen || none));
+    $('add-label').textContent = L === 'queue' ? T.addQueue : L === 'shelf' || L === 'cards' ? T.addTile : $('add-label').getAttribute('data-label') || $('add-label').textContent;
+    if (L === 'queue') $('add-slot').appendChild(form);
+    if (L === 'stubs') { $('ticket-slot').appendChild(form); form.hidden = !(ticketOpen || none); } else form.hidden = false;
+    if (L === 'stubs' && state.items.length) hero.appendChild(stats());
     var ul;
-    if (L === 'shelf') { ul = el('ul', { 'class': 'shelf', id: 'items' }); items.forEach(function (it) { ul.appendChild(itemShelf(it)); }); }
-    else if (L === 'cards') { ul = el('ul', { 'class': 'cards', id: 'items' }); items.forEach(function (it) { ul.appendChild(itemCard(it)); }); }
+    if (L === 'shelf') {
+      ul = el('ul', { 'class': 'shelf', id: 'items' });
+      if (tab === 'watch' && !query && !tagFilter) { var tile = el('li', { 'class': 'shelf-add' }); tile.appendChild(form); ul.appendChild(tile); }
+      items.forEach(function (it) { ul.appendChild(itemShelf(it)); });
+    }
+    else if (L === 'cards') {
+      ul = el('ul', { 'class': 'cards', id: 'items' });
+      if (tab === 'watch' && !query && !tagFilter) { var blank = el('li', { 'class': 'card add-card' }); blank.appendChild(form); ul.appendChild(blank); }
+      items.forEach(function (it) { ul.appendChild(itemCard(it)); });
+    }
     else if (L === 'queue' && tab === 'watch' && items.length) {
       stage.appendChild(tonight(items[0]));
       ul = el('ol', { 'class': 'queue', id: 'items', 'aria-label': T.laterH });
@@ -398,9 +442,11 @@
       }
     }
     else { ul = el('ul', { 'class': 'items', id: 'items' }); items.forEach(function (it) { ul.appendChild(rowList(it)); }); }
+    if ((L === 'shelf' || L === 'cards') && !stage.contains(form) && !ul.contains(form)) form.hidden = true;
     stage.appendChild(ul);
     $('empty').hidden = items.length > 0;
     if (!items.length) renderEmpty($('empty'), query);
+    if (had) { var f = document.getElementById('add-input'); if (f) f.focus(); }
   }
 
   /* Pick something for tonight: a short shuffle (none if the visitor prefers less motion), then one title. */
@@ -519,10 +565,14 @@
     var tag = e.target && e.target.tagName;
     if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT' && !e.ctrlKey && !e.metaKey && !e.altKey && !$('record').open) { e.preventDefault(); $('add-input').focus(); }
   });
-  document.addEventListener('streaming:design', function () { editing = null; render(); });
+  document.addEventListener('streaming:design', function () { editing = null; moreOpen = null; render(); });
 
   $('toast-undo').addEventListener('click', function () { var f = undoFn; undoFn = null; $('toast').hidden = true; clearTimeout(toastTimer); if (f) f(); });
   $('pick-btn').addEventListener('click', runPick);
+  $('refine-toggle').addEventListener('click', function () { refineOpen = !refineOpen; render(); if (refineOpen) { var f = document.querySelector('#refine .tag, #filter-text'); if (f) f.focus(); } });
+  $('all-toggle').addEventListener('click', function () { allOpen = !allOpen; if (!allOpen) setTab('watch'); else render(); });
+  $('ticket-toggle').addEventListener('click', function () { ticketOpen = !ticketOpen; render(); if (ticketOpen) $('add-input').focus(); });
+  $('add-label').setAttribute('data-label', $('add-label').textContent);
   $('example-clear').addEventListener('click', function () { C.removeExamples(state); persist(); render(); $('add-input').focus(); });
   $('filter-text').addEventListener('input', render);
   $('sort').addEventListener('change', render);

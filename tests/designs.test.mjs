@@ -35,6 +35,15 @@ async function open(design, path = '/') {
   const { ctx, p } = await open(null);
   assert.equal(await p.getAttribute('body', 'data-layout'), 'shelf');
   assert.equal(await p.locator('.shelf .shelf-item').count(), 5);
+  assert.equal(await p.locator('.shelf .shelf-add #add-input').count(), 1, 'adding a title is a blank cover');
+  // one main action per title, the rest behind More
+  const firstItem = p.locator('.shelf-item').first();
+  assert.deepEqual(await firstItem.locator('.item-acts button').allTextContents(), ['Mark as seen', 'More']);
+  await firstItem.locator('.more-btn').click();
+  assert.equal(await firstItem.locator('.more-btn').getAttribute('aria-expanded'), 'true');
+  assert.deepEqual(await firstItem.locator('.more-menu button').allTextContents(), ['Hide', 'Note and tags', 'Remove']);
+  await p.keyboard.press('Escape');
+  assert.equal(await p.locator('.more-menu').count(), 0);
   assert.equal(await p.locator('.shelf .cover svg').count(), 5);
   await p.locator('.shelf-item').first().locator('.cover-btn').click();
   assert.equal(await p.evaluate(() => document.getElementById('record').open), true);
@@ -43,19 +52,23 @@ async function open(design, path = '/') {
   // switching design redraws straight away
   await p.selectOption('#design', 'cards');
   assert.equal(await p.getAttribute('body', 'data-layout'), 'cards');
-  assert.equal(await p.locator('.cards .card').count(), 5);
+  assert.equal(await p.locator('.cards .card[data-id]').count(), 5);
+  assert.equal(await p.locator('.cards .add-card #add-input').count(), 1, 'adding a title is a blank card');
   await ctx.close();
 }
 
 // The queue: tonight's title on top, then the rest in the owner's order
 {
   const { ctx, p } = await open('queue');
+  assert.equal(await p.isVisible('#tabsblock'), false, 'the tabs wait behind All titles');
+  assert.equal(await p.locator('#add-slot #add-input').count(), 1, 'Add to the queue sits under the running order');
   const top = await p.textContent('.tonight .tonight-title');
   const second = await p.locator('.queue-item').first().locator('.item-title').textContent();
   assert.equal(await p.locator('.queue-item').count(), 4);
   await p.locator('.queue-item').first().getByText('Watch tonight').click();
   assert.equal(await p.textContent('.tonight .tonight-title'), second);
   assert.equal(await p.locator('.queue-item').first().locator('.item-title').textContent(), top);
+  await p.locator('.queue-item').first().locator('.more-btn').click();
   await p.locator('.queue-item').first().getByText('Move down').click();
   assert.equal(await p.locator('.queue-item').nth(1).locator('.item-title').textContent(), top);
   assert.match(await p.textContent('#msg'), /moved .* down/i);
@@ -77,7 +90,10 @@ async function open(design, path = '/') {
 // Ticket stubs: figures, charts with a tooltip on focus and a table, stubs by month
 {
   const { ctx, p } = await open('stubs');
-  assert.deepEqual(await p.locator('.tile-value').allTextContents(), ['6', '5', '3.4']);
+  assert.deepEqual(await p.locator('#hero .tile-value').allTextContents(), ['6', '5', '3.4']);
+  assert.equal(await p.isVisible('#add-input'), false);
+  await p.click('#ticket-toggle');
+  assert.equal(await p.isVisible('#add-input'), true);
   await p.click('.tab[data-status="seen"]');
   assert.deepEqual((await p.locator('.stub-month').allTextContents()).slice(0, 2), ['November 2026', 'October 2026']);
   assert.equal(await p.locator('.stub').count(), 6);
@@ -99,6 +115,7 @@ async function open(design, path = '/') {
   const { ctx, p } = await open('shelf');
   const png = readFileSync(new URL('../site/assets/icons/icon-192.png', import.meta.url)); // our own icon, as a made-up picture
   const item = p.locator('.shelf-item', { hasText: 'The Imaginary Lighthouse' });
+  await item.locator('.more-btn').click();
   await item.getByText('Note and tags').click();
   await item.locator('input[type=file]').setInputFiles({ name: 'made-up.png', mimeType: 'image/png', buffer: png });
   await p.waitForFunction(() => /Picture saved/.test(document.getElementById('msg').textContent));
@@ -137,6 +154,7 @@ for (const path of ['/', '/pt/policy/']) {
 // every design draws every page of the list without script errors, in both languages
 for (const d of ['shelf', 'queue', 'cards', 'stubs', 'list']) for (const path of ['/', '/pt/']) {
   const { ctx, p } = await open(d, path);
+  if (d === 'queue') await p.click('#all-toggle');
   for (const s of ['watch', 'seen', 'hidden']) { await p.click(`.tab[data-status="${s}"]`); assert.ok(await p.locator('[data-id]').count() >= 1, d + ' ' + path + ' ' + s); }
   assert.ok(await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
   await ctx.close();

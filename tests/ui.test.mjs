@@ -41,7 +41,7 @@ assert.match(await msg(), /Only links/);
 assert.equal(await pg.locator('#items li.item').count(), 2);
 assert.equal(await first().locator('.item-title').textContent(), 'sample harbour nights');
 // note, rating, status
-await first().getByText('Note and tags').click();
+await first().locator('.more-btn').click(); await first().getByText('Note and tags').click();
 await first().locator('textarea').fill('Made-up note.');
 await first().locator('input[type=text]').fill('family, weekend');
 await pg.click('text=Save note');
@@ -78,26 +78,26 @@ await tab('seen');
 await first().locator('.star').nth(3).click();
 assert.equal(await msg(), 'Rated 4 out of 5.');
 assert.equal(await first().locator('.star[aria-pressed="true"]').count(), 4);
-await first().getByText('Hide', { exact: true }).click();
+await first().locator('.more-btn').click(); await first().getByText('Hide', { exact: true }).click();
 assert.equal(await pg.isVisible('#toast'), true);
 await pg.click('#toast-undo');
 assert.equal(await msg(), 'Put back.'); assert.equal(await count('seen'), '1'); assert.equal(await count('hidden'), '0');
-await first().getByText('Hide', { exact: true }).click();
+await first().locator('.more-btn').click(); await first().getByText('Hide', { exact: true }).click();
 await tab('hidden'); assert.equal(await pg.locator('#items li.item').count(), 1);
 await first().getByText('Unhide').click();
 await tab('watch'); assert.equal(await pg.locator('#items li.item').count(), 2);
 // remove
-await first().locator('.remove').click();
+await first().locator('.more-btn').click(); await first().locator('.remove').click();
 assert.equal(await msg(), 'Removed.'); assert.equal(await count('watch'), '1');
 await pg.click('#toast-undo'); assert.equal(await count('watch'), '2');
-await first().locator('.remove').click(); assert.equal(await count('watch'), '1');
+await first().locator('.more-btn').click(); await first().locator('.remove').click(); assert.equal(await count('watch'), '1');
 // paste a link anywhere on the page, and / to start typing
 await pg.locator('h1').click();
 await pg.evaluate(() => { const d = new DataTransfer(); d.setData('text/plain', 'https://www.themoviedb.org/tv/5-pasted-made-up-show'); document.body.dispatchEvent(new ClipboardEvent('paste', { clipboardData: d, bubbles: true })); });
 assert.equal(await msg(), 'Added.'); assert.equal(await count('watch'), '2');
 await pg.locator('h1').click(); await pg.keyboard.press('/');
 assert.equal(await pg.evaluate(() => document.activeElement.id), 'add-input');
-await first().locator('.remove').click();
+await first().locator('.more-btn').click(); await first().locator('.remove').click();
 // it survives a reload, and /pt/ reads the same list
 await pg.reload(); assert.equal(await count('watch'), '1');
 const pt = await ctx.newPage(); await pt.goto(base + '/pt/');
