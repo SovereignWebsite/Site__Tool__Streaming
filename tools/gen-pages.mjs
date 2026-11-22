@@ -189,7 +189,7 @@ function homeMain(k) {
 <p>${t.dataP}</p>
 <div class="row">
   <button type="button" id="export">${t.exportBtn}</button>
-  <div><label for="import">${t.importLabel}</label><input type="file" id="import" accept="application/json,.json"><label class="plain"><input type="checkbox" id="merge" checked> ${t.merge}</label></div>
+  <div><input type="file" id="import" class="file-input" accept="application/json,.json"><label for="import" class="button">${t.importLabel}</label><label class="plain"><input type="checkbox" id="merge" checked> ${t.merge}</label></div>
   <button type="button" id="wipe" class="quiet">${t.wipeBtn}</button>
 </div>
 </section>
