@@ -29,6 +29,7 @@
 <link rel="icon" href="/assets/icons/icon-192.png" type="image/png">
 <script src="/assets/design.js"></script>
 <script src="/assets/pwa.js" defer></script>
+<script src="/assets/design-control.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -56,7 +57,7 @@
     <a href="/start/">Start here</a>
     <a href="/agents/">Use with your AI</a>
     <a href="/pt/policy/" hreflang="pt-PT" lang="pt-PT">Português</a>
-    <span><label class="sr" for="design">Choose a design</label><select id="design" name="design"><option value="paper">Paper</option><option value="night">Night</option><option value="cinema">Cinema</option><option value="coast">Coast</option><option value="contrast">High contrast</option></select></span>
+    <span class="design-pick"><label for="design">Choose a design</label> <select id="design" name="design"><option value="auto">Automatic</option><option value="paper">Paper</option><option value="night">Night</option><option value="cinema">Cinema</option><option value="coast">Coast</option><option value="contrast">High contrast</option></select></span>
   </nav>
 </header>
 <main id="main">

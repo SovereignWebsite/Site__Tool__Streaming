@@ -38,6 +38,22 @@ for (const path of ['/start/', '/agents/', '/admin/', '/policy/', '/pt/start/', 
   assert.equal(await q.getAttribute('html', 'data-design'), null, 'new context has no stored design: ' + path);
   await q.close();
 }
+// the design control works on a page without the list, and Automatic follows the device
+{
+  const ctx = await b.newContext({ colorScheme: 'dark', viewport: { width: 320, height: 700 } }); const q = await ctx.newPage();
+  await q.goto(base + '/policy/');
+  assert.equal(await q.inputValue('#design'), 'auto');
+  assert.equal(await q.evaluate(() => getComputedStyle(document.body).backgroundColor), 'rgb(20, 21, 19)');
+  await q.selectOption('#design', 'coast');
+  assert.equal(await q.getAttribute('html', 'data-design'), 'coast');
+  await q.goto(base + '/pt/agents/');
+  assert.equal(await q.getAttribute('html', 'data-design'), 'coast');
+  assert.equal(await q.inputValue('#design'), 'coast');
+  for (const path of ['/', '/agents/', '/policy/', '/pt/']) { await q.goto(base + path); assert.ok(await q.evaluate(() => document.documentElement.scrollWidth <= 320), 'no sideways scroll at 320 px: ' + path); }
+  await q.selectOption('#design', 'auto');
+  assert.equal(await q.getAttribute('html', 'data-design'), null);
+  await ctx.close();
+}
 // merge an import into the list
 const fixture = readFileSync(new URL('./fixtures/made-up-list.json', import.meta.url));
 await pg.setInputFiles('#import', { name: 'f.json', mimeType: 'application/json', buffer: fixture });

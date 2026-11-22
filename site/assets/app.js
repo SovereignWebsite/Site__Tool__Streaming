@@ -122,13 +122,5 @@
     state = C.empty(); persist(); renderItems(); renderPrefs(); renderViews(); say('wiped');
   });
 
-  var d = $('design');
-  try { d.value = localStorage.getItem('streaming.design') || 'paper'; } catch (e) {}
-  if (!d.value) d.value = 'paper';
-  d.addEventListener('change', function () {
-    document.documentElement.setAttribute('data-design', d.value);
-    try { localStorage.setItem('streaming.design', d.value); } catch (e) {}
-  });
-
   renderItems(); renderPrefs(); renderViews();
 })();

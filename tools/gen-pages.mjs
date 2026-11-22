@@ -17,9 +17,9 @@ const L = {
     listH: 'Your list', fstatus: 'Show', fall: 'All (not hidden)', sort: 'Sort by', sortNew: 'Newest first', sortTitle: 'Title', sortRating: 'Rating', merge: 'Add to my list instead of replacing it', ftext: 'Search your list', empty: 'Nothing here yet.',
     prefsH: 'Your preferences', services: 'Favourite services', countries: 'Countries', gb: 'United Kingdom', pt: 'Portugal',
     genres: 'Favourite genres (separated by commas)', prefsBtn: 'Save preferences',
-    viewsH: 'Saved views', viewsP: 'A saved view is a name and a link to a filtered view on PrompTugal\'s page.', vname: 'Name', vlink: 'Link (data.promptugal.news/streaming/...)', vbtn: 'Save view',
+    viewsH: 'Saved views', viewsP: 'A saved view is a name and a link to a filtered view on PrompTugal\'s page.', vname: 'Name', vlink: 'Link to the view', vbtn: 'Save view',
     dataH: 'Your data', dataP: 'Export your list as one JSON file, import it on another device, or wipe it from this browser.', exportBtn: 'Export as JSON', importLabel: 'Import a JSON file', wipeBtn: 'Wipe everything from this browser',
-    designLabel: 'Choose a design', designs: ['Paper', 'Night', 'Cinema', 'Coast', 'High contrast'],
+    designLabel: 'Choose a design', designs: ['Automatic', 'Paper', 'Night', 'Cinema', 'Coast', 'High contrast'],
     privacyH: 'Privacy', privacy: 'Your list is saved in this browser\'s own storage and goes nowhere else. Clearing your browser data removes it, so export a copy now and then. A personal, non-commercial tool.',
     nav: ['Start here', 'Use with your AI'], foot: ['How this site was made', 'How this site is governed'],
     js: {
@@ -42,9 +42,9 @@ const L = {
     listH: 'A sua lista', fstatus: 'Mostrar', fall: 'Todos (exceto ocultos)', sort: 'Ordenar por', sortNew: 'Mais recentes primeiro', sortTitle: 'Título', sortRating: 'Classificação', merge: 'Juntar à minha lista em vez de a substituir', ftext: 'Pesquisar na sua lista', empty: 'Ainda não há nada aqui.',
     prefsH: 'As suas preferências', services: 'Serviços favoritos', countries: 'Países', gb: 'Reino Unido', pt: 'Portugal',
     genres: 'Géneros favoritos (separados por vírgulas)', prefsBtn: 'Guardar preferências',
-    viewsH: 'Vistas guardadas', viewsP: 'Uma vista guardada é um nome e uma ligação para uma vista filtrada na página do PrompTugal.', vname: 'Nome', vlink: 'Ligação (data.promptugal.news/streaming/...)', vbtn: 'Guardar vista',
+    viewsH: 'Vistas guardadas', viewsP: 'Uma vista guardada é um nome e uma ligação para uma vista filtrada na página do PrompTugal.', vname: 'Nome', vlink: 'Ligação para a vista', vbtn: 'Guardar vista',
     dataH: 'Os seus dados', dataP: 'Exporte a sua lista num ficheiro JSON, importe-o noutro dispositivo ou apague-a deste navegador.', exportBtn: 'Exportar em JSON', importLabel: 'Importar um ficheiro JSON', wipeBtn: 'Apagar tudo deste navegador',
-    designLabel: 'Escolher um desenho', designs: ['Papel', 'Noite', 'Cinema', 'Costa', 'Alto contraste'],
+    designLabel: 'Escolher um desenho', designs: ['Automático', 'Papel', 'Noite', 'Cinema', 'Costa', 'Alto contraste'],
     privacyH: 'Privacidade', privacy: 'A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.',
     nav: ['Começar aqui', 'Usar com a sua IA'], foot: ['Como este sítio foi feito', 'Como este sítio é governado'],
     js: {
@@ -63,7 +63,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 
 function shell(k, o) {
   const t = L[k], url = ORIGIN + o.path, pre = k === 'pt' ? '/pt' : '';
-  const designs = ['paper', 'night', 'cinema', 'coast', 'contrast'].map((d, i) => `<option value="${d}">${t.designs[i]}</option>`).join('');
+  const designs = ['auto', 'paper', 'night', 'cinema', 'coast', 'contrast'].map((d, i) => `<option value="${d}">${t.designs[i]}</option>`).join('');
   const meta = (a, b) => `<meta ${a} content="${esc(b)}">`;
   return `<!doctype html>
 <html lang="${t.lang}">
@@ -96,6 +96,7 @@ function shell(k, o) {
 <link rel="icon" href="/assets/icons/icon-192.png" type="image/png">
 <script src="/assets/design.js"></script>
 <script src="/assets/pwa.js" defer></script>
+<script src="/assets/design-control.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">${t.skip}</a>
@@ -106,7 +107,7 @@ ${k === 'pt' ? familyPt : family}
     <a href="${pre}/start/">${t.nav[0]}</a>
     <a href="${pre}/agents/">${t.nav[1]}</a>
     <a href="${k === 'pt' ? o.en : o.pt}" hreflang="${t.otherLang}" lang="${t.otherLang}">${t.otherName}</a>
-    <span><label class="sr" for="design">${t.designLabel}</label><select id="design" name="design">${designs}</select></span>
+    <span class="design-pick"><label for="design">${t.designLabel}</label> <select id="design" name="design">${designs}</select></span>
   </nav>
 </header>
 <main id="main">

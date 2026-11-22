@@ -4,6 +4,8 @@
 [data-design="cinema"]{--bg:#16090c;--fg:#f4e9e4;--muted:#c4aaa3;--accent:#ff8a73;--line:#4a2228;--card:#241014;--radius:2px}
 [data-design="coast"]{--bg:#eef5f8;--fg:#10252e;--muted:#3f5864;--accent:#0b5d86;--line:#c3d7e0;--card:#fff;--radius:16px}
 [data-design="contrast"]{--bg:#000;--fg:#fff;--muted:#e6e6e6;--accent:#ffe14d;--line:#fff;--card:#000;--radius:0}
+/* Automatic (no design chosen): follow the device's light or dark setting. */
+@media (prefers-color-scheme:dark){:root:not([data-design]){--bg:#141513;--fg:#ecebe6;--muted:#a8a69e;--accent:#7fc3a0;--line:#2c2d29;--card:#1c1d1a;--radius:8px}}
 /* The Sovereign Website menu follows the chosen design, not the operating system's colour scheme. */
 :root,[data-design]{--family-fg:var(--muted);--family-fg-strong:var(--fg);--family-bg:var(--card)}
 *{box-sizing:border-box}
@@ -40,7 +42,10 @@ ul.items li{border-top:1px solid var(--line);padding:.8rem 0;color:var(--fg)}
 footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
 .site-links{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;margin-bottom:.8rem;font-size:.95rem}
 .site-links a{font-weight:600}
-main a,main code{overflow-wrap:anywhere}
+main a,main code,main p,main li,label,legend,h1,h2{overflow-wrap:anywhere}
+pre{background:rgba(127,127,127,.1);padding:.8rem 1rem;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;font-size:.9rem;color:var(--fg)}
+ol,ul.plain{padding-left:1.2rem}li{margin:.35rem 0}
+.row>*{min-width:0;max-width:100%}input,textarea,select{max-width:100%}
 /* The Sovereign Website credit on a customer's site: one small, muted control at the far top right that opens a
    pop-up menu of the family links. Not a strip and not a menu bar: the site is about its owner (Dinis, 20 November
    2026: "It needs to fundamentally be about the site and who is it about ... top right pop-up menu").
@@ -61,3 +66,4 @@ main a,main code{overflow-wrap:anywhere}
 .family-credit .family-gap{border-bottom:1px solid rgba(127,127,127,.25);padding-bottom:.3rem;margin-bottom:.3rem}
 [data-family-credit="off"] .family-credit{display:none}
 @media print{.family-credit{display:none}}
+.design-pick{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem}.design-pick label{display:inline;margin:0;font-weight:400;color:var(--muted)}

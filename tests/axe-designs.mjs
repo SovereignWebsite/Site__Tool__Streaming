@@ -14,10 +14,10 @@ const srv = createServer((q, r) => {
 const base = 'http://127.0.0.1:' + srv.address().port;
 const b = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM, args: ['--no-sandbox'] } : {});
 let bad = 0;
-for (const design of ['paper', 'night', 'cinema', 'coast', 'contrast']) {
+for (const design of ['auto', 'paper', 'night', 'cinema', 'coast', 'contrast']) {
   for (const colour of ['light', 'dark']) {
     const ctx = await b.newContext({ colorScheme: colour });
-    await ctx.addInitScript((d) => localStorage.setItem('streaming.design', d), design);
+    if (design !== 'auto') await ctx.addInitScript((d) => localStorage.setItem('streaming.design', d), design);
     const pg = await ctx.newPage();
     for (const path of ['/', '/pt/', '/start/', '/pt/start/', '/agents/', '/pt/agents/', '/admin/', '/pt/admin/', '/policy/', '/pt/policy/']) {
       await pg.goto(base + path);
