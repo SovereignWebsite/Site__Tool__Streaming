@@ -165,6 +165,8 @@
     var ul = $('items'); ul.textContent = '';
     items.forEach(function (it) { ul.appendChild(row(it)); });
     $('empty').hidden = items.length > 0;
+    /* On an empty list the steps below say how to add a title, so the help under Add is not repeated. */
+    $('add-help').hidden = !state.items.length;
     if (!items.length) renderEmpty($('empty'), query);
   }
 

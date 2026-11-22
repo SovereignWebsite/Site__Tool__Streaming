@@ -179,7 +179,7 @@ function homeMain(k) {
     <button type="submit">${t.addBtn}</button>
   </div>
   <p id="msg" class="msg" role="status" aria-live="polite"></p>
-  <p class="help">${t.addHelp}</p>
+  <p class="help" id="add-help">${t.addHelp}</p>
 </form>
 
 <section class="list" aria-labelledby="list-h">
