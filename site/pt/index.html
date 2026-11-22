@@ -57,37 +57,40 @@
     <a href="/pt/start/">Começar aqui</a>
     <a href="/pt/agents/">Usar com a sua IA</a>
     <a href="/" hreflang="en-GB" lang="en-GB">English</a>
-    <span class="design-pick"><label for="design">Escolher um desenho</label> <select id="design" name="design"><option value="auto">Automático</option><option value="paper">Papel</option><option value="night">Noite</option><option value="cinema">Cinema</option><option value="coast">Costa</option><option value="contrast">Alto contraste</option></select></span>
   </nav>
 </header>
 <main id="main">
-<div class="mark">streaming.tool.sovereignweb.site</div>
 <h1>A sua lista de streaming</h1>
-<p>A sua lista para ver, títulos vistos e ocultos, classificações, notas e preferências. Tudo fica neste navegador: sem conta, sem servidor, sem cookies, sem rastreio.</p>
-<p>Este sítio não tem dados de catálogo. Para saber o que está em streaming, use a <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">página de streaming do PrompTugal</a> e depois acrescente aqui um título, colando a ligação ou escrevendo o nome.</p>
-<p id="msg" class="msg" role="status" aria-live="polite"></p>
-
-<section class="panel" aria-labelledby="add-h">
-<h2 id="add-h">Acrescentar um título</h2>
-<form id="add-form" class="row">
-  <div class="grow"><label for="add-input">Uma ligação para a ficha (PrompTugal ou themoviedb.org) ou o título</label><input type="text" id="add-input" autocomplete="off"></div>
-  <button type="submit">Acrescentar</button>
+<p class="lead">A sua lista para ver, guardada neste navegador. Sem conta, sem servidor, sem cookies, sem rastreio.</p>
+<form id="add-form" class="add" aria-labelledby="add-label">
+  <label id="add-label" for="add-input">Adicionar um título</label>
+  <div class="add-row">
+    <input type="text" id="add-input" autocomplete="off" placeholder="Ligação ou título">
+    <button type="submit">Adicionar</button>
+  </div>
+  <p id="msg" class="msg" role="status" aria-live="polite"></p>
+  <p class="help">Este sítio não tem catálogo próprio. Procure algo na <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">página de streaming do PrompTugal</a> e depois cole aqui a ligação ou escreva o nome.</p>
 </form>
-</section>
 
-<section class="panel" aria-labelledby="list-h">
-<h2 id="list-h">A sua lista <span id="count" class="meta"></span></h2>
-<div class="row">
-  <div><label for="filter-status">Mostrar</label><select id="filter-status"><option value="">Todos (exceto ocultos)</option><option value="watch">Para ver</option><option value="seen">Visto</option><option value="hidden">Oculto</option></select></div>
-  <div><label for="sort">Ordenar por</label><select id="sort"><option value="new">Mais recentes primeiro</option><option value="title">Título</option><option value="rating">Classificação</option></select></div>
-  <div class="grow"><label for="filter-text">Pesquisar na sua lista</label><input type="search" id="filter-text"></div>
+<section class="list" aria-labelledby="list-h">
+<h2 id="list-h" class="sr">A sua lista</h2>
+<div class="tabs" role="group" aria-label="A sua lista">
+  <button type="button" class="tab" data-status="watch" aria-pressed="true">Para ver <span class="n" id="n-watch">0</span></button>
+  <button type="button" class="tab" data-status="seen" aria-pressed="false">Vistos <span class="n" id="n-seen">0</span></button>
+  <button type="button" class="tab" data-status="hidden" aria-pressed="false">Ocultos <span class="n" id="n-hidden">0</span></button>
 </div>
-<p id="counts" class="meta"></p>
+<div id="tools" class="tools" hidden>
+  <div class="grow"><label for="filter-text">Pesquisar na sua lista</label><input type="search" id="filter-text"></div>
+  <div><label for="sort">Ordenar por</label><select id="sort"><option value="new">Mais recentes primeiro</option><option value="title">Título</option><option value="rating">Classificação</option></select></div>
+</div>
+<div id="example-banner" class="banner" hidden><p>Isto é um exemplo, com títulos inventados. Ao adicionar um título seu, o exemplo desaparece.</p><button type="button" id="example-clear" class="quiet">Remover o exemplo</button></div>
 <ul id="items" class="items"></ul>
+<div id="empty" class="empty" hidden></div>
 </section>
 
-<section class="panel" aria-labelledby="prefs-h">
-<h2 id="prefs-h">As suas preferências</h2>
+<details class="fold">
+<summary>Preferências e vistas guardadas</summary>
+<p>Ficam aqui para quando a <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">página do PrompTugal</a> puder abrir uma vista filtrada a partir de uma ligação. Ainda nada as usa.</p>
 <form id="prefs-form">
   <fieldset><legend>Serviços favoritos</legend>
     <label><input type="checkbox" id="svc-0"> Netflix</label>
@@ -100,35 +103,29 @@
     <label><input type="checkbox" id="cty-PT"> Portugal</label>
   </fieldset>
   <label for="genres">Géneros favoritos (separados por vírgulas)</label><input type="text" id="genres" autocomplete="off">
-  <p><button type="submit">Guardar preferências</button></p>
+  <p><button type="submit" class="quiet">Guardar preferências</button></p>
 </form>
-</section>
-
-<section class="panel" aria-labelledby="views-h">
-<h2 id="views-h">Vistas guardadas</h2>
-<p>Uma vista guardada é um nome e uma ligação para uma vista filtrada na página do PrompTugal.</p>
-<ul id="views" class="items"></ul>
+<h3>Vistas guardadas</h3>
+<ul id="views" class="plain-list"></ul>
 <form id="view-form" class="row">
   <div><label for="view-name">Nome</label><input type="text" id="view-name" autocomplete="off"></div>
   <div class="grow"><label for="view-link">Ligação para a vista</label><input type="url" id="view-link" autocomplete="off"></div>
-  <button type="submit">Guardar vista</button>
+  <button type="submit" class="quiet">Guardar vista</button>
 </form>
-</section>
+</details>
 
-<section class="panel" aria-labelledby="data-h">
-<h2 id="data-h">Os seus dados</h2>
+<details class="fold">
+<summary>Os seus dados</summary>
 <p>Exporte a sua lista num ficheiro JSON, importe-o noutro dispositivo ou apague-a deste navegador.</p>
 <div class="row">
-  <button type="button" id="export">Exportar em JSON</button>
-  <div><input type="file" id="import" class="file-input" accept="application/json,.json"><label for="import" class="button">Importar um ficheiro JSON</label><label class="plain"><input type="checkbox" id="merge" checked> Juntar à minha lista em vez de a substituir</label></div>
-  <button type="button" id="wipe" class="quiet">Apagar tudo deste navegador</button>
+  <button type="button" id="export" class="quiet">Exportar em JSON</button>
+  <div><input type="file" id="import" class="file-input" accept="application/json,.json"><label for="import" class="button">Importar um ficheiro JSON</label>
+  <label class="plain"><input type="checkbox" id="merge" checked> Juntar à minha lista em vez de a substituir</label></div>
 </div>
-</section>
+<p><button type="button" id="wipe" class="text-danger">Apagar tudo deste navegador</button></p>
+</details>
 
-<section aria-labelledby="priv-h">
-<h2 id="priv-h">Privacidade</h2>
-<p>A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.</p>
-</section>
+<p class="privacy">A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.</p>
 
 <footer>
 <nav class="site-links" aria-label="About this site">
@@ -137,9 +134,10 @@
   <a href="/pt/admin/">Como este sítio foi feito</a>
   <a href="/pt/policy/">Como este sítio é governado</a>
 </nav>
+<p class="design-pick"><label for="design">Escolher um desenho</label> <select id="design" name="design"><option value="auto">Automático</option><option value="paper">Papel</option><option value="night">Noite</option><option value="cinema">Cinema</option><option value="coast">Costa</option><option value="contrast">Alto contraste</option></select></p>
 Sovereign Website. Source: <a href="https://github.com/SovereignWebsite/Site__Tool__Streaming">github.com/SovereignWebsite/Site__Tool__Streaming</a>.</footer>
 </main>
-<script type="application/json" id="i18n">{"empty":"Ainda não há nada aqui.","open":"Abrir ficha","remove":"Remover","norating":"Sem classificação","noteph":"A sua nota privada","statusfor":"Estado de","ratingfor":"Classificação de","notefor":"Nota sobre","s_watch":"Para ver","s_seen":"Visto","s_hidden":"Oculto","added":"Acrescentado.","removed":"Removido.","prefssaved":"Preferências guardadas.","viewadded":"Vista guardada.","exported":"Exportado.","imported":"Importado.","merged":"Foram acrescentados {n} títulos novos.","wiped":"Tudo foi removido deste navegador.","noviews":"Ainda não há vistas guardadas.","nostorage":"O navegador não quis guardar isto. Exporte uma cópia para o conservar.","confirmwipe":"Remover tudo deste navegador?","err_empty":"Escreva primeiro um título ou cole uma ligação.","err_badlink":"Essa ligação não parece correta.","err_host":"Só são aceites ligações para a página de streaming do PrompTugal ou para themoviedb.org. Escreva antes o título.","err_notitle":"Não foi possível ler um título dessa ligação. Escreva antes o título.","err_duplicate":"Esse título já está na sua lista.","err_noname":"Dê um nome à vista.","err_viewhost":"Uma vista guardada tem de ser uma ligação para data.promptugal.news/streaming/.","err_import":"Esse ficheiro não é uma exportação do Streaming."}</script>
+<script type="application/json" id="i18n">{"tab_watch":"Para ver","tab_seen":"Vistos","tab_hidden":"Ocultos","markSeen":"Marcar como visto","toWatch":"Voltar a para ver","hide":"Ocultar","unhide":"Mostrar","note":"Adicionar nota","editNote":"Editar nota","saveNote":"Guardar nota","cancel":"Cancelar","remove":"Remover","open":"Abrir ficha","rateFor":"Classificação de {t}","star":"{n} em 5","noteFor":"Nota sobre {t}","actionsFor":"{a}: {t}","emptyWatch":"A sua lista está vazia.","emptySteps":["Procure um título na página de streaming do PrompTugal.","Copie a ligação, ou só o nome.","Cole-o na caixa acima e prima Adicionar."],"emptySeen":"Ainda não marcou nada como visto.","emptyHidden":"Nada oculto.","noMatch":"Nada nesta lista corresponde à sua pesquisa.","exampleBtn":"Mostrar uma lista de exemplo","exampleBanner":"Isto é um exemplo, com títulos inventados. Ao adicionar um título seu, o exemplo desaparece.","exampleClear":"Remover o exemplo","examples":[{"title":"O Farol Imaginário","status":"watch","rating":0,"note":"Inventado para este exemplo."},{"title":"Noites no Porto de Exemplo","status":"watch","rating":0,"note":""},{"title":"As Colinas Fictícias","status":"seen","rating":4,"note":"Um título inventado. As suas notas ficam neste navegador."},{"title":"Uma Costa Inventada","status":"seen","rating":2,"note":""}],"added":"Adicionado.","removed":"Removido.","prefssaved":"Preferências guardadas.","viewadded":"Vista guardada.","exported":"Exportado.","imported":"Importado.","merged":"Foram adicionados {n} títulos novos.","wiped":"Tudo foi removido deste navegador.","moved_seen":"Marcado como visto.","moved_watch":"De volta à sua lista para ver.","moved_hidden":"Oculto.","noteSaved":"Nota guardada.","rated":"Classificado com {n} em 5.","unrated":"Classificação removida.","noviews":"Ainda não há vistas guardadas.","nostorage":"O navegador não quis guardar isto. Exporte uma cópia para o conservar.","confirmwipe":"Remover tudo deste navegador?","err_empty":"Escreva primeiro um título ou cole uma ligação.","err_badlink":"Essa ligação não parece correta.","err_host":"Só são aceites ligações para a página de streaming do PrompTugal ou para themoviedb.org. Escreva antes o título.","err_notitle":"Não foi possível ler um título dessa ligação. Escreva antes o título.","err_duplicate":"Esse título já está na sua lista.","err_noname":"Dê um nome à vista.","err_viewhost":"Uma vista guardada tem de ser uma ligação para data.promptugal.news/streaming/.","err_import":"Esse ficheiro não é uma exportação do Streaming."}</script>
 <script src="/assets/core.js"></script>
 <script src="/assets/app.js"></script>
 

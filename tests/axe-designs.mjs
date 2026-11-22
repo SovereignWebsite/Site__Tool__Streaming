@@ -21,7 +21,7 @@ for (const design of ['auto', 'paper', 'night', 'cinema', 'coast', 'contrast']) 
     const pg = await ctx.newPage();
     for (const path of ['/', '/pt/', '/start/', '/pt/start/', '/agents/', '/pt/agents/', '/admin/', '/pt/admin/', '/policy/', '/pt/policy/']) {
       await pg.goto(base + path);
-      if (path === '/') { await pg.fill('#add-input', 'The Imaginary Lighthouse'); await pg.click('#add-form button'); }
+      if (path === '/' || path === '/pt/') { await pg.evaluate(() => localStorage.removeItem('streaming.v1')); await pg.reload(); await pg.click('#empty button'); await pg.fill('#add-input', 'A Made-up Title'); await pg.click('#add-form button'); await pg.locator('#items li.item').first().getByText(/note|nota/i).click(); await pg.locator('details.fold summary').nth(0).click(); await pg.locator('details.fold summary').nth(1).click(); }
       const r = await new AxeBuilder({ page: pg }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
       for (const v of r.violations) { bad++; console.log(design, colour, path, v.id, v.nodes.slice(0, 2).map((n) => n.target.join(' ') + ' ' + (n.any[0]?.message || '')).join(' | ')); }
     }

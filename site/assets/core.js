@@ -141,6 +141,18 @@
     return added;
   }
 
+  /* An example list of made-up titles, marked so it can be removed in one go. */
+  function addExamples(state, examples, now) {
+    var t = (now || new Date()).getTime();
+    examples.forEach(function (e, i) {
+      var title = clean(e.title, 200); if (!title) return;
+      state.items.push({ id: 'ex' + i + makeId().slice(1, 9), title: title, url: '', status: STATUSES.indexOf(e.status) >= 0 ? e.status : 'watch',
+        rating: e.rating >= 0 && e.rating <= 5 ? e.rating : 0, note: clean(e.note, 2000), added: new Date(t - i * 1000).toISOString(), example: true });
+    });
+  }
+  function hasExamples(state) { return state.items.some(function (i) { return i.example; }); }
+  function removeExamples(state) { state.items = state.items.filter(function (i) { return !i.example; }); }
+
   function exportJson(state) { return JSON.stringify({ app: 'streaming', exported: new Date().toISOString(), data: state }, null, 2); }
 
   /* Validates an imported file and rebuilds a clean state; never trusts shapes. */
@@ -164,8 +176,10 @@
         status: STATUSES.indexOf(o.status) >= 0 ? o.status : 'watch',
         rating: rating >= 0 && rating <= 5 ? rating : 0,
         note: clean(o.note, 2000),
-        added: clean(o.added, 40)
+        added: clean(o.added, 40),
+        example: o.example === true
       });
+      if (!s.items[s.items.length - 1].example) delete s.items[s.items.length - 1].example;
     });
     if (d.prefs) setPrefs(s, d.prefs);
     (d.views || []).slice(0, 200).forEach(function (v) { if (v) addView(s, v.name, v.url); });
@@ -179,7 +193,7 @@
   function save(storage, state) { try { storage.setItem(KEY, JSON.stringify(state)); return true; } catch (e) { return false; } }
 
   var api = { KEY: KEY, SERVICES: SERVICES, COUNTRIES: COUNTRIES, empty: empty, addItem: addItem, update: update, remove: remove,
-    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, exportJson: exportJson, importJson: importJson,
+    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
     load: load, save: save, titleFromUrl: titleFromUrl };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StreamingCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
