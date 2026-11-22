@@ -42,7 +42,7 @@ const L = {
       admitOne: 'Admit one', unusedH: 'Still to watch', asTable: 'Show as a table', noTags: 'No tags yet. Add some with Note and tags.',
       statsH: 'Your figures', statSeen: 'Seen', statWatch: 'To watch', statAvg: 'Average rating',
       chartMonths: 'Titles seen, last 12 months', tipMonth: '{m}: {n} seen', colMonth: 'Month', colSeen: 'Seen',
-      chartRatings: 'Your ratings', tipRating: '{s}: {n}', oneStar: '1 star', nStars: '{s} stars', oneTitle: '1 title', nTitles: '{n} titles', exampleShort: 'Example list, made up.', exampleRemove: 'Remove', addOpen: 'Add a title', colRating: 'Rating', colTitles: 'Titles', chartTags: 'Your tags',
+      chartRatings: 'Your ratings', tipRating: '{s}: {n}', oneStar: '1 star', nStars: '{s} stars', oneTitle: '1 title', nTitles: '{n} titles', exampleShort: 'Example list, made up.', exampleRemove: 'Remove', addOpen: 'Add a title', colRating: 'Rating', colTitles: 'Titles', chartTags: 'Your tags', chartsH: 'Your charts',
       jsonH: 'This record as JSON', copy: 'Copy JSON', copied: 'Copied.', copyFailed: 'Your browser would not copy it. Select the text and copy it instead.', download: 'Download JSON',
       markSeen: 'Mark as seen', toWatch: 'Back to watch', hide: 'Hide', unhide: 'Unhide', note: 'Add a note', editNote: 'Edit note', saveNote: 'Save note', cancel: 'Cancel',
       remove: 'Remove', open: 'Open entry', rateFor: 'Rating for {t}', star: '{n} out of 5', noteFor: 'Note for {t}', actionsFor: '{a}: {t}',
@@ -105,7 +105,7 @@ const L = {
       admitOne: 'Entrada individual', unusedH: 'Ainda por ver', asTable: 'Mostrar em tabela', noTags: 'Ainda sem etiquetas. Acrescente-as em Nota e etiquetas.',
       statsH: 'Os seus números', statSeen: 'Vistos', statWatch: 'Para ver', statAvg: 'Classificação média',
       chartMonths: 'Títulos vistos, últimos 12 meses', tipMonth: '{m}: {n} vistos', colMonth: 'Mês', colSeen: 'Vistos',
-      chartRatings: 'As suas classificações', tipRating: '{s}: {n}', oneStar: '1 estrela', nStars: '{s} estrelas', oneTitle: '1 título', nTitles: '{n} títulos', exampleShort: 'Lista de exemplo, inventada.', exampleRemove: 'Remover', addOpen: 'Adicionar um título', colRating: 'Classificação', colTitles: 'Títulos', chartTags: 'As suas etiquetas',
+      chartRatings: 'As suas classificações', tipRating: '{s}: {n}', oneStar: '1 estrela', nStars: '{s} estrelas', oneTitle: '1 título', nTitles: '{n} títulos', exampleShort: 'Lista de exemplo, inventada.', exampleRemove: 'Remover', addOpen: 'Adicionar um título', colRating: 'Classificação', colTitles: 'Títulos', chartTags: 'As suas etiquetas', chartsH: 'Os seus gráficos',
       jsonH: 'Esta ficha em JSON', copy: 'Copiar JSON', copied: 'Copiado.', copyFailed: 'O navegador não quis copiar. Selecione o texto e copie-o.', download: 'Descarregar JSON',
       markSeen: 'Marcar como visto', toWatch: 'Voltar a para ver', hide: 'Ocultar', unhide: 'Mostrar', note: 'Adicionar nota', editNote: 'Editar nota', saveNote: 'Guardar nota', cancel: 'Cancelar',
       remove: 'Remover', open: 'Abrir ficha', rateFor: 'Classificação de {t}', star: '{n} em 5', noteFor: 'Nota sobre {t}', actionsFor: '{a}: {t}',
@@ -233,7 +233,6 @@ function homeMain(k) {
 <div id="hero" class="hero"></div>
 <p class="ticket-row" id="ticket-row" hidden><button type="button" id="ticket-toggle" class="chip" aria-expanded="false">${t.js.newTicket}</button></p>
 <div id="ticket-slot"></div>
-<p class="all-row" id="all-row" hidden><button type="button" id="all-toggle" class="chip quiet-chip" aria-expanded="false" aria-controls="tabsblock">${t.js.allTitles}</button></p>
 <div id="tabsblock" class="tabsblock">
 <div class="tabs" role="group" aria-label="${t.tabsLabel}">
   <button type="button" class="tab" data-status="watch" aria-pressed="true">${t.js.tab_watch} <span class="n" id="n-watch">0</span></button>
@@ -243,6 +242,8 @@ function homeMain(k) {
 <p id="list-count" class="list-count"></p>
 </div>
 <div class="bar2">
+  <button type="button" id="queue-add" class="chip" aria-expanded="false" hidden>${t.js.addQueue}</button>
+  <button type="button" id="all-toggle" class="chip quiet-chip" aria-expanded="false" aria-controls="tabsblock" hidden>${t.js.allTitles}</button>
   <div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">${t.js.pickBtn}</button></div>
   <button type="button" id="refine-toggle" class="chip quiet-chip" aria-expanded="false" aria-controls="refine" hidden>${t.js.refineBtn}</button>
 </div>
@@ -257,7 +258,6 @@ function homeMain(k) {
 <div id="example-banner" class="banner" hidden><p>${t.js.exampleShort}</p><button type="button" id="example-clear" class="text-danger" aria-label="${t.js.exampleClear}">${t.js.exampleRemove}</button></div>
 <div id="stage" class="stage"></div>
 <div id="empty" class="empty" hidden></div>
-<div id="add-slot"></div>
 </section>
 
 <div id="toast" class="toast" role="status" hidden><span id="toast-msg"></span> <button type="button" id="toast-undo">${t.js.undo}</button></div>

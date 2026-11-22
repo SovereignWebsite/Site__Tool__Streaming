@@ -336,3 +336,7 @@ body[data-layout="queue"] .all-row[hidden]{display:none}
 body[data-layout="shelf"] .stage > .add{margin:.4rem 0 1rem;padding:.8rem;border:2px dashed var(--line);border-radius:var(--radius)}
 .banner{padding:.3rem .7rem;margin:.4rem 0;gap:.3rem .8rem}
 .banner p{font-size:.85rem}
+/* Round 5 addendum: one row for the queue's controls; the stubs' charts in one fold */
+.charts-fold{margin-top:.2rem}
+.charts-fold summary{cursor:pointer;font-weight:700;color:var(--fg);padding:.4rem 0}
+body[data-layout="queue"] #ticket-slot .add{margin:.4rem 0 .8rem;padding:.8rem;border:2px dashed var(--line);border-radius:var(--radius)}

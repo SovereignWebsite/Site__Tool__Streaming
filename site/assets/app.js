@@ -5,7 +5,7 @@
   var T = JSON.parse(document.getElementById('i18n').textContent);
   var $ = function (id) { return document.getElementById(id); };
   var state = C.load(window.localStorage);
-  var tab = 'watch', tagFilter = '', editing = null, moreOpen = null, addOpen = false, refineOpen = false, allOpen = false, ticketOpen = false, lastPick = null, toastTimer = null, undoFn = null;
+  var tab = 'watch', tagFilter = '', editing = null, moreOpen = null, addOpen = false, queueAddOpen = false, chartsOpen = !!(window.matchMedia && window.matchMedia('(min-width: 44rem)').matches), refineOpen = false, allOpen = false, ticketOpen = false, lastPick = null, toastTimer = null, undoFn = null;
   var PT_LINK = 'https://data.promptugal.news/streaming/';
   var LAYOUTS = ['shelf', 'queue', 'cards', 'stubs', 'list'];
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -299,7 +299,7 @@
       if (i === peak && d.value > 0) { var v = svgEl('text', { x: x + bw / 2, y: y - 6, 'text-anchor': 'middle', 'class': 'peak' }); v.textContent = String(d.value); g.appendChild(v); }
       var show = function () { tip.textContent = tipFn(d); tip.hidden = false; tip.style.left = Math.min(82, Math.max(18, (i + 0.5) / n * 100)) + '%'; g.classList.add('on'); };
       var hide = function () { tip.hidden = true; g.classList.remove('on'); };
-      g.addEventListener('pointerenter', show); g.addEventListener('pointerleave', hide); g.addEventListener('focus', show); g.addEventListener('blur', hide);
+      g.addEventListener('pointerenter', function (e) { if (!e.pointerType || e.pointerType === 'mouse') show(); }); g.addEventListener('pointerleave', hide); g.addEventListener('focus', show); g.addEventListener('blur', hide);
       s.appendChild(g);
     });
     var wrap = el('div', { 'class': 'chart-wrap' }); wrap.appendChild(s); wrap.appendChild(tip); fig.appendChild(wrap);
@@ -339,7 +339,13 @@
     rc.appendChild(tableView(ratings.map(function (d) { return [fmt(T.star, { n: d.stars }), d.value]; }), [T.colRating, T.colTitles]));
     var charts = el('div', { 'class': 'charts' });
     charts.appendChild(mc); charts.appendChild(rc); charts.appendChild(tagBars(T.chartTags, C.allTags(state)));
-    box.appendChild(charts);
+    /* The figures stay the hero; the charts fold into one panel, open on a desktop and closed on a phone. */
+    var fold = el('details', { 'class': 'charts-fold' });
+    if (chartsOpen) fold.setAttribute('open', '');
+    fold.appendChild(el('summary', {}, T.chartsH));
+    fold.appendChild(charts);
+    fold.addEventListener('toggle', function () { chartsOpen = fold.open; });
+    box.appendChild(fold);
     return box;
   }
 
@@ -401,14 +407,16 @@
     $('refine-toggle').hidden = L === 'list' || (L === 'queue' && !allOpen);
     $('refine').hidden = (L !== 'list' && !refineOpen) || (L === 'queue' && !allOpen);
     $('refine-toggle').setAttribute('aria-expanded', String(L === 'list' || refineOpen));
-    $('all-row').hidden = L !== 'queue' || none;
+    $('all-toggle').hidden = L !== 'queue' || none;
+    $('queue-add').hidden = L !== 'queue' || none;
+    $('queue-add').setAttribute('aria-expanded', String(queueAddOpen));
     $('tabsblock').hidden = L === 'queue' && !allOpen && !none;
     $('all-toggle').setAttribute('aria-expanded', String(allOpen));
     $('ticket-row').hidden = L !== 'stubs' || none;
     $('ticket-toggle').setAttribute('aria-expanded', String(ticketOpen || none));
     $('add-label').textContent = L === 'queue' ? T.addQueue : L === 'shelf' || L === 'cards' ? T.addTile : $('add-label').getAttribute('data-label') || $('add-label').textContent;
-    if (L === 'queue') $('add-slot').appendChild(form);
-    if (L === 'stubs') { $('ticket-slot').appendChild(form); form.hidden = !(ticketOpen || none); } else form.hidden = false;
+    if (L === 'queue') { $('ticket-slot').appendChild(form); form.hidden = !(queueAddOpen || none); }
+    if (L === 'stubs') { $('ticket-slot').appendChild(form); form.hidden = !(ticketOpen || none); } else if (L !== 'queue') form.hidden = false;
     if (L === 'stubs' && state.items.length) hero.appendChild(stats());
     var ul;
     if (L === 'shelf') {
@@ -578,6 +586,7 @@
   $('pick-btn').addEventListener('click', runPick);
   $('refine-toggle').addEventListener('click', function () { refineOpen = !refineOpen; render(); if (refineOpen) { var f = document.querySelector('#refine .tag, #filter-text'); if (f) f.focus(); } });
   $('all-toggle').addEventListener('click', function () { allOpen = !allOpen; if (!allOpen) setTab('watch'); else render(); });
+  $('queue-add').addEventListener('click', function () { queueAddOpen = !queueAddOpen; render(); if (queueAddOpen) $('add-input').focus(); });
   $('ticket-toggle').addEventListener('click', function () { ticketOpen = !ticketOpen; render(); if (ticketOpen) $('add-input').focus(); });
   $('add-label').setAttribute('data-label', $('add-label').textContent);
   $('example-clear').addEventListener('click', function () { C.removeExamples(state); persist(); render(); $('add-input').focus(); });

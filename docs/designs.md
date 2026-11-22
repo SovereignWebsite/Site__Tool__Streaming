@@ -44,7 +44,7 @@ Written by streaming.d@SovereignWebsite.dinis, keeper of Streaming, on 22 Novemb
 
 Dinis Cruz, in the keeper's session: "Yes please start on both but just publish them". Following design.d's rounds 3 and 4:
 
-- **Each design owns its first screen.** The shelf opens on the covers, with adding a title as a blank cover at the start of the shelf. The queue opens on Up next, with the other tabs, search and tags behind "All titles" and "Add to the queue" under the running order. The index cards open with a blank ruled card for adding, and the tabs drawn as card tabs. The ticket stubs open on the owner's figures and the year as charts, with a small "New ticket". The list stays as it was.
+- **Each design owns its first screen.** The shelf opens on the covers, with adding a title as a blank cover at the start of the shelf. The queue opens on Up next, with "Add to the queue", "All titles" (the other tabs, search and tags) and "Pick something for tonight" in one row above it. The index cards open with a blank ruled card for adding, and the tabs drawn as card tabs. The ticket stubs open on the owner's three figures, with the charts folded into one "Your charts" panel (open on a desktop, closed on a phone) and a small "New ticket". The list stays as it was.
 - **One main action per title.** Each title shows its stars and one main action (Mark as seen; in the queue, Watch tonight; for a hidden title, Unhide). Hide, Back to watch, Note and tags, Move up and down, the link to the entry and Remove sit behind "More".
 - Search and tags sit behind "Search and tags" in every design except the list.
 

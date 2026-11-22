@@ -67,7 +67,10 @@ async function open(design, path = '/') {
 {
   const { ctx, p } = await open('queue');
   assert.equal(await p.isVisible('#tabsblock'), false, 'the tabs wait behind All titles');
-  assert.equal(await p.locator('#add-slot #add-input').count(), 1, 'Add to the queue sits under the running order');
+  assert.equal(await p.isVisible('#add-input'), false, 'the add box waits behind Add to the queue');
+  await p.click('#queue-add');
+  assert.equal(await p.evaluate(() => document.activeElement.id), 'add-input');
+  await p.click('#queue-add');
   const top = await p.textContent('.tonight .tonight-title');
   const second = await p.locator('.queue-item').first().locator('.item-title').textContent();
   assert.equal(await p.locator('.queue-item').count(), 4);
