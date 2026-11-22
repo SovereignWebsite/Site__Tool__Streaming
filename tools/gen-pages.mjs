@@ -12,7 +12,8 @@ const L = {
     lang: 'en-GB', locale: 'en_GB', otherName: 'Português', otherLang: 'pt-PT',
     desc: 'Your own watchlist, notes and preferences for streaming in the UK and Portugal. Kept in your browser, no account.',
     skip: 'Skip to content', nav: ['Start here', 'Use with your AI'], foot: ['How this site was made', 'How this site is governed'],
-    designLabel: 'Choose a design', designs: ['Automatic (The shelf)', 'The shelf', 'The queue', 'Index cards', 'Ticket stubs', 'The list'],
+    designLabel: 'Choose a design', designBtn: 'Design', designP: 'Each design shows the same list, your own, in a different way. Your choice is kept in this browser only.', useBtn: 'Use this design', inUse: 'In use', autoBtn: 'Automatic (The shelf, light or dark as your device asks)', closeBtn: 'Close', shotAlt: '{d}, shown with made-up titles',
+    designDesc: ['Every title a cover on a shelf. Tap a cover for its record.', 'Tonight\'s title in a large card, then the rest in your own order.', 'Each title an index card, with your note written large.', 'Your figures and charts, then what you have seen as dated ticket stubs.', 'A calm checklist with a small poster beside each title.'], designs: ['Automatic (The shelf)', 'The shelf', 'The queue', 'Index cards', 'Ticket stubs', 'The list'],
     h1: 'Your streaming list',
     lead: 'Your watchlist, kept in this browser. No account, no server, no cookies, no tracking.',
     addLabel: 'Add a title', addPh: 'Paste a link, or type a title', addBtn: 'Add',
@@ -65,7 +66,8 @@ const L = {
     lang: 'pt-PT', locale: 'pt_PT', otherName: 'English', otherLang: 'en-GB',
     desc: 'A sua lista, notas e preferências para streaming no Reino Unido e em Portugal. Guardadas no seu navegador, sem conta.',
     skip: 'Saltar para o conteúdo', nav: ['Começar aqui', 'Usar com a sua IA'], foot: ['Como este sítio foi feito', 'Como este sítio é governado'],
-    designLabel: 'Escolher um desenho', designs: ['Automático (A prateleira)', 'A prateleira', 'A fila', 'Fichas', 'Bilhetes', 'A lista'],
+    designLabel: 'Escolher um desenho', designBtn: 'Desenho', designP: 'Cada desenho mostra a mesma lista, a sua, de outra maneira. A escolha fica só neste navegador.', useBtn: 'Usar este desenho', inUse: 'Em uso', autoBtn: 'Automático (A prateleira, clara ou escura conforme o dispositivo)', closeBtn: 'Fechar', shotAlt: '{d}, com títulos inventados',
+    designDesc: ['Cada título é uma capa numa prateleira. Toque numa capa para ver a ficha.', 'O título de hoje num cartão grande e depois os outros pela sua ordem.', 'Cada título é uma ficha, com a sua nota em letra grande.', 'Os seus números e gráficos e depois o que já viu, em bilhetes datados.', 'Uma lista simples, com um pequeno cartaz ao lado de cada título.'], designs: ['Automático (A prateleira)', 'A prateleira', 'A fila', 'Fichas', 'Bilhetes', 'A lista'],
     h1: 'A sua lista de streaming',
     lead: 'A sua lista para ver, guardada neste navegador. Sem conta, sem servidor, sem cookies, sem rastreio.',
     addLabel: 'Adicionar um título', addPh: 'Ligação ou título', addBtn: 'Adicionar',
@@ -160,12 +162,21 @@ function shell(k, o) {
 ${k === 'pt' ? familyPt : family}
 <header class="top">
   <a class="name" href="${pre}/">Streaming</a>
+  <button type="button" id="design-open" class="design-open" aria-haspopup="dialog" hidden>${t.designBtn}</button>
   <nav class="own" aria-label="Streaming">
     <a href="${pre}/start/">${t.nav[0]}</a>
     <a href="${pre}/agents/">${t.nav[1]}</a>
     <a href="${k === 'pt' ? o.en : o.pt}" hreflang="${t.otherLang}" lang="${t.otherLang}">${t.otherName}</a>
   </nav>
 </header>
+<dialog id="design-dialog" class="design-dialog" aria-labelledby="design-dialog-h" data-in-use="${t.inUse}">
+  <h2 id="design-dialog-h">${t.designLabel}</h2>
+  <p>${t.designP}</p>
+  <ul class="design-cards">
+${['shelf', 'queue', 'cards', 'stubs', 'list'].map((d, i) => `    <li><img src="/assets/designs/${d}.jpg" alt="${esc(t.shotAlt.replace('{d}', t.designs[i + 1]))}" width="390" height="520" loading="lazy"><h3>${t.designs[i + 1]}</h3><p>${t.designDesc[i]}</p><button type="button" class="design-use" data-design="${d}">${t.useBtn}</button></li>`).join('\n')}
+  </ul>
+  <p class="design-foot"><button type="button" class="design-use quiet" data-design="auto">${t.autoBtn}</button> <button type="button" id="design-close" class="quiet">${t.closeBtn}</button></p>
+</dialog>
 <main id="main">
 ${o.main}
 <footer>

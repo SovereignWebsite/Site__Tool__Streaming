@@ -113,6 +113,27 @@ async function open(design, path = '/') {
   await ctx.close();
 }
 
+// the Design button opens five screenshot cards on every page, and a card applies its design
+for (const path of ['/', '/pt/policy/']) {
+  const { ctx, p } = await open(null, path);
+  assert.equal(await p.isVisible('#design-open'), true);
+  await p.click('#design-open');
+  assert.equal(await p.evaluate(() => document.getElementById('design-dialog').open), true);
+  assert.equal(await p.locator('.design-cards li').count(), 5);
+  assert.equal(await p.locator('.design-cards img').count(), 5);
+  assert.equal(await p.getAttribute('.design-use[data-design="auto"]', 'aria-pressed'), 'true');
+  await p.click('.design-use[data-design="stubs"]');
+  assert.equal(await p.evaluate(() => document.getElementById('design-dialog').open), false);
+  assert.equal(await p.getAttribute('html', 'data-design'), 'stubs');
+  assert.equal(await p.inputValue('#design'), 'stubs');
+  assert.equal(await p.evaluate(() => document.activeElement.id), 'design-open');
+  if (path === '/') assert.equal(await p.getAttribute('body', 'data-layout'), 'stubs');
+  await p.click('#design-open');
+  assert.equal(await p.getAttribute('.design-use[data-design="stubs"]', 'aria-pressed'), 'true');
+  await p.keyboard.press('Escape');
+  await ctx.close();
+}
+
 // every design draws every page of the list without script errors, in both languages
 for (const d of ['shelf', 'queue', 'cards', 'stubs', 'list']) for (const path of ['/', '/pt/']) {
   const { ctx, p } = await open(d, path);

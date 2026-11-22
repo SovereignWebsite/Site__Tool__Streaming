@@ -53,12 +53,25 @@
 
 <header class="top">
   <a class="name" href="/">Streaming</a>
+  <button type="button" id="design-open" class="design-open" aria-haspopup="dialog" hidden>Design</button>
   <nav class="own" aria-label="Streaming">
     <a href="/start/">Start here</a>
     <a href="/agents/">Use with your AI</a>
     <a href="/pt/policy/" hreflang="pt-PT" lang="pt-PT">Português</a>
   </nav>
 </header>
+<dialog id="design-dialog" class="design-dialog" aria-labelledby="design-dialog-h" data-in-use="In use">
+  <h2 id="design-dialog-h">Choose a design</h2>
+  <p>Each design shows the same list, your own, in a different way. Your choice is kept in this browser only.</p>
+  <ul class="design-cards">
+    <li><img src="/assets/designs/shelf.jpg" alt="The shelf, shown with made-up titles" width="390" height="520" loading="lazy"><h3>The shelf</h3><p>Every title a cover on a shelf. Tap a cover for its record.</p><button type="button" class="design-use" data-design="shelf">Use this design</button></li>
+    <li><img src="/assets/designs/queue.jpg" alt="The queue, shown with made-up titles" width="390" height="520" loading="lazy"><h3>The queue</h3><p>Tonight's title in a large card, then the rest in your own order.</p><button type="button" class="design-use" data-design="queue">Use this design</button></li>
+    <li><img src="/assets/designs/cards.jpg" alt="Index cards, shown with made-up titles" width="390" height="520" loading="lazy"><h3>Index cards</h3><p>Each title an index card, with your note written large.</p><button type="button" class="design-use" data-design="cards">Use this design</button></li>
+    <li><img src="/assets/designs/stubs.jpg" alt="Ticket stubs, shown with made-up titles" width="390" height="520" loading="lazy"><h3>Ticket stubs</h3><p>Your figures and charts, then what you have seen as dated ticket stubs.</p><button type="button" class="design-use" data-design="stubs">Use this design</button></li>
+    <li><img src="/assets/designs/list.jpg" alt="The list, shown with made-up titles" width="390" height="520" loading="lazy"><h3>The list</h3><p>A calm checklist with a small poster beside each title.</p><button type="button" class="design-use" data-design="list">Use this design</button></li>
+  </ul>
+  <p class="design-foot"><button type="button" class="design-use quiet" data-design="auto">Automatic (The shelf, light or dark as your device asks)</button> <button type="button" id="design-close" class="quiet">Close</button></p>
+</dialog>
 <main id="main">
 <div class="mark">Agent Behaviour Policy</div>
 <h1>How this site is governed</h1>

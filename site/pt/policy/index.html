@@ -53,12 +53,25 @@
 
 <header class="top">
   <a class="name" href="/pt/">Streaming</a>
+  <button type="button" id="design-open" class="design-open" aria-haspopup="dialog" hidden>Desenho</button>
   <nav class="own" aria-label="Streaming">
     <a href="/pt/start/">Começar aqui</a>
     <a href="/pt/agents/">Usar com a sua IA</a>
     <a href="/policy/" hreflang="en-GB" lang="en-GB">English</a>
   </nav>
 </header>
+<dialog id="design-dialog" class="design-dialog" aria-labelledby="design-dialog-h" data-in-use="Em uso">
+  <h2 id="design-dialog-h">Escolher um desenho</h2>
+  <p>Cada desenho mostra a mesma lista, a sua, de outra maneira. A escolha fica só neste navegador.</p>
+  <ul class="design-cards">
+    <li><img src="/assets/designs/shelf.jpg" alt="A prateleira, com títulos inventados" width="390" height="520" loading="lazy"><h3>A prateleira</h3><p>Cada título é uma capa numa prateleira. Toque numa capa para ver a ficha.</p><button type="button" class="design-use" data-design="shelf">Usar este desenho</button></li>
+    <li><img src="/assets/designs/queue.jpg" alt="A fila, com títulos inventados" width="390" height="520" loading="lazy"><h3>A fila</h3><p>O título de hoje num cartão grande e depois os outros pela sua ordem.</p><button type="button" class="design-use" data-design="queue">Usar este desenho</button></li>
+    <li><img src="/assets/designs/cards.jpg" alt="Fichas, com títulos inventados" width="390" height="520" loading="lazy"><h3>Fichas</h3><p>Cada título é uma ficha, com a sua nota em letra grande.</p><button type="button" class="design-use" data-design="cards">Usar este desenho</button></li>
+    <li><img src="/assets/designs/stubs.jpg" alt="Bilhetes, com títulos inventados" width="390" height="520" loading="lazy"><h3>Bilhetes</h3><p>Os seus números e gráficos e depois o que já viu, em bilhetes datados.</p><button type="button" class="design-use" data-design="stubs">Usar este desenho</button></li>
+    <li><img src="/assets/designs/list.jpg" alt="A lista, com títulos inventados" width="390" height="520" loading="lazy"><h3>A lista</h3><p>Uma lista simples, com um pequeno cartaz ao lado de cada título.</p><button type="button" class="design-use" data-design="list">Usar este desenho</button></li>
+  </ul>
+  <p class="design-foot"><button type="button" class="design-use quiet" data-design="auto">Automático (A prateleira, clara ou escura conforme o dispositivo)</button> <button type="button" id="design-close" class="quiet">Fechar</button></p>
+</dialog>
 <main id="main">
 <div class="mark">Política de Comportamento dos Agentes</div>
 <h1>Como este sítio é governado</h1>

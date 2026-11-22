@@ -45,6 +45,7 @@ for (const design of ['auto', 'shelf', 'queue', 'cards', 'stubs', 'list']) {
         await pg.locator('[data-id]').first().locator('.item-title').click();
         await check(pg, label + ' (record)');
       } else await check(pg, label);
+      if (path === '/policy/' && colour === 'light') { await pg.click('#design-open'); await check(pg, label + ' (design cards)'); await pg.keyboard.press('Escape'); }
     }
     await ctx.close();
   }
