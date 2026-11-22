@@ -5,7 +5,7 @@
   var T = JSON.parse(document.getElementById('i18n').textContent);
   var $ = function (id) { return document.getElementById(id); };
   var state = C.load(window.localStorage);
-  var tab = 'watch', tagFilter = '', editing = null, moreOpen = null, refineOpen = false, allOpen = false, ticketOpen = false, lastPick = null, toastTimer = null, undoFn = null;
+  var tab = 'watch', tagFilter = '', editing = null, moreOpen = null, addOpen = false, refineOpen = false, allOpen = false, ticketOpen = false, lastPick = null, toastTimer = null, undoFn = null;
   var PT_LINK = 'https://data.promptugal.news/streaming/';
   var LAYOUTS = ['shelf', 'queue', 'cards', 'stubs', 'list'];
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -335,7 +335,7 @@
     var mc = columns(T.chartMonths, months, function (d) { return fmt(T.tipMonth, { m: monthName(d.key), n: d.value }); });
     mc.appendChild(tableView(months.map(function (d) { return [monthName(d.key), d.value]; }), [T.colMonth, T.colSeen]));
     var ratings = C.ratingCounts(state).map(function (r) { return { label: r.stars + '★', value: r.count, stars: r.stars }; });
-    var rc = columns(T.chartRatings, ratings, function (d) { return fmt(T.tipRating, { s: d.stars, n: d.value }); });
+    var rc = columns(T.chartRatings, ratings, function (d) { return fmt(T.tipRating, { s: d.stars === 1 ? T.oneStar : fmt(T.nStars, { s: d.stars }), n: d.value === 1 ? T.oneTitle : fmt(T.nTitles, { n: d.value }) }); });
     rc.appendChild(tableView(ratings.map(function (d) { return [fmt(T.star, { n: d.stars }), d.value]; }), [T.colRating, T.colTitles]));
     var charts = el('div', { 'class': 'charts' });
     charts.appendChild(mc); charts.appendChild(rc); charts.appendChild(tagBars(T.chartTags, C.allTags(state)));
@@ -413,7 +413,13 @@
     var ul;
     if (L === 'shelf') {
       ul = el('ul', { 'class': 'shelf', id: 'items' });
-      if (tab === 'watch' && !query && !tagFilter) { var tile = el('li', { 'class': 'shelf-add' }); tile.appendChild(form); ul.appendChild(tile); }
+      /* The + cover opens the add box full width above the shelf, where there is room to type. */
+      if (addOpen || none) stage.appendChild(form);
+      if (tab === 'watch' && !query && !tagFilter && !addOpen && !none) {
+        var tile = el('li', { 'class': 'shelf-add' });
+        tile.appendChild(btn(T.addOpen, 'shelf-add-btn', null, function () { addOpen = true; render(); $('add-input').focus(); }));
+        ul.appendChild(tile);
+      }
       items.forEach(function (it) { ul.appendChild(itemShelf(it)); });
     }
     else if (L === 'cards') {
@@ -553,6 +559,7 @@
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.addEventListener('click', function () { setTab(b.getAttribute('data-status')); }); });
+  $('add-form').addEventListener('keydown', function (e) { if (e.key === 'Escape' && addOpen) { addOpen = false; render(); var b = document.querySelector('.shelf-add-btn'); if (b) b.focus(); } });
   $('add-form').addEventListener('submit', function (e) { e.preventDefault(); if (addTitle($('add-input').value)) $('add-input').value = ''; });
   document.addEventListener('paste', function (e) {
     var t = e.target, tag = t && t.tagName;

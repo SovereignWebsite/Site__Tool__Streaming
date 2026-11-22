@@ -42,7 +42,7 @@ const L = {
       admitOne: 'Admit one', unusedH: 'Still to watch', asTable: 'Show as a table', noTags: 'No tags yet. Add some with Note and tags.',
       statsH: 'Your figures', statSeen: 'Seen', statWatch: 'To watch', statAvg: 'Average rating',
       chartMonths: 'Titles seen, last 12 months', tipMonth: '{m}: {n} seen', colMonth: 'Month', colSeen: 'Seen',
-      chartRatings: 'Your ratings', tipRating: '{s} stars: {n} titles', colRating: 'Rating', colTitles: 'Titles', chartTags: 'Your tags',
+      chartRatings: 'Your ratings', tipRating: '{s}: {n}', oneStar: '1 star', nStars: '{s} stars', oneTitle: '1 title', nTitles: '{n} titles', exampleShort: 'Example list, made up.', exampleRemove: 'Remove', addOpen: 'Add a title', colRating: 'Rating', colTitles: 'Titles', chartTags: 'Your tags',
       jsonH: 'This record as JSON', copy: 'Copy JSON', copied: 'Copied.', copyFailed: 'Your browser would not copy it. Select the text and copy it instead.', download: 'Download JSON',
       markSeen: 'Mark as seen', toWatch: 'Back to watch', hide: 'Hide', unhide: 'Unhide', note: 'Add a note', editNote: 'Edit note', saveNote: 'Save note', cancel: 'Cancel',
       remove: 'Remove', open: 'Open entry', rateFor: 'Rating for {t}', star: '{n} out of 5', noteFor: 'Note for {t}', actionsFor: '{a}: {t}',
@@ -105,7 +105,7 @@ const L = {
       admitOne: 'Entrada individual', unusedH: 'Ainda por ver', asTable: 'Mostrar em tabela', noTags: 'Ainda sem etiquetas. Acrescente-as em Nota e etiquetas.',
       statsH: 'Os seus números', statSeen: 'Vistos', statWatch: 'Para ver', statAvg: 'Classificação média',
       chartMonths: 'Títulos vistos, últimos 12 meses', tipMonth: '{m}: {n} vistos', colMonth: 'Mês', colSeen: 'Vistos',
-      chartRatings: 'As suas classificações', tipRating: '{s} estrelas: {n} títulos', colRating: 'Classificação', colTitles: 'Títulos', chartTags: 'As suas etiquetas',
+      chartRatings: 'As suas classificações', tipRating: '{s}: {n}', oneStar: '1 estrela', nStars: '{s} estrelas', oneTitle: '1 título', nTitles: '{n} títulos', exampleShort: 'Lista de exemplo, inventada.', exampleRemove: 'Remover', addOpen: 'Adicionar um título', colRating: 'Classificação', colTitles: 'Títulos', chartTags: 'As suas etiquetas',
       jsonH: 'Esta ficha em JSON', copy: 'Copiar JSON', copied: 'Copiado.', copyFailed: 'O navegador não quis copiar. Selecione o texto e copie-o.', download: 'Descarregar JSON',
       markSeen: 'Marcar como visto', toWatch: 'Voltar a para ver', hide: 'Ocultar', unhide: 'Mostrar', note: 'Adicionar nota', editNote: 'Editar nota', saveNote: 'Guardar nota', cancel: 'Cancelar',
       remove: 'Remover', open: 'Abrir ficha', rateFor: 'Classificação de {t}', star: '{n} em 5', noteFor: 'Nota sobre {t}', actionsFor: '{a}: {t}',
@@ -254,7 +254,7 @@ function homeMain(k) {
   <div id="sort-wrap"><label for="sort">${t.sort}</label><select id="sort"><option value="new">${t.sortNew}</option><option value="title">${t.sortTitle}</option><option value="rating">${t.sortRating}</option></select></div>
 </div>
 </div>
-<div id="example-banner" class="banner" hidden><p>${t.js.exampleBanner}</p><button type="button" id="example-clear" class="quiet">${t.js.exampleClear}</button></div>
+<div id="example-banner" class="banner" hidden><p>${t.js.exampleShort}</p><button type="button" id="example-clear" class="text-danger" aria-label="${t.js.exampleClear}">${t.js.exampleRemove}</button></div>
 <div id="stage" class="stage"></div>
 <div id="empty" class="empty" hidden></div>
 <div id="add-slot"></div>

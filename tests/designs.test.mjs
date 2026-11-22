@@ -35,7 +35,13 @@ async function open(design, path = '/') {
   const { ctx, p } = await open(null);
   assert.equal(await p.getAttribute('body', 'data-layout'), 'shelf');
   assert.equal(await p.locator('.shelf .shelf-item').count(), 5);
-  assert.equal(await p.locator('.shelf .shelf-add #add-input').count(), 1, 'adding a title is a blank cover');
+  assert.equal(await p.isVisible('#add-input'), false, 'the add box waits behind the + cover');
+  await p.click('.shelf-add-btn');
+  assert.equal(await p.evaluate(() => document.activeElement.id), 'add-input', 'the + cover opens the add box, full width above the shelf');
+  assert.ok(await p.evaluate(() => document.getElementById('add-input').getBoundingClientRect().width > 250));
+  await p.keyboard.press('Escape');
+  assert.equal(await p.isVisible('#add-input'), false);
+  assert.equal(await p.evaluate(() => document.activeElement.className), 'shelf-add-btn');
   // one main action per title, the rest behind More
   const firstItem = p.locator('.shelf-item').first();
   assert.deepEqual(await firstItem.locator('.item-acts button').allTextContents(), ['Mark as seen', 'More']);
@@ -101,6 +107,8 @@ async function open(design, path = '/') {
   assert.equal(await bars.count(), 5);
   await bars.nth(3).focus();
   assert.equal(await p.locator('.chart').nth(1).locator('.chart-tip').textContent(), '4 stars: 2 titles');
+  await bars.nth(0).focus();
+  assert.equal(await p.locator('.chart').nth(1).locator('.chart-tip').textContent(), '1 star: 1 title', 'singular for one');
   await p.locator('.chart').nth(1).locator('summary').click();
   assert.deepEqual(await p.locator('.chart').nth(1).locator('tbody td').allTextContents(), ['1', '1', '1', '2', '2']);
   await p.locator('.hbars .tag', { hasText: '#crime' }).click();

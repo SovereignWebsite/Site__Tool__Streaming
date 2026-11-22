@@ -328,3 +328,11 @@ body[data-layout]:not([data-layout="list"]) #pick-btn{font-size:.9rem;padding:.3
 body[data-layout="queue"] .all-row{display:inline-block;margin-right:.4rem}
 body[data-layout="queue"] .all-row[hidden]{display:none}
 @media (max-width:40rem){body[data-layout="queue"] .tonight .cover-btn{max-width:46%}}
+/* Round 5 notes: the + cover opens the add box above the shelf; a one-line example banner */
+.shelf-add{padding:0;border:2px dashed var(--line)}
+.shelf-add::before{content:none}
+.shelf-add-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;width:100%;min-height:12rem;height:100%;background:transparent;border:0;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;border-radius:var(--radius)}
+.shelf-add-btn::before{content:"+";font-size:2.8rem;line-height:1;font-weight:300}
+body[data-layout="shelf"] .stage > .add{margin:.4rem 0 1rem;padding:.8rem;border:2px dashed var(--line);border-radius:var(--radius)}
+.banner{padding:.3rem .7rem;margin:.4rem 0;gap:.3rem .8rem}
+.banner p{font-size:.85rem}
