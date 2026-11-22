@@ -50,4 +50,30 @@ assert.deepEqual(a.prefs.services, ['Netflix', 'Disney+']); assert.deepEqual(a.p
 assert.deepEqual(C.counts(a), { watch: 3, seen: 1, hidden: 1 });
 assert.equal(C.list(a, { sort: 'title' })[0].title, 'Another Made-up Title');
 assert.equal(C.list(a, { sort: 'rating' })[0].rating, 4);
+// tags, seen date, tag filter, pick, undo, record
+{
+  const t = C.empty();
+  const a = C.addItem(t, 'Made-up One').item, b2 = C.addItem(t, 'Made-up Two').item, c = C.addItem(t, 'Made-up Three').item;
+  C.update(t, a.id, { tags: 'Family, weekend, family, ' + 'x'.repeat(40) });
+  assert.deepEqual(a.tags, ['Family', 'weekend', 'x'.repeat(30)]);
+  C.update(t, b2.id, { tags: ['family'] });
+  assert.equal(C.allTags(t)[0].tag.toLowerCase(), 'family'); assert.equal(C.allTags(t)[0].count, 2);
+  assert.equal(C.list(t, { status: 'watch', tag: 'FAMILY' }).length, 2);
+  assert.equal(C.list(t, { text: 'weekend' }).length, 1);
+  const when = new Date('2026-01-05T20:00:00.000Z');
+  C.update(t, c.id, { status: 'seen', now: when });
+  assert.equal(c.seenAt, '2026-01-05T20:00:00.000Z');
+  C.update(t, c.id, { status: 'seen', now: new Date() }); assert.equal(c.seenAt, '2026-01-05T20:00:00.000Z', 'seen date kept when already seen');
+  for (let i = 0; i < 20; i++) { const p = C.pick(t, 'family', a.id); assert.equal(p.id, b2.id); }
+  assert.equal(C.pick(t, 'nothing'), null);
+  assert.equal(C.pick(t, '', null, () => 0).id, C.list(t, { status: 'watch' })[0].id);
+  const taken = C.take(t, b2.id); assert.equal(taken.index, 1); assert.equal(t.items.length, 2);
+  assert.equal(C.putBack(t, taken), true); assert.equal(t.items[1].id, b2.id); assert.equal(C.putBack(t, taken), false);
+  const rec = JSON.parse(C.recordJson(t, a.id));
+  assert.equal(rec.kind, 'record'); assert.equal(rec.record.title, 'Made-up One'); assert.deepEqual(rec.record.tags, a.tags);
+  const back = C.importJson(C.exportJson(t)).state;
+  assert.deepEqual(back.items.find((i) => i.id === a.id).tags, a.tags);
+  assert.equal(back.items.find((i) => i.id === c.id).seenAt, '2026-01-05T20:00:00.000Z');
+  assert.equal('tags' in back.items.find((i) => i.id === c.id), false);
+}
 console.log('core tests passed');

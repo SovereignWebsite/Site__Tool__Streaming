@@ -69,7 +69,7 @@
     <button type="submit">Add</button>
   </div>
   <p id="msg" class="msg" role="status" aria-live="polite"></p>
-  <p class="help">This site has no catalogue of its own. Find something on <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">PrompTugal's streaming page</a>, then paste its link or type its name here.</p>
+  <p class="help">This site has no catalogue of its own. Find something on <a href="https://data.promptugal.news/streaming/" rel="noopener noreferrer">PrompTugal's streaming page</a>, then paste its link or type its name here. You can also paste a link anywhere on this page, or press / to start typing.</p>
 </form>
 
 <section class="list" aria-labelledby="list-h">
@@ -79,6 +79,9 @@
   <button type="button" class="tab" data-status="seen" aria-pressed="false">Seen <span class="n" id="n-seen">0</span></button>
   <button type="button" class="tab" data-status="hidden" aria-pressed="false">Hidden <span class="n" id="n-hidden">0</span></button>
 </div>
+<div id="tagbar" class="tagbar" role="group" aria-label="Filter by tag" hidden></div>
+<div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">Pick something for tonight</button></div>
+<div id="pick-card" class="pick-card" hidden></div>
 <div id="tools" class="tools" hidden>
   <div class="grow"><label for="filter-text">Search your list</label><input type="search" id="filter-text"></div>
   <div><label for="sort">Sort by</label><select id="sort"><option value="new">Newest first</option><option value="title">Title</option><option value="rating">Rating</option></select></div>
@@ -87,6 +90,22 @@
 <ul id="items" class="items"></ul>
 <div id="empty" class="empty" hidden></div>
 </section>
+
+<div id="toast" class="toast" role="status" hidden><span id="toast-msg"></span> <button type="button" id="toast-undo">Undo</button></div>
+
+<dialog id="record" class="record" aria-labelledby="record-h">
+  <p class="mark">Record</p>
+  <h2 id="record-h"></h2>
+  <dl id="record-dl"></dl>
+  <div class="row">
+    <button type="button" id="rec-copy">Copy JSON</button>
+    <button type="button" id="rec-download" class="quiet">Download JSON</button>
+    <button type="button" id="rec-close" class="quiet">Close</button>
+  </div>
+  <p id="rec-status" class="meta" role="status"></p>
+  <h3>This record as JSON</h3>
+  <pre id="record-json" tabindex="0"></pre>
+</dialog>
 
 <details class="fold">
 <summary>Preferences and saved views</summary>
@@ -137,7 +156,7 @@
 <p class="design-pick"><label for="design">Choose a design</label> <select id="design" name="design"><option value="auto">Automatic</option><option value="paper">Paper</option><option value="night">Night</option><option value="cinema">Cinema</option><option value="coast">Coast</option><option value="contrast">High contrast</option></select></p>
 Sovereign Website. Source: <a href="https://github.com/SovereignWebsite/Site__Tool__Streaming">github.com/SovereignWebsite/Site__Tool__Streaming</a>.</footer>
 </main>
-<script type="application/json" id="i18n">{"tab_watch":"To watch","tab_seen":"Seen","tab_hidden":"Hidden","markSeen":"Mark as seen","toWatch":"Back to watch","hide":"Hide","unhide":"Unhide","note":"Add a note","editNote":"Edit note","saveNote":"Save note","cancel":"Cancel","remove":"Remove","open":"Open entry","rateFor":"Rating for {t}","star":"{n} out of 5","noteFor":"Note for {t}","actionsFor":"{a}: {t}","emptyWatch":"Your list is empty.","emptySteps":["Find a title on PrompTugal's streaming page.","Copy its link, or just its name.","Paste it in the box above and press Add."],"emptySeen":"Nothing marked as seen yet.","emptyHidden":"Nothing hidden.","noMatch":"Nothing in this list matches your search.","exampleBtn":"Show an example list","exampleBanner":"This is an example, with made-up titles. Adding your own title removes it.","exampleClear":"Remove the example","examples":[{"title":"The Imaginary Lighthouse","status":"watch","rating":0,"note":"Made up for this example."},{"title":"Sample Harbour Nights","status":"watch","rating":0,"note":""},{"title":"Placeholder Hills","status":"seen","rating":4,"note":"A made-up title. Your notes stay in this browser."},{"title":"A Fictional Coast","status":"seen","rating":2,"note":""}],"added":"Added.","removed":"Removed.","prefssaved":"Preferences saved.","viewadded":"View saved.","exported":"Exported.","imported":"Imported.","merged":"Added {n} new titles.","wiped":"Everything removed from this browser.","moved_seen":"Marked as seen.","moved_watch":"Back on your watchlist.","moved_hidden":"Hidden.","noteSaved":"Note saved.","rated":"Rated {n} out of 5.","unrated":"Rating cleared.","noviews":"No saved views yet.","nostorage":"Your browser would not save this. Export a copy to keep it.","confirmwipe":"Remove everything from this browser?","err_empty":"Type a title or paste a link first.","err_badlink":"That link does not look right.","err_host":"Only links to PrompTugal's streaming page or themoviedb.org are accepted. Type the title instead.","err_notitle":"No title could be read from that link. Type the title instead.","err_duplicate":"That title is already on your list.","err_noname":"Give the view a name.","err_viewhost":"A saved view must be a link to data.promptugal.news/streaming/.","err_import":"That file is not a Streaming export."}</script>
+<script type="application/json" id="i18n">{"tab_watch":"To watch","tab_seen":"Seen","tab_hidden":"Hidden","edit":"Note and tags","notePh":"Your private note","tagsLabel":"Your tags (separated by commas)","tagsPh":"family, weekend","allTags":"All","tagFilter":"Filter by tag","filterTag":"Show only #{t}","filterTagCount":"Show only #{t} ({n} titles)","undo":"Undo","undone":"Put back.","removedT":"Removed {t}.","hiddenT":"Hid {t}.","pickBtn":"Pick something for tonight","pickTag":"Pick something tagged #{t}","pickTitle":"Tonight:","pickAgain":"Pick again","close":"Close","picked":"Picked {t}.","openRecord":"Record","recordH":"Record","r_status":"Status","r_rating":"Your rating","r_tags":"Your tags","r_note":"Your note","r_added":"Added","r_seen":"Seen on","r_link":"Link","none":"None","jsonH":"This record as JSON","copy":"Copy JSON","copied":"Copied.","copyFailed":"Your browser would not copy it. Select the text and copy it instead.","download":"Download JSON","markSeen":"Mark as seen","toWatch":"Back to watch","hide":"Hide","unhide":"Unhide","note":"Add a note","editNote":"Edit note","saveNote":"Save note","cancel":"Cancel","remove":"Remove","open":"Open entry","rateFor":"Rating for {t}","star":"{n} out of 5","noteFor":"Note for {t}","actionsFor":"{a}: {t}","emptyWatch":"Your list is empty.","emptySteps":["Find a title on PrompTugal's streaming page.","Copy its link, or just its name.","Paste it in the box above and press Add."],"emptySeen":"Nothing marked as seen yet.","emptyHidden":"Nothing hidden.","noMatch":"Nothing in this list matches your search.","exampleBtn":"Show an example list","exampleBanner":"This is an example, with made-up titles. Adding your own title removes it.","exampleClear":"Remove the example","examples":[{"title":"The Imaginary Lighthouse","status":"watch","rating":0,"note":"Made up for this example."},{"title":"Sample Harbour Nights","status":"watch","rating":0,"note":""},{"title":"Placeholder Hills","status":"seen","rating":4,"note":"A made-up title. Your notes stay in this browser."},{"title":"A Fictional Coast","status":"seen","rating":2,"note":""}],"added":"Added.","removed":"Removed.","prefssaved":"Preferences saved.","viewadded":"View saved.","exported":"Exported.","imported":"Imported.","merged":"Added {n} new titles.","wiped":"Everything removed from this browser.","moved_seen":"Marked as seen.","moved_watch":"Back on your watchlist.","moved_hidden":"Hidden.","noteSaved":"Note saved.","rated":"Rated {n} out of 5.","unrated":"Rating cleared.","noviews":"No saved views yet.","nostorage":"Your browser would not save this. Export a copy to keep it.","confirmwipe":"Remove everything from this browser?","err_empty":"Type a title or paste a link first.","err_badlink":"That link does not look right.","err_host":"Only links to PrompTugal's streaming page or themoviedb.org are accepted. Type the title instead.","err_notitle":"No title could be read from that link. Type the title instead.","err_duplicate":"That title is already on your list.","err_noname":"Give the view a name.","err_viewhost":"A saved view must be a link to data.promptugal.news/streaming/.","err_import":"That file is not a Streaming export."}</script>
 <script src="/assets/core.js"></script>
 <script src="/assets/app.js"></script>
 

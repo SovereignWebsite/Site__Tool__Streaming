@@ -122,3 +122,31 @@ ul.plain-list{padding-left:1.1rem}
 footer .design-pick{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.6rem 0}
 footer .design-pick label{display:inline;margin:0;font-weight:400;color:var(--muted)}
 [hidden]{display:none!important}
+
+/* Interactive pieces: tags, the tonight picker, undo, the record dialog. */
+.item-title{background:transparent;border:0;padding:0;color:var(--fg);font:inherit;font-weight:600;font-size:1.05rem;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.item-title:hover{text-decoration-color:var(--accent)}
+.item-tags,.tagbar{display:flex;flex-wrap:wrap;gap:.3rem;margin:.35rem 0 0}
+.tagbar{margin:.2rem 0 .5rem}
+.tag{font-size:.8rem;font-weight:600;padding:.2rem .6rem;border-radius:999px;background:transparent;color:var(--muted);border:1px solid var(--line);min-height:28px}
+.tag[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pickbar{margin:.4rem 0}
+.pick-card{border:2px solid var(--accent);border-radius:var(--radius);padding:.8rem 1rem;margin:.5rem 0 .8rem;background:var(--card)}
+.pick-label{margin:0;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700}
+.pick-name{margin:.2rem 0 .6rem;font-size:1.5rem;font-weight:700;color:var(--fg);line-height:1.2}
+.pick-name.spinning{opacity:.55}
+.pick-acts{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.toast{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:60;display:flex;gap:.8rem;align-items:center;width:min(30rem,calc(100% - 2rem));background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:.6rem .6rem .6rem 1rem;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.toast button{background:var(--bg);color:var(--fg);border-color:var(--bg);padding:.3rem .8rem}
+.record{max-width:min(36rem,calc(100% - 2rem));width:100%;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--fg);padding:1.2rem}
+.record::backdrop{background:rgba(0,0,0,.5)}
+.record h2{margin:.1rem 0 .8rem}
+.record dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem;margin:0 0 1rem}
+.record dt{color:var(--muted);font-size:.9rem}
+.record dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+.record pre{max-height:14rem;overflow:auto;font-size:.8rem}
+.note-edit label{font-size:.9rem;margin-top:.5rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+#toast-msg{flex:1 1 auto;min-width:0}
+.record{max-height:calc(100dvh - 2rem);overflow:auto}
+.record .row{margin:0 0 .8rem}

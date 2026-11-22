@@ -16,7 +16,7 @@ const L = {
     h1: 'Your streaming list',
     lead: 'Your watchlist, kept in this browser. No account, no server, no cookies, no tracking.',
     addLabel: 'Add a title', addPh: 'Paste a link, or type a title', addBtn: 'Add',
-    addHelp: `This site has no catalogue of its own. Find something on <a href="${PT_LINK}" rel="noopener noreferrer">PrompTugal's streaming page</a>, then paste its link or type its name here.`,
+    addHelp: `This site has no catalogue of its own. Find something on <a href="${PT_LINK}" rel="noopener noreferrer">PrompTugal's streaming page</a>, then paste its link or type its name here. You can also paste a link anywhere on this page, or press / to start typing.`,
     tabsLabel: 'Your list', search: 'Search your list', sort: 'Sort by', sortNew: 'Newest first', sortTitle: 'Title', sortRating: 'Rating',
     moreH: 'Preferences and saved views',
     moreP: `Kept here for when <a href="${PT_LINK}" rel="noopener noreferrer">PrompTugal's page</a> can open a filtered view from a link. Nothing uses them yet.`,
@@ -28,6 +28,12 @@ const L = {
     privacy: 'Your list is saved in this browser\'s own storage and goes nowhere else. Clearing your browser data removes it, so export a copy now and then. A personal, non-commercial tool.',
     js: {
       tab_watch: 'To watch', tab_seen: 'Seen', tab_hidden: 'Hidden',
+      edit: 'Note and tags', notePh: 'Your private note', tagsLabel: 'Your tags (separated by commas)', tagsPh: 'family, weekend',
+      allTags: 'All', tagFilter: 'Filter by tag', filterTag: 'Show only #{t}', filterTagCount: 'Show only #{t} ({n} titles)',
+      undo: 'Undo', undone: 'Put back.', removedT: 'Removed {t}.', hiddenT: 'Hid {t}.',
+      pickBtn: 'Pick something for tonight', pickTag: 'Pick something tagged #{t}', pickTitle: 'Tonight:', pickAgain: 'Pick again', close: 'Close', picked: 'Picked {t}.',
+      openRecord: 'Record', recordH: 'Record', r_status: 'Status', r_rating: 'Your rating', r_tags: 'Your tags', r_note: 'Your note', r_added: 'Added', r_seen: 'Seen on', r_link: 'Link', none: 'None',
+      jsonH: 'This record as JSON', copy: 'Copy JSON', copied: 'Copied.', copyFailed: 'Your browser would not copy it. Select the text and copy it instead.', download: 'Download JSON',
       markSeen: 'Mark as seen', toWatch: 'Back to watch', hide: 'Hide', unhide: 'Unhide', note: 'Add a note', editNote: 'Edit note', saveNote: 'Save note', cancel: 'Cancel',
       remove: 'Remove', open: 'Open entry', rateFor: 'Rating for {t}', star: '{n} out of 5', noteFor: 'Note for {t}', actionsFor: '{a}: {t}',
       emptyWatch: 'Your list is empty.', emptySteps: ['Find a title on PrompTugal\'s streaming page.', 'Copy its link, or just its name.', 'Paste it in the box above and press Add.'],
@@ -55,7 +61,7 @@ const L = {
     h1: 'A sua lista de streaming',
     lead: 'A sua lista para ver, guardada neste navegador. Sem conta, sem servidor, sem cookies, sem rastreio.',
     addLabel: 'Adicionar um título', addPh: 'Ligação ou título', addBtn: 'Adicionar',
-    addHelp: `Este sítio não tem catálogo próprio. Procure algo na <a href="${PT_LINK}" rel="noopener noreferrer">página de streaming do PrompTugal</a> e depois cole aqui a ligação ou escreva o nome.`,
+    addHelp: `Este sítio não tem catálogo próprio. Procure algo na <a href="${PT_LINK}" rel="noopener noreferrer">página de streaming do PrompTugal</a> e depois cole aqui a ligação ou escreva o nome. Também pode colar uma ligação em qualquer ponto da página, ou premir / para começar a escrever.`,
     tabsLabel: 'A sua lista', search: 'Pesquisar na sua lista', sort: 'Ordenar por', sortNew: 'Mais recentes primeiro', sortTitle: 'Título', sortRating: 'Classificação',
     moreH: 'Preferências e vistas guardadas',
     moreP: `Ficam aqui para quando a <a href="${PT_LINK}" rel="noopener noreferrer">página do PrompTugal</a> puder abrir uma vista filtrada a partir de uma ligação. Ainda nada as usa.`,
@@ -67,6 +73,12 @@ const L = {
     privacy: 'A sua lista fica guardada no armazenamento deste navegador e não vai para mais lado nenhum. Se limpar os dados do navegador, perde-a; por isso, exporte uma cópia de vez em quando. Uma ferramenta pessoal e não comercial.',
     js: {
       tab_watch: 'Para ver', tab_seen: 'Vistos', tab_hidden: 'Ocultos',
+      edit: 'Nota e etiquetas', notePh: 'A sua nota privada', tagsLabel: 'As suas etiquetas (separadas por vírgulas)', tagsPh: 'família, fim de semana',
+      allTags: 'Todas', tagFilter: 'Filtrar por etiqueta', filterTag: 'Mostrar só #{t}', filterTagCount: 'Mostrar só #{t} ({n} títulos)',
+      undo: 'Anular', undone: 'Reposto.', removedT: 'Removeu {t}.', hiddenT: 'Ocultou {t}.',
+      pickBtn: 'Escolher algo para hoje à noite', pickTag: 'Escolher algo com #{t}', pickTitle: 'Hoje à noite:', pickAgain: 'Escolher outra vez', close: 'Fechar', picked: 'Escolhido: {t}.',
+      openRecord: 'Ficha', recordH: 'Ficha', r_status: 'Estado', r_rating: 'A sua classificação', r_tags: 'As suas etiquetas', r_note: 'A sua nota', r_added: 'Adicionado', r_seen: 'Visto em', r_link: 'Ligação', none: 'Nenhuma',
+      jsonH: 'Esta ficha em JSON', copy: 'Copiar JSON', copied: 'Copiado.', copyFailed: 'O navegador não quis copiar. Selecione o texto e copie-o.', download: 'Descarregar JSON',
       markSeen: 'Marcar como visto', toWatch: 'Voltar a para ver', hide: 'Ocultar', unhide: 'Mostrar', note: 'Adicionar nota', editNote: 'Editar nota', saveNote: 'Guardar nota', cancel: 'Cancelar',
       remove: 'Remover', open: 'Abrir ficha', rateFor: 'Classificação de {t}', star: '{n} em 5', noteFor: 'Nota sobre {t}', actionsFor: '{a}: {t}',
       emptyWatch: 'A sua lista está vazia.', emptySteps: ['Procure um título na página de streaming do PrompTugal.', 'Copie a ligação, ou só o nome.', 'Cole-o na caixa acima e prima Adicionar.'],
@@ -177,6 +189,9 @@ function homeMain(k) {
   <button type="button" class="tab" data-status="seen" aria-pressed="false">${t.js.tab_seen} <span class="n" id="n-seen">0</span></button>
   <button type="button" class="tab" data-status="hidden" aria-pressed="false">${t.js.tab_hidden} <span class="n" id="n-hidden">0</span></button>
 </div>
+<div id="tagbar" class="tagbar" role="group" aria-label="${t.js.tagFilter}" hidden></div>
+<div id="pickbar" class="pickbar" hidden><button type="button" id="pick-btn" class="quiet">${t.js.pickBtn}</button></div>
+<div id="pick-card" class="pick-card" hidden></div>
 <div id="tools" class="tools" hidden>
   <div class="grow"><label for="filter-text">${t.search}</label><input type="search" id="filter-text"></div>
   <div><label for="sort">${t.sort}</label><select id="sort"><option value="new">${t.sortNew}</option><option value="title">${t.sortTitle}</option><option value="rating">${t.sortRating}</option></select></div>
@@ -185,6 +200,22 @@ function homeMain(k) {
 <ul id="items" class="items"></ul>
 <div id="empty" class="empty" hidden></div>
 </section>
+
+<div id="toast" class="toast" role="status" hidden><span id="toast-msg"></span> <button type="button" id="toast-undo">${t.js.undo}</button></div>
+
+<dialog id="record" class="record" aria-labelledby="record-h">
+  <p class="mark">${t.js.recordH}</p>
+  <h2 id="record-h"></h2>
+  <dl id="record-dl"></dl>
+  <div class="row">
+    <button type="button" id="rec-copy">${t.js.copy}</button>
+    <button type="button" id="rec-download" class="quiet">${t.js.download}</button>
+    <button type="button" id="rec-close" class="quiet">${t.js.close}</button>
+  </div>
+  <p id="rec-status" class="meta" role="status"></p>
+  <h3>${t.js.jsonH}</h3>
+  <pre id="record-json" tabindex="0"></pre>
+</dialog>
 
 <details class="fold">
 <summary>${t.moreH}</summary>

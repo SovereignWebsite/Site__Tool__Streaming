@@ -61,11 +61,26 @@
     return r;
   }
 
+  /* The owner's own tags: short, at most 10 per title, no duplicates (case does not matter). */
+  function cleanTags(tags) {
+    var list = Array.isArray(tags) ? tags : String(tags || '').split(',');
+    var seen = {}, out = [];
+    list.forEach(function (t) {
+      var v = clean(t, 30); var k = v.toLowerCase();
+      if (v && !seen[k] && out.length < 10) { seen[k] = 1; out.push(v); }
+    });
+    return out;
+  }
+
   function update(state, id, patch) {
     for (var i = 0; i < state.items.length; i++) {
       var it = state.items[i];
       if (it.id !== id) continue;
-      if (patch.status !== undefined && STATUSES.indexOf(patch.status) >= 0) it.status = patch.status;
+      if (patch.status !== undefined && STATUSES.indexOf(patch.status) >= 0) {
+        if (patch.status === 'seen' && it.status !== 'seen') it.seenAt = (patch.now || new Date()).toISOString();
+        it.status = patch.status;
+      }
+      if (patch.tags !== undefined) it.tags = cleanTags(patch.tags);
       if (patch.rating !== undefined) { var n = parseInt(patch.rating, 10); it.rating = n >= 0 && n <= 5 ? n : 0; }
       if (patch.note !== undefined) it.note = clean(patch.note, 2000);
       return true;
@@ -104,7 +119,8 @@
     return sortItems(state.items, f.sort).filter(function (i) {
       if (f.status && i.status !== f.status) return false;
       if (!f.status && !f.showHidden && i.status === 'hidden') return false;
-      if (f.text && (i.title + ' ' + i.note).toLowerCase().indexOf(f.text.toLowerCase()) < 0) return false;
+      if (f.tag && !(i.tags || []).some(function (t) { return t.toLowerCase() === f.tag.toLowerCase(); })) return false;
+      if (f.text && (i.title + ' ' + i.note + ' ' + (i.tags || []).join(' ')).toLowerCase().indexOf(f.text.toLowerCase()) < 0) return false;
       return true;
     });
   }
@@ -153,6 +169,40 @@
   function hasExamples(state) { return state.items.some(function (i) { return i.example; }); }
   function removeExamples(state) { state.items = state.items.filter(function (i) { return !i.example; }); }
 
+  /* Every tag in use, with how many titles carry it, most used first. */
+  function allTags(state) {
+    var c = {}, name = {};
+    state.items.forEach(function (i) { (i.tags || []).forEach(function (t) { var k = t.toLowerCase(); c[k] = (c[k] || 0) + 1; if (!name[k]) name[k] = t; }); });
+    return Object.keys(c).sort(function (a, b) { return c[b] - c[a] || (a < b ? -1 : 1); }).map(function (k) { return { tag: name[k], count: c[k] }; });
+  }
+
+  /* A random title from the watchlist, optionally with a tag, never the one just shown when there is a choice. */
+  function pick(state, tag, avoidId, rnd) {
+    var pool = list(state, { status: 'watch', tag: tag || '' });
+    if (pool.length > 1 && avoidId) pool = pool.filter(function (i) { return i.id !== avoidId; });
+    if (!pool.length) return null;
+    return pool[Math.floor((rnd || Math.random)() * pool.length)];
+  }
+
+  /* Removes a title and says where it was, so it can be put back (undo). */
+  function take(state, id) {
+    for (var i = 0; i < state.items.length; i++) if (state.items[i].id === id) return { item: state.items.splice(i, 1)[0], index: i };
+    return null;
+  }
+  function putBack(state, taken) {
+    if (!taken || state.items.some(function (i) { return i.id === taken.item.id; })) return false;
+    state.items.splice(Math.min(taken.index, state.items.length), 0, taken.item);
+    return true;
+  }
+
+  function find(state, id) { for (var i = 0; i < state.items.length; i++) if (state.items[i].id === id) return state.items[i]; return null; }
+
+  /* One title's record, as the owner holds it, ready to save as its own JSON file. */
+  function recordJson(state, id) {
+    var it = find(state, id); if (!it) return null;
+    return JSON.stringify({ app: 'streaming', kind: 'record', exported: new Date().toISOString(), record: it }, null, 2);
+  }
+
   function exportJson(state) { return JSON.stringify({ app: 'streaming', exported: new Date().toISOString(), data: state }, null, 2); }
 
   /* Validates an imported file and rebuilds a clean state; never trusts shapes. */
@@ -177,8 +227,13 @@
         rating: rating >= 0 && rating <= 5 ? rating : 0,
         note: clean(o.note, 2000),
         added: clean(o.added, 40),
-        example: o.example === true
+        example: o.example === true,
+        tags: cleanTags(o.tags),
+        seenAt: /^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/.test(String(o.seenAt || '')) ? String(o.seenAt) : ''
       });
+      var last = s.items[s.items.length - 1];
+      if (!last.tags.length) delete last.tags;
+      if (!last.seenAt) delete last.seenAt;
       if (!s.items[s.items.length - 1].example) delete s.items[s.items.length - 1].example;
     });
     if (d.prefs) setPrefs(s, d.prefs);
@@ -193,7 +248,7 @@
   function save(storage, state) { try { storage.setItem(KEY, JSON.stringify(state)); return true; } catch (e) { return false; } }
 
   var api = { KEY: KEY, SERVICES: SERVICES, COUNTRIES: COUNTRIES, empty: empty, addItem: addItem, update: update, remove: remove,
-    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
+    setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, cleanTags: cleanTags, allTags: allTags, pick: pick, take: take, putBack: putBack, find: find, recordJson: recordJson, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
     load: load, save: save, titleFromUrl: titleFromUrl };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StreamingCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
