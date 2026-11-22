@@ -36,7 +36,7 @@
     var d = new Date(key + '-01T12:00:00Z');
     try { return d.toLocaleDateString(lang, style === 'short' ? { month: 'short', timeZone: 'UTC' } : { month: 'long', year: 'numeric', timeZone: 'UTC' }); } catch (e) { return key; }
   }
-  function focusRow(id, sel) { var e = document.querySelector('[data-id="' + id + '"] ' + (sel || '.item-title, .cover-btn')); if (e) e.focus(); }
+  function focusRow(id, sel) { var e = document.querySelector('[data-id="' + id + '"] ' + (sel || '.item-title')) || document.querySelector('[data-id="' + id + '"] .item-title'); if (e) e.focus(); }
 
   /* A title's picture: the owner's own, or the generated poster. Decorative; the title is always shown as text. */
   function cover(it, cls) {
@@ -89,7 +89,9 @@
   }
   function titleBtn(it, cls) { return btn(it.title, 'item-title ' + (cls || ''), act(T.openRecord, it.title), function () { openRecord(it.id); }); }
   function coverBtn(it, cls) {
-    var b = el('button', { type: 'button', 'class': 'cover-btn', 'aria-label': act(T.openRecord, it.title) });
+    /* The title is the one control for the record; the cover does the same for a pointer, but stays out of the
+       keyboard and screen reader order so each title is offered once. */
+    var b = el('button', { type: 'button', 'class': 'cover-btn', tabindex: '-1', 'aria-hidden': 'true' });
     b.appendChild(cover(it, cls));
     if (it.status === 'seen') b.appendChild(el('span', { 'class': 'ribbon', 'aria-hidden': 'true' }, T.tab_seen));
     b.addEventListener('click', function () { openRecord(it.id); });
@@ -203,12 +205,13 @@
     add(body, tagsEl(it));
     var bar = el('div', { 'class': 'item-bar' });
     var up = btn(T.moveUp, 'chip quiet-chip', act(T.moveUp, it.title), function () { if (C.move(state, it.id, -1)) { persist(); render(); say('movedUp', { t: it.title }); focusRow(it.id, '.move-up'); } });
-    up.classList.add('move-up'); if (n <= 2) up.disabled = true;
+    up.classList.add('move-up');
     var down = btn(T.moveDown, 'chip quiet-chip', act(T.moveDown, it.title), function () { if (C.move(state, it.id, 1)) { persist(); render(); say('movedDown', { t: it.title }); focusRow(it.id, '.move-down'); } });
-    down.classList.add('move-down'); if (n === total) down.disabled = true;
+    down.classList.add('move-down');
     var bring = btn(T.makeTonight, 'chip', act(T.makeTonight, it.title), function () { while (C.move(state, it.id, -1)) {} persist(); render(); say('madeTonight', { t: it.title }); focusRow(it.id); });
     var qa = actions(it); qa.appendChild(removeBtn(it));
-    bar.appendChild(bring); bar.appendChild(up); bar.appendChild(down); bar.appendChild(qa);
+    /* A move that cannot happen is not shown. */
+    bar.appendChild(bring); if (n > 2) bar.appendChild(up); if (n < total) bar.appendChild(down); bar.appendChild(qa);
     body.appendChild(bar);
     noteOrEdit(body, it);
     li.appendChild(body);
