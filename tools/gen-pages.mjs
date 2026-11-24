@@ -67,7 +67,7 @@ const L = {
       moved_seen: 'Marked as seen.', moved_watch: 'Back on your watchlist.', moved_hidden: 'Hidden.', noteSaved: 'Note saved.', rated: 'Rated {n} out of 5.', unrated: 'Rating cleared.',
       noviews: 'No saved views yet.', nostorage: 'Your browser would not save this. Export a copy to keep it.', confirmwipe: 'Remove everything from this browser?',
       err_empty: 'Type a title or paste a link first.', err_badlink: 'That link does not look right.', err_host: 'Only links to PrompTugal\'s streaming page or themoviedb.org are accepted. Type the title instead.',
-      err_notitle: 'No title could be read from that link. Type the title instead.', err_duplicate: 'That title is already on your list.',
+      err_notitle: 'No title could be read from that link. Type the title instead.', err_pttitle: 'Got the link. PrompTugal\'s links carry no title, so add it after the link: the link, a space, then the title.', ptLink: 'On PrompTugal\'s page', ptMay: 'may have left the list', r_pt: 'PrompTugal', err_duplicate: 'That title is already on your list.',
       err_noname: 'Give the view a name.', err_viewhost: 'A saved view must be a link to data.promptugal.news/streaming/.', err_import: 'That file is not a Streaming export.'
     }
   },
@@ -130,7 +130,7 @@ const L = {
       moved_seen: 'Marcado como visto.', moved_watch: 'De volta à sua lista para ver.', moved_hidden: 'Oculto.', noteSaved: 'Nota guardada.', rated: 'Classificado com {n} em 5.', unrated: 'Classificação removida.',
       noviews: 'Ainda não há vistas guardadas.', nostorage: 'O navegador não quis guardar isto. Exporte uma cópia para o conservar.', confirmwipe: 'Remover tudo deste navegador?',
       err_empty: 'Escreva primeiro um título ou cole uma ligação.', err_badlink: 'Essa ligação não parece correta.', err_host: 'Só são aceites ligações para a página de streaming do PrompTugal ou para themoviedb.org. Escreva antes o título.',
-      err_notitle: 'Não foi possível ler um título dessa ligação. Escreva antes o título.', err_duplicate: 'Esse título já está na sua lista.',
+      err_notitle: 'Não foi possível ler um título dessa ligação. Escreva antes o título.', err_pttitle: 'Recebida a ligação. As ligações do PrompTugal não trazem o título, por isso acrescente-o a seguir: a ligação, um espaço e o título.', ptLink: 'Na página do PrompTugal', ptMay: 'pode já ter saído da lista', r_pt: 'PrompTugal', err_duplicate: 'Esse título já está na sua lista.',
       err_noname: 'Dê um nome à vista.', err_viewhost: 'Uma vista guardada tem de ser uma ligação para data.promptugal.news/streaming/.', err_import: 'Esse ficheiro não é uma exportação do Streaming.'
     }
   }
