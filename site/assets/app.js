@@ -130,7 +130,9 @@
     if (it.status !== 'hidden') box.appendChild(btn(T.hide, 'chip quiet-chip', act(T.hide, it.title), move(it, 'hidden')));
     box.appendChild(btn(T.edit, 'chip quiet-chip', act(T.edit, it.title), function () { moreOpen = null; editing = it.id; render(); focusRow(it.id, 'textarea'); }));
     ((opts && opts.extra) || []).forEach(function (b) { box.appendChild(b); });
-    if (it.url) box.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer', 'class': 'chip quiet-chip open', 'aria-label': act(T.open, it.title) }, T.open));
+    var pt = C.promptugalLink(it);
+    if (pt) box.appendChild(el('a', { href: pt, rel: 'noopener noreferrer', 'class': 'chip quiet-chip open', 'aria-label': act(T.ptLink, it.title) + ' (' + T.ptMay + ')' }, T.ptLink));
+    if (it.url && it.url !== pt) box.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer', 'class': 'chip quiet-chip open', 'aria-label': act(T.open, it.title) }, T.open));
     box.appendChild(btn(T.remove, 'text-danger remove', act(T.remove, it.title), function () { removeItem(it); }));
     box.addEventListener('keydown', function (e) { if (e.key === 'Escape') { moreOpen = null; render(); focusRow(it.id, '.more-btn'); } });
     return box;
@@ -511,6 +513,11 @@
       [T.r_picture, PIC.get(it.id) ? T.picOwn : T.picGenerated]
     ];
     rows.forEach(function (r) { dl.appendChild(el('dt', {}, r[0])); dl.appendChild(el('dd', {}, r[1])); });
+    var ptl = C.promptugalLink(it);
+    if (ptl) {
+      dl.appendChild(el('dt', {}, T.r_pt));
+      var pd = el('dd'); pd.appendChild(el('a', { href: ptl, rel: 'noopener noreferrer' }, T.ptLink)); pd.appendChild(document.createTextNode(' (' + T.ptMay + ')')); dl.appendChild(pd);
+    }
     dl.appendChild(el('dt', {}, T.r_link));
     var dd = el('dd');
     if (it.url) dd.appendChild(el('a', { href: it.url, rel: 'noopener noreferrer' }, it.url)); else dd.textContent = T.none;

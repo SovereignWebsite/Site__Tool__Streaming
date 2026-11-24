@@ -51,4 +51,4 @@ Dinis Cruz, in the keeper's session: "Yes please start on both but just publish 
 ## What is not here yet
 
 - A picture from an open source (Wikidata or Wikimedia Commons) would mean a request to Wikimedia from each visitor's browser; it waits for Dinis.
-- Links to a per-title record on PrompTugal's page wait for the data agent and Dinis (docs/decisions.md: no TMDB data on this site).
+- PrompTugal's page now keeps an anchor per title while it is in its lists (#title-movie-<id>, #title-tv-<id>; data agent, commit ed46425, 24 November 2026). Streaming links each title to it, worked out from the owner's own link and labelled "may have left the list"; nothing is read from that page. A per-title JSON record from the data agent still waits for Dinis.

@@ -65,6 +65,8 @@ assert.equal(await pg.evaluate(() => document.getElementById('record').open), tr
 const rec = JSON.parse(await pg.textContent('#record-json'));
 assert.equal(rec.kind, 'record'); assert.equal(rec.record.note, 'Made-up note.'); assert.deepEqual(rec.record.tags, ['family', 'weekend']);
 const recId = rec.record.id;
+assert.equal(await pg.getAttribute('#record-dl a[href*="data.promptugal.news"]', 'href'), 'https://data.promptugal.news/streaming/#title-movie-1', 'the record links to the title on PrompTugal\'s page');
+assert.match(await pg.textContent('#record-dl'), /may have left the list/);
 assert.ok(pg.url().endsWith('#title-' + recId));
 const [dl] = await Promise.all([pg.waitForEvent('download'), pg.click('#rec-download')]);
 assert.match(dl.suggestedFilename(), /^streaming-sample-harbour-nights\.json$/);

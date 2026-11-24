@@ -101,4 +101,19 @@ assert.equal(C.list(a, { sort: 'rating' })[0].rating, 4);
   assert.ok(P.svg('<script>').includes('&lt;script&gt;'));
   assert.ok(P.lines('A very long made-up title that goes on and on and on for ever').length <= 4);
 }
+// PrompTugal's per-title anchors: links need a typed title; themoviedb.org links get a PrompTugal link worked out
+{
+  const t = C.empty();
+  assert.equal(C.addItem(t, 'https://data.promptugal.news/streaming/#title-movie-1616687').error, 'pttitle');
+  const a = C.addItem(t, 'https://data.promptugal.news/streaming/#title-movie-1616687 A Made-up Film').item;
+  assert.equal(a.title, 'A Made-up Film'); assert.equal(a.url, 'https://data.promptugal.news/streaming/#title-movie-1616687');
+  assert.equal(C.promptugalLink(a), 'https://data.promptugal.news/streaming/#title-movie-1616687');
+  const b2 = C.addItem(t, 'https://www.themoviedb.org/tv/42-made-up-series').item;
+  assert.equal(b2.title, 'made up series');
+  assert.equal(C.promptugalLink(b2), 'https://data.promptugal.news/streaming/#title-tv-42');
+  const c = C.addItem(t, 'https://www.themoviedb.org/movie/77-made-up Typed Better Title').item;
+  assert.equal(c.title, 'Typed Better Title');
+  assert.equal(C.promptugalLink(C.addItem(t, 'Only Typed').item), '');
+  assert.equal(C.promptugalLink({ url: 'https://data.promptugal.news/streaming/?made=up' }), '');
+}
 console.log('core tests passed');

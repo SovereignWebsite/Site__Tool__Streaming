@@ -32,21 +32,35 @@
   }
 
   /* input: a pasted link or a typed title. Returns {ok, item} or {ok:false, error}. */
+  /* input: a pasted link, a link followed by its title, or a typed title. Returns {ok, item} or {ok:false, error}. */
   function makeItem(input, now) {
     var raw = clean(input, 500);
     if (!raw) return { ok: false, error: 'empty' };
-    var u = /^https?:\/\//i.test(raw) ? parseUrl(raw) : null;
     var item = { id: makeId(), title: '', url: '', status: 'watch', rating: 0, note: '', added: (now || new Date()).toISOString() };
     if (/^https?:\/\//i.test(raw)) {
+      var sp = raw.search(/\s/), link = sp < 0 ? raw : raw.slice(0, sp), typed = sp < 0 ? '' : raw.slice(sp + 1);
+      var u = parseUrl(link);
       if (!u) return { ok: false, error: 'badlink' };
       if (LINK_HOSTS.indexOf(u.hostname) < 0) return { ok: false, error: 'host' };
       item.url = u.href;
-      item.title = clean(titleFromUrl(u), 200);
-      if (!item.title) return { ok: false, error: 'notitle' };
+      /* PrompTugal's page has no title in its address (only #title-movie-<id>), so its links need the title typed after them. */
+      item.title = clean(typed, 200) || (u.hostname === VIEW_HOST ? '' : clean(titleFromUrl(u), 200));
+      if (!item.title) return { ok: false, error: u.hostname === VIEW_HOST ? 'pttitle' : 'notitle' };
     } else {
       item.title = clean(raw, 200);
     }
     return { ok: true, item: item };
+  }
+
+  /* The title's entry on PrompTugal's streaming page, worked out from the owner's own link (nothing is fetched).
+     data.promptugal.news keeps an anchor per title while it is in its lists: #title-movie-<id> or #title-tv-<id>. */
+  function promptugalLink(item) {
+    var u = item && item.url ? parseUrl(item.url) : null;
+    if (!u) return '';
+    if (u.hostname === VIEW_HOST && /^#title-(movie|tv)-\d+$/.test(u.hash)) return u.href;
+    var m = /^\/(movie|tv)\/(\d+)/.exec(u.pathname);
+    if ((u.hostname === 'www.themoviedb.org' || u.hostname === 'themoviedb.org') && m) return 'https://' + VIEW_HOST + '/streaming/#title-' + m[1] + '-' + m[2];
+    return '';
   }
 
   function addItem(state, input, now) {
@@ -295,6 +309,6 @@
 
   var api = { KEY: KEY, SERVICES: SERVICES, COUNTRIES: COUNTRIES, empty: empty, addItem: addItem, update: update, remove: remove,
     setPrefs: setPrefs, addView: addView, removeView: removeView, list: list, sortItems: sortItems, counts: counts, merge: merge, move: move, seenByMonth: seenByMonth, ratingCounts: ratingCounts, seenGroups: seenGroups, cleanTags: cleanTags, allTags: allTags, pick: pick, take: take, putBack: putBack, find: find, recordJson: recordJson, addExamples: addExamples, hasExamples: hasExamples, removeExamples: removeExamples, exportJson: exportJson, importJson: importJson,
-    load: load, save: save, titleFromUrl: titleFromUrl };
+    load: load, save: save, titleFromUrl: titleFromUrl, promptugalLink: promptugalLink };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StreamingCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
