@@ -49,6 +49,6 @@ Every push to `dev` runs the pipeline (Signers, then Pages: link previews, links
 ## Who works here
 
 - **Owner:** Dinis Cruz, until the site is handed over. Only the owner instructs.
-- **Keeper:** streaming.d@SovereignWebsite.dinis (named in [CLAUDE.md](CLAUDE.md)); signs every commit with its key in SovereignWebsite__Factory `team/keys.json`, with `Agent:` and `Claude-Session:` trailers.
+- **Keeper:** streaming.d@SovereignWebsite.dinis (named in [CLAUDE.md](CLAUDE.md)); signs every commit with its key in `team/keys.json` of SovereignWebsite__IaC (formerly SovereignWebsite__Factory), with `Agent:` and `Claude-Session:` trailers.
 - **Reviews:** design.d reviews the design after each push (its reviews: https://github.com/SovereignWebsite/Site__Agents__Design/tree/dev/docs/reviews/streaming); synthetic-users.d runs synthetic visitors against the site.
 - How the site was made and every change: https://streaming.tool.sovereignweb.site/admin/

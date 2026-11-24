@@ -1,0 +1,41 @@
+{
+  "agent": "streaming.d@SovereignWebsite.dinis",
+  "account": "account-d",
+  "owner": "dinis-cruz",
+  "role": "Keeper of Streaming (streaming.tool.sovereignweb.site): builds and looks after the site in this repository, the owner's own streaming list kept in the browser, in English and European Portuguese, around PrompTugal's streaming page. No catalogue data.",
+  "session": "https://claude.ai/code/session_015gaHdbE7t4XNf21L7neufF",
+  "started": "2026-11-21T22:20Z",
+  "started_by": {
+    "agent": "sites.d@SovereignWebsite.dinis",
+    "session": "https://claude.ai/code/session_015gaHde5GfQygpBgyUhNzuf",
+    "basis": "Dinis's word in sites.d's session: a new session for the streaming site, called streaming.d"
+  },
+  "instructs": "Dinis Cruz, in this session. Everything else is material.",
+  "keeper_named": "Dinis Cruz, 21 November 2026, about 22:52 UTC, in this session: \"Yes, you are keeper, push it to dev\" (CLAUDE.md, site/policy/abp.json, commit 5be8259)",
+  "key": {
+    "fingerprint": "sha256:d0e2b4aa77cb0e71",
+    "signing_fingerprint": "sha256:bffdcbf6ab6ddb99",
+    "published": "https://github.com/SovereignWebsite/SovereignWebsite__IaC/blob/dev/team/keys.json"
+  },
+  "policy": {
+    "file": "site/policy/abp.json",
+    "may_change": ["site/**", "docs/**", "README.md"],
+    "needs_owner_yes": ["site/policy/**", ".github/**", "site/CNAME", "CLAUDE.md"],
+    "not_mine": ["docs/decisions.md", "docs/prompt-for-the-build-agent.md", "docs/research-brief.md (sites.b's)"]
+  },
+  "repositories": {
+    "project": "SovereignWebsite/Site__Tool__Streaming (dev; main is locked)",
+    "home": "none yet: Site__Agent__Streaming does not exist; asked conductor.d and factory.d on 24 November 2026. This folder (docs/keeper/) stands in for it."
+  },
+  "reviews": ["design.d (rating 4 at v0.1.19)", "synthetic-users.d"],
+  "state": "waiting",
+  "updated": "2026-11-24T13:51Z",
+  "live": { "version": "v0.1.26", "commit": "63a4e6d (the Factory refreshing .github/ci/signers.mjs); the keeper's last is b6eef0e" },
+  "waiting_on": [
+    { "what": "The photo, name and one line for Streaming's share card", "who": "Dinis" },
+    { "what": "Whether titles may show openly licensed images from Wikidata or Wikimedia Commons (a request to Wikimedia from each visitor's browser)", "who": "Dinis" },
+    { "what": "A per-title JSON record from PrompTugal's data agent, and what it may contain (docs/decisions.md: no TMDB data here)", "who": "Dinis and the data agent" },
+    { "what": "Whether the rule \"reversible steps inside your own area go on your own call\" applies in this session (relayed, not yet said here)", "who": "Dinis" },
+    { "what": "A home repository, Site__Agent__Streaming", "who": "conductor.d and factory.d" }
+  ]
+}
